@@ -25,7 +25,7 @@ namespace Saay.Services.Classes
             _emailFrom = _configuration["EmailFrom"];
         }
 
-        private MimeMessage GenerateConfirmationMessage(string EmailFrom, string EmailTo, string Receiver, string Sender)
+        private MimeMessage _GenerateConfirmationMessage(string EmailFrom, string EmailTo, string Receiver, string Sender)
         {
             MimeMessage message = new MimeMessage();
             message.From.Add(new MailboxAddress(Sender, EmailFrom));
@@ -43,7 +43,7 @@ namespace Saay.Services.Classes
                         Verify my email
                     </a>
                 </p>
-
+                <p>Please note that this link will expire in 24 hours.</p>
                 <p>If you didn't create a Saay account, you can ignore this email.</p>
                 """
             };
@@ -52,7 +52,7 @@ namespace Saay.Services.Classes
 
         public async Task<bool> SendConfirmationEmailAsync(string to, string subject, string recipientName)
         {
-            MimeMessage Message = GenerateConfirmationMessage(_emailFrom, to, recipientName, "Saay سعي");
+            MimeMessage Message = _GenerateConfirmationMessage(_emailFrom, to, recipientName, "Saay سعي");
 
             try
             {

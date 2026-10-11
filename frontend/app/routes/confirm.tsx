@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { useAuth } from "~/context/AuthContext";
 import { confirm } from "~/services/api/auth";
-import { getEmailCookie } from "~/services/cookie/email";
+import { getEmailCookie, removeEmailCookie } from "~/services/cookie/email";
 
 export default function ConfirmEmail() {
   const currentUserId = useAuth()?.currentUserId;
@@ -16,6 +16,7 @@ export default function ConfirmEmail() {
 
     if (typeof result === "string") return;
 
+    removeEmailCookie();
     setIsConfirmed(true);
   }
 

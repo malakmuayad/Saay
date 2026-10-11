@@ -35,5 +35,5 @@ export async function sendAIMessage(
     return "An error occurred. Please try again later.";
   }
 
-  return (await response.json()) as string;
+  return (await response.text()) as string;
 }
