@@ -110,9 +110,9 @@ namespace Saay.Repository.Classes
             .Select(u => u.Email)
             .FirstOrDefaultAsync();
 
-        public async Task<bool?> UpdateConfirmationStatusAsync(int userId)
+        public async Task<bool?> UpdateConfirmationStatusAsync(string email)
         {
-            User user = await _context.Users.FindAsync(userId);
+            User user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             if (user == null) return null; // User not found
 

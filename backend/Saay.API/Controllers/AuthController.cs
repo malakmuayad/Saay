@@ -198,23 +198,15 @@ namespace Saay.API.Controllers
         }
 
         [EnableRateLimiting("CriticalOpsLimiter")]
-        [HttpPut("{userId}")]
+        [HttpPut("{email}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
-        public async Task<IActionResult> Confirm(int userId)
+        public async Task<IActionResult> Confirm(string email)
         {
-            if(!await _ownershipAuthorizationService.IsOwnerAsync(User, userId))
-            {
-                _logger.LogWarning("User {userId} attempted to confirm email without ownership.",
-                   userId);
-                return Forbid();
-            }
-
-            bool? confirmResult = await _userService.UpdateConfirmationStatusAsync(userId);
+            bool? confirmResult = await _userService.UpdateConfirmationStatusAsync(email);
 
             if(confirmResult is null)
                 return NotFound();

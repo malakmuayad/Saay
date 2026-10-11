@@ -162,8 +162,8 @@ namespace Saay.Services.Classes
         public async Task<string?> GetUserEmailAsync(int userId) =>
             await _userRepository.GetUserEmailAsync(userId);
 
-        public async Task<bool?> UpdateConfirmationStatusAsync(int userId) =>
-            await _userRepository.UpdateConfirmationStatusAsync(userId);
+        public async Task<bool?> UpdateConfirmationStatusAsync(string email) =>
+             await _userRepository.UpdateConfirmationStatusAsync(email);
 
         public Task<bool?> IsConfirmedAsync(int userId) =>
             _userRepository.IsConfirmedAsync(userId);

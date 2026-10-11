@@ -19,7 +19,7 @@ namespace Saay.Repository.Interfaces
         public Task<string?> GetNameAsync(int userId);
         public Task<bool?> UpdateConfirmation(int userId, bool isConfirmed);
         public Task<string?> GetUserEmailAsync(int userId);
-        public Task<bool?> UpdateConfirmationStatusAsync(int userId);
+        public Task<bool?> UpdateConfirmationStatusAsync(string email);
         public System.Threading.Tasks.Task BeginTransactionAsync();
         public System.Threading.Tasks.Task CommitTransactionAsync();
         public System.Threading.Tasks.Task RollbackTransactionAsync();

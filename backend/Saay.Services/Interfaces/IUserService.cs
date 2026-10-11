@@ -16,7 +16,7 @@ namespace Saay.Services.Interfaces
         public Task<bool> IsEmailOwner(int userId, string email);
         public Task<string?> GetUserMissionAsync(int userId);
         public Task<string?> GetUserEmailAsync(int userId);
-        public Task<bool?> UpdateConfirmationStatusAsync(int userId);
+        public Task<bool?> UpdateConfirmationStatusAsync(string email);
         public Task<bool?> IsConfirmedAsync(int userId);
     }
 }

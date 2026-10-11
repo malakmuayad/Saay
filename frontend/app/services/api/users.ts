@@ -5,7 +5,9 @@ import type { UpdateUserDto } from "~/types/users/UpdateUserDto";
 
 const Base_URL = "https://saay.runasp.net";
 
-export async function addUser(user: AddUserDto): Promise<string | number> {
+export async function addUser(
+  user: AddUserDto,
+): Promise<string | [number, string]> {
   const url: URL = new URL("api/saay/users", Base_URL);
 
   const options = {
@@ -32,7 +34,7 @@ export async function addUser(user: AddUserDto): Promise<string | number> {
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
     const createdUser = await response.json();
-    return createdUser.userId; // registeration successed
+    return [createdUser.userId, createdUser.email]; // registeration successed
   } catch (error) {
     return "An error occurred. Please try again later.";
   }

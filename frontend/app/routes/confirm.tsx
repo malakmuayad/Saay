@@ -2,15 +2,17 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { useAuth } from "~/context/AuthContext";
 import { confirm } from "~/services/api/auth";
+import { getEmailCookie } from "~/services/cookie/email";
 
 export default function ConfirmEmail() {
   const currentUserId = useAuth()?.currentUserId;
   const [isConfirmed, setIsConfirmed] = useState(false);
 
   async function confirmEmail() {
-    if (currentUserId === null || currentUserId === undefined) return;
+    const email = getEmailCookie();
+    if (email === null) return;
 
-    const result = await confirm(currentUserId);
+    const result = await confirm(email);
 
     if (typeof result === "string") return;
 

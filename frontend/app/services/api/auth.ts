@@ -119,8 +119,8 @@ export async function logout(logoutDto: LogoutDto): Promise<boolean | string> {
   }
 }
 
-export async function confirm(userId: number): Promise<boolean | string> {
-  const url = new URL(`${userId}`, Base_URL);
+export async function confirm(email: string): Promise<boolean | string> {
+  const url = new URL(`${email}`, Base_URL);
   const options: RequestInit = {
     method: "PUT",
     headers: {
