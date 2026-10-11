@@ -240,5 +240,32 @@ namespace Saay.API.Controllers
 
             return Ok(await _userService.GetUserMissionAsync(userId));
         }
+
+        [EnableRateLimiting("LightOpsLimiter")]
+        [Authorize]
+        [HttpGet("confirmation/{userId}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        public async Task<ActionResult<bool>> IsConfirmedAsync(int userId)
+        {
+            if (!await _ownershipAuthorizationService.IsOwnerAsync(User, userId))
+            {
+                _logger.LogWarning("User {userId} attmpted to get confirmation status without ownership.",
+                   userId);
+                return Forbid();
+            }
+
+            bool? result = (await _userService.IsConfirmedAsync(userId));
+
+            if (result == null)
+                return NotFound("User not found.");
+            else
+                return Ok(result);
+        }
     }
 }

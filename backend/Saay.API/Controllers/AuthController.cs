@@ -18,10 +18,13 @@ namespace Saay.API.Controllers
         private readonly IConfiguration _configuration;
         private readonly IUserTokenService _userTokenService;
 
+        private readonly IOwnershipAuthorizationService _ownershipAuthorizationService;
+
         private readonly ILogger<AuthController> _logger;
 
         public AuthController(IUserService userService, IPasswordHasher passwordHasher,
-            ITokenService tokenService, IConfiguration configuration, IUserTokenService usertoken, ILogger<AuthController> logger)
+            ITokenService tokenService, IConfiguration configuration, IUserTokenService usertoken,
+            ILogger<AuthController> logger, IOwnershipAuthorizationService ownershipAuthorizationService)
         {
             _userService = userService;
             _passwordHasher = passwordHasher;
@@ -29,6 +32,7 @@ namespace Saay.API.Controllers
             _configuration = configuration;
             _userTokenService = usertoken;
             _logger = logger;
+            _ownershipAuthorizationService = ownershipAuthorizationService;
         }
 
         [EnableRateLimiting("AuthLimiter")]
@@ -191,6 +195,31 @@ namespace Saay.API.Controllers
                 return StatusCode(500, "An error occurred while logging out");
 
             return Ok(true);
+        }
+
+        [EnableRateLimiting("CriticalOpsLimiter")]
+        [HttpPut("{userId}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        public async Task<IActionResult> Confirm(int userId)
+        {
+            if(!await _ownershipAuthorizationService.IsOwnerAsync(User, userId))
+            {
+                _logger.LogWarning("User {userId} attempted to confirm email without ownership.",
+                   userId);
+                return Forbid();
+            }
+
+            bool? confirmResult = await _userService.UpdateConfirmationStatusAsync(userId);
+
+            if(confirmResult is null)
+                return NotFound();
+
+            return confirmResult == true ? Ok(true) : StatusCode(500, "An error occurred while confirming email");
         }
     }
 }

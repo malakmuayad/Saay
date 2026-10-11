@@ -17,6 +17,12 @@ type Pages = {
   "/signup": {
     params: {};
   };
+  "/confirm": {
+    params: {};
+  };
+  "/notConfirmed": {
+    params: {};
+  };
   "/dashboard": {
     params: {};
   };
@@ -37,7 +43,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/signup" | "/dashboard" | "/dashboard/goals" | "/dashboard/tasks" | "/dashboard/habits" | "/dashboard/settings";
+    page: "/" | "/signup" | "/confirm" | "/notConfirmed" | "/dashboard" | "/dashboard/goals" | "/dashboard/tasks" | "/dashboard/habits" | "/dashboard/settings";
   };
   "routes/signin.tsx": {
     id: "routes/signin";
@@ -46,6 +52,14 @@ type RouteFiles = {
   "routes/signup.tsx": {
     id: "routes/signup";
     page: "/signup";
+  };
+  "routes/confirm.tsx": {
+    id: "routes/confirm";
+    page: "/confirm";
+  };
+  "routes/notConfirmed.tsx": {
+    id: "routes/notConfirmed";
+    page: "/notConfirmed";
   };
   "routes/dashboard.tsx": {
     id: "routes/dashboard";
@@ -77,6 +91,8 @@ type RouteModules = {
   "root": typeof import("./app/root.tsx");
   "routes/signin": typeof import("./app/routes/signin.tsx");
   "routes/signup": typeof import("./app/routes/signup.tsx");
+  "routes/confirm": typeof import("./app/routes/confirm.tsx");
+  "routes/notConfirmed": typeof import("./app/routes/notConfirmed.tsx");
   "routes/dashboard": typeof import("./app/routes/dashboard.tsx");
   "routes/home": typeof import("./app/routes/home.tsx");
   "routes/goals": typeof import("./app/routes/goals.tsx");

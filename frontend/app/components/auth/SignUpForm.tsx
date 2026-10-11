@@ -83,7 +83,7 @@ export default function SignUpForm() {
 
     setError(null);
     setSuccess(true);
-    navigator("/");
+    setTimeout(() => navigator("/"), 4000);
   }
 
   return (
@@ -104,7 +104,9 @@ export default function SignUpForm() {
           <Alert
             variant="success"
             title="Success"
-            message={"Account is created successfully!"}
+            message={
+              "Account is created. Check your email to confirm your account!"
+            }
           />
         )}
         <form onSubmit={handleSignUp}>

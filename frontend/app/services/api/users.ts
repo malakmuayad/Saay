@@ -5,7 +5,7 @@ import type { UpdateUserDto } from "~/types/users/UpdateUserDto";
 
 const Base_URL = "https://saay.runasp.net";
 
-export async function addUser(user: AddUserDto): Promise<string | null> {
+export async function addUser(user: AddUserDto): Promise<string | number> {
   const url: URL = new URL("api/saay/users", Base_URL);
 
   const options = {
@@ -31,8 +31,8 @@ export async function addUser(user: AddUserDto): Promise<string | null> {
 
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-    await response.json();
-    return null; // registeration successed
+    const createdUser = await response.json();
+    return createdUser.userId; // registeration successed
   } catch (error) {
     return "An error occurred. Please try again later.";
   }
@@ -201,6 +201,35 @@ export async function deleteUser(userId: number): Promise<boolean | string> {
 
   const options: RequestInit = {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const response = await apiFetch(url, options);
+
+  if (typeof response === "string") {
+    return response;
+  }
+
+  if (response.status === 404) {
+    return "User not found.";
+  }
+
+  if (!response.ok) {
+    return "An error occurred. Please try again later.";
+  }
+
+  return (await response.json()) as boolean;
+}
+
+export async function getUserConfirmationStatus(
+  userId: number,
+): Promise<string | boolean> {
+  const url: URL = new URL(`api/saay/users/confirmation/${userId}`, Base_URL);
+
+  const options: RequestInit = {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
     },

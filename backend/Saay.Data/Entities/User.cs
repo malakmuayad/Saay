@@ -16,6 +16,8 @@ public partial class User
 
     public string? Mission { get; set; }
 
+    public bool IsConfirmed { get; set; } = false;
+
     public virtual ICollection<Goal> Goals { get; set; } = new List<Goal>();
 
     public virtual ICollection<Habit> Habits { get; set; } = new List<Habit>();

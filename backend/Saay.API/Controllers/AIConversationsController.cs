@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Saay.Infrastructure.DTOs.AIConversationDTOs;
 using Saay.Services.Interfaces;
+using MailKit.Security;
+using MimeKit;
 
 namespace Saay.API.Controllers
 {
@@ -41,6 +43,49 @@ namespace Saay.API.Controllers
             }
             string aiResponse = await _aiConversationService.SendMessage(messageDto.UserId, messageDto.Message);
             return Ok(aiResponse);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> SendTestMessage()
+        {
+            var emailFrom = "saaynoreply@gmail.com";
+            var appPassword = "umts upbh fsvd oytp";
+            var emailTo = "malakmuayad11@gmail.com";
+
+            var message = new MimeMessage();
+
+            message.From.Add(
+                new MailboxAddress("Saay Test", emailFrom)
+            );
+
+            message.To.Add(
+                new MailboxAddress("Test Recipient", emailTo)
+            );
+
+            message.Subject = "Saay Email Test";
+
+            message.Body = new TextPart("plain")
+            {
+                Text = "This is a test email sent from the Saay API."
+            };
+
+            using var client = new MailKit.Net.Smtp.SmtpClient();
+
+            await client.ConnectAsync(
+                "smtp.gmail.com",
+                587,
+                SecureSocketOptions.StartTls
+            );
+
+            await client.AuthenticateAsync(
+                emailFrom,
+                appPassword
+            );
+
+            await client.SendAsync(message);
+
+            await client.DisconnectAsync(true);
+            return Ok("sent");
         }
     }
 }

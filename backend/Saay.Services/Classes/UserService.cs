@@ -10,30 +10,63 @@ namespace Saay.Services.Classes
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
 
-        public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher)
+        private readonly IEmailService _emailService;
+
+        public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IEmailService emailService)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
+            _emailService = emailService;
         }
-        
+
         public async Task<int?> AddUserAsync(AddUserDto addUserDto)
         {
-            if(await _userRepository.DoesEmailExist(addUserDto.Email))
+            if (await _userRepository.DoesEmailExist(addUserDto.Email))
                 return null;
 
-            User user = new User
+            await _userRepository.BeginTransactionAsync();
+
+            try
             {
-                FirstName = addUserDto.FirstName,
-                LastName = addUserDto.LastName,
-                Email = addUserDto.Email,
-                PasswordHash = _passwordHasher.HashPassword(addUserDto.Password),
-                ProfilePictureUrl = addUserDto.ProfilePictureURL
-            };
+                User user = new User
+                {
+                    FirstName = addUserDto.FirstName,
+                    LastName = addUserDto.LastName,
+                    Email = addUserDto.Email,
+                    PasswordHash = _passwordHasher.HashPassword(addUserDto.Password),
+                    ProfilePictureUrl = addUserDto.ProfilePictureURL,
+                    IsConfirmed = false
+                };
 
-            if(await _userRepository.AddUserAsync(user) > 0)
+                int? result = await _userRepository.AddUserAsync(user);
+
+                if (result is null or <= 0)
+                {
+                    await _userRepository.RollbackTransactionAsync();
+                    return null;
+                }
+
+                bool emailSent = await _emailService.SendConfirmationEmailAsync(
+                    user.Email,
+                    "Confirm Your Saay Account",
+                    user.FirstName
+                );
+
+                if (!emailSent)
+                {
+                    await _userRepository.RollbackTransactionAsync();
+                    return null;
+                }
+
+                await _userRepository.CommitTransactionAsync();
+
                 return user.UserId;
-
-            return null;
+            }
+            catch
+            {
+                await _userRepository.RollbackTransactionAsync();
+                throw;
+            }
         }
 
         public async Task<bool?> DeleteUserAsync(int userId) => await _userRepository.DeleteUserAsync(userId);
@@ -125,5 +158,14 @@ namespace Saay.Services.Classes
 
         public async Task<string?> GetUserMissionAsync(int userId) =>
             await _userRepository.GetUserMission(userId);
+
+        public async Task<string?> GetUserEmailAsync(int userId) =>
+            await _userRepository.GetUserEmailAsync(userId);
+
+        public async Task<bool?> UpdateConfirmationStatusAsync(int userId) =>
+            await _userRepository.UpdateConfirmationStatusAsync(userId);
+
+        public Task<bool?> IsConfirmedAsync(int userId) =>
+            _userRepository.IsConfirmedAsync(userId);
     }
 }

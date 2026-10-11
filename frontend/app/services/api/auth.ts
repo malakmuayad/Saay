@@ -3,6 +3,7 @@ import { removeAccessToken, setAccessToken } from "../sessionStorage/auth";
 import { removeRefreshToken, setRefreshToken } from "../localStorage/auth";
 import { getCurrentUser, removeCurrentUser } from "../localStorage/users";
 import type { LogoutDto } from "~/types/auth/LogoutDto";
+import { apiFetch } from "./main";
 
 const Base_URL = "https://saay.runasp.net/api/saay/auth/";
 
@@ -116,4 +117,30 @@ export async function logout(logoutDto: LogoutDto): Promise<boolean | string> {
     console.error("Logout error:", error);
     return "An error occurred. Please try again later.";
   }
+}
+
+export async function confirm(userId: number): Promise<boolean | string> {
+  const url = new URL(`${userId}`, Base_URL);
+  const options: RequestInit = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const response = await apiFetch(url, options);
+
+  if (typeof response === "string") {
+    return response;
+  }
+
+  if (response.status === 404) {
+    return "User not found.";
+  }
+
+  if (!response.ok) {
+    return "An error occurred. Please try again later.";
+  }
+
+  return (await response.json()) as boolean;
 }

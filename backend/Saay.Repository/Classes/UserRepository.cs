@@ -95,5 +95,40 @@ namespace Saay.Repository.Classes
             .Where(u => u.UserId == userId)
             .Select(u => u.FirstName)
             .FirstOrDefaultAsync();
+
+        public async Task<bool?> UpdateConfirmation(int userId, bool isConfirmed)
+        {
+            User user = await _context.Users.FindAsync(userId);
+            if (user == null) return null; // User not found
+            user.IsConfirmed = isConfirmed;
+            return await _context.SaveChangesAsync() >= 0;
+        }
+
+        public async Task<string?> GetUserEmailAsync(int userId) =>
+            await _context.Users
+            .Where(u => u.UserId == userId)
+            .Select(u => u.Email)
+            .FirstOrDefaultAsync();
+
+        public async Task<bool?> UpdateConfirmationStatusAsync(int userId)
+        {
+            User user = await _context.Users.FindAsync(userId);
+
+            if (user == null) return null; // User not found
+
+            user.IsConfirmed = true;
+
+            return await _context.SaveChangesAsync() >= 0;
+        }
+
+        public async System.Threading.Tasks.Task BeginTransactionAsync() => await _context.Database.BeginTransactionAsync();
+        public async System.Threading.Tasks.Task CommitTransactionAsync() => await _context.Database.CommitTransactionAsync();
+        public async System.Threading.Tasks.Task RollbackTransactionAsync() => await _context.Database.RollbackTransactionAsync();
+    
+        public Task<bool?> IsConfirmedAsync(int userId) =>
+            _context.Users
+            .Where(u => u.UserId == userId)
+            .Select(u => (bool?)u.IsConfirmed)
+            .FirstOrDefaultAsync();
     }
 }

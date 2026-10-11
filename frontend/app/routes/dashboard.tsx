@@ -8,12 +8,19 @@ import { getCurrentUser } from "~/services/localStorage/users";
 import { useState } from "react";
 import AIChatbot from "~/components/layout/AIChatbot";
 import Alert from "~/components/ui/Alert";
+import { getUserConfirmationStatus } from "~/services/api/users";
 
 export async function clientLoader() {
   const currentUserId = getCurrentUser();
 
   if (!currentUserId) {
     throw redirect("/");
+  }
+
+  const isConfirmed = await getUserConfirmationStatus(Number(currentUserId));
+
+  if (!isConfirmed) {
+    throw redirect("/notConfirmed");
   }
 
   return null;

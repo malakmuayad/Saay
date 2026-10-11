@@ -54,6 +54,7 @@ namespace Saay.Extensions
 
         public static IServiceCollection AddSaayServices(this IServiceCollection services)
         {
+            services.AddScoped<IEmailService, GmailService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITaskCategoryService, TaskCategoryService>();
             services.AddScoped<IPasswordHasher, ArgonPasswordHasher>();

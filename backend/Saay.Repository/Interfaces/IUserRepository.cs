@@ -17,5 +17,12 @@ namespace Saay.Repository.Interfaces
         public Task<bool> IsEmailOwner(int userId, string email);
         public Task<string?> GetUserMission(int userId);
         public Task<string?> GetNameAsync(int userId);
+        public Task<bool?> UpdateConfirmation(int userId, bool isConfirmed);
+        public Task<string?> GetUserEmailAsync(int userId);
+        public Task<bool?> UpdateConfirmationStatusAsync(int userId);
+        public System.Threading.Tasks.Task BeginTransactionAsync();
+        public System.Threading.Tasks.Task CommitTransactionAsync();
+        public System.Threading.Tasks.Task RollbackTransactionAsync();
+        public Task<bool?> IsConfirmedAsync(int userId);
     }
 }

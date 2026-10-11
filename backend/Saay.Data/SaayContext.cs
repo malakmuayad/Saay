@@ -153,6 +153,8 @@ public partial class SaayContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("ProfilePictureURL");
+            entity.Property(u => u.IsConfirmed)
+                .HasDefaultValue(false);
         });
 
         modelBuilder.Entity<AIConversation>(entity =>
@@ -175,7 +177,8 @@ public partial class SaayContext : DbContext
             entity.HasOne(e => e.User)
                 .WithMany(u => u.AIConversations)
                 .HasForeignKey(e => e.UserId)
-                .HasConstraintName("FK_AIConversations_Users");
+                .HasConstraintName("FK_AIConversations_Users")
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         OnModelCreatingPartial(modelBuilder);
