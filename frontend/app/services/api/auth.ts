@@ -120,8 +120,6 @@ export async function logout(logoutDto: LogoutDto): Promise<boolean | string> {
 }
 
 export async function confirm(token: string): Promise<boolean | string> {
-  const url = new URL("/api/saay/users/confirm-email", Base_URL);
-
   const options: RequestInit = {
     method: "PUT",
     headers: {
@@ -130,7 +128,7 @@ export async function confirm(token: string): Promise<boolean | string> {
     body: JSON.stringify({ token }),
   };
 
-  const response = await apiFetch(url, options);
+  const response = await apiFetch(Base_URL, options);
 
   if (typeof response === "string") {
     return response;
