@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "~/context/AuthContext";
 import { sendAIMessage } from "~/services/api/ai";
 import Badge from "../ui/Badge";
+import ReactMarkdown from "react-markdown";
 
 type AIChatbotProps = {
   onClose: () => void;
@@ -127,7 +128,7 @@ export default function AIChatbot({ onClose }: AIChatbotProps) {
                     : "rounded-bl-md bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
                 }`}
               >
-                {msg.text}
+                <ReactMarkdown>{msg.text}</ReactMarkdown>
               </div>
             </div>
           ))}
