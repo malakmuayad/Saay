@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import { useAuth } from "~/context/AuthContext";
+import Alert from "~/components/ui/Alert";
 import { confirm } from "~/services/api/auth";
-import { getEmailCookie, removeEmailCookie } from "~/services/cookie/email";
 
 export default function ConfirmEmail() {
   const [searchParams] = useSearchParams();
-  const currentUserId = useAuth()?.currentUserId;
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState<boolean | null>(null);
 
   async function confirmEmail() {
     const token = searchParams.get("token");
 
     if (!token) {
-      // setMessage("The confirmation link is invalid.");
+      setIsConfirmed(false);
       return;
     }
 
@@ -21,7 +19,6 @@ export default function ConfirmEmail() {
 
     if (typeof result === "string") return;
 
-    // removeEmailCookie();
     setIsConfirmed(true);
   }
 
@@ -30,7 +27,7 @@ export default function ConfirmEmail() {
       <section className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm sm:p-10">
         {/* Icon */}
         <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-indigo-50">
-          {isConfirmed ? (
+          {isConfirmed === true ? (
             <svg
               className="h-10 w-10 text-green-600"
               fill="none"
@@ -76,7 +73,7 @@ export default function ConfirmEmail() {
         </p>
 
         {/* Action */}
-        {!isConfirmed ? (
+        {isConfirmed === null ? (
           <button
             type="button"
             onClick={confirmEmail}
@@ -91,6 +88,14 @@ export default function ConfirmEmail() {
           >
             Go to home page
           </Link>
+        )}
+
+        {isConfirmed === false && (
+          <Alert
+            variant="error"
+            title="Error Occurred"
+            message="The account is not found or the link is expired."
+          />
         )}
 
         {/* Footer */}
