@@ -1,22 +1,27 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { useAuth } from "~/context/AuthContext";
 import { confirm } from "~/services/api/auth";
 import { getEmailCookie, removeEmailCookie } from "~/services/cookie/email";
 
 export default function ConfirmEmail() {
+  const [searchParams] = useSearchParams();
   const currentUserId = useAuth()?.currentUserId;
   const [isConfirmed, setIsConfirmed] = useState(false);
 
   async function confirmEmail() {
-    const email = getEmailCookie();
-    if (email === null) return;
+    const token = searchParams.get("token");
 
-    const result = await confirm(email);
+    if (!token) {
+      // setMessage("The confirmation link is invalid.");
+      return;
+    }
+
+    const result = await confirm(token);
 
     if (typeof result === "string") return;
 
-    removeEmailCookie();
+    // removeEmailCookie();
     setIsConfirmed(true);
   }
 

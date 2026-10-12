@@ -85,6 +85,7 @@ namespace Saay.Extensions
             services.AddScoped<IHabitRepository, HabitRepository>();
             services.AddScoped<IUserTokenRepository, UserTokenRpository>();
             services.AddScoped<IAIConversationRepository, AIConversationRepository>();
+            services.AddScoped<IEmailConfirmationRepository, EmailConfirmationRepository>();
 
             return services;
         }

@@ -43,5 +43,19 @@ namespace Saay.Services.Classes
                 signingCredentials: creds
             );
         }
+
+        public string GenerateEmailConfirmationToken()
+        {
+            byte[] bytes = RandomNumberGenerator.GetBytes(32);
+            return Convert.ToBase64String(bytes)
+                .TrimEnd('=')
+                .Replace('+', '-')
+                .Replace('/', '_');
+        }
+        public string HashToken(string token)
+        {
+            byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(token));
+            return Convert.ToHexString(bytes);
+        }
     }
 }

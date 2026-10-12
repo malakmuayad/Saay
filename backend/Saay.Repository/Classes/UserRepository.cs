@@ -110,15 +110,26 @@ namespace Saay.Repository.Classes
             .Select(u => u.Email)
             .FirstOrDefaultAsync();
 
-        public async Task<bool?> UpdateConfirmationStatusAsync(string email)
+        public async Task<bool?> UpdateConfirmationStatusAsync(string token)
         {
-            User user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            EmailConfirmationToken? confirmationToken =
+                await _context.EmailConfirmationTokens
+                    .Include(t => t.User)
+                    .FirstOrDefaultAsync(t => t.TokenHash == token);
 
-            if (user == null) return null; // User not found
+            if (confirmationToken == null)
+                return null;
 
-            user.IsConfirmed = true;
+            if (confirmationToken.ExpiresAt <= DateTime.UtcNow ||
+                confirmationToken.UsedAt != null)
+            {
+                return false;
+            }
 
-            return await _context.SaveChangesAsync() >= 0;
+            confirmationToken.User.IsConfirmed = true;
+            confirmationToken.UsedAt = DateTime.UtcNow;
+
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async System.Threading.Tasks.Task BeginTransactionAsync() => await _context.Database.BeginTransactionAsync();

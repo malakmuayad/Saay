@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Saay.Infrastructure.DTOs.AuthDTOs;
+using Saay.Infrastructure.DTOs.EmailConfirmationDTOs;
 using Saay.Infrastructure.DTOs.TokenDTOs;
 using Saay.Infrastructure.DTOs.UserDTOs;
 using Saay.Services.Interfaces;
@@ -204,14 +205,16 @@ namespace Saay.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
-        public async Task<IActionResult> Confirm(string email)
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto dto)
         {
-            bool? confirmResult = await _userService.UpdateConfirmationStatusAsync(email);
+            bool? confirmed = await _userService.UpdateConfirmationStatusAsync(dto.Token);
 
-            if(confirmResult is null)
-                return NotFound();
-
-            return confirmResult == true ? Ok(true) : StatusCode(500, "An error occurred while confirming email");
+            if (confirmed == null)
+                return NotFound("User not found");
+            else if (confirmed == false)
+                return BadRequest("The confirmation link is invalid or expired.");
+           
+            return Ok(true);
         }
     }
 }

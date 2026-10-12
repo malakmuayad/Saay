@@ -25,7 +25,7 @@ namespace Saay.Services.Classes
             _emailFrom = _configuration["EmailFrom"];
         }
 
-        private MimeMessage _GenerateConfirmationMessage(string EmailFrom, string EmailTo, string Receiver, string Sender)
+        private MimeMessage _GenerateConfirmationMessage(string EmailFrom, string EmailTo, string Receiver, string Sender, string confirmationUrl)
         {
             MimeMessage message = new MimeMessage();
             message.From.Add(new MailboxAddress(Sender, EmailFrom));
@@ -39,7 +39,7 @@ namespace Saay.Services.Classes
                 <p>Please verify your email address by clicking the link below:</p>
 
                 <p>
-                    <a href="saay.vercel.app/confirm">
+                    <a href="{confirmationUrl}">
                         Verify my email
                     </a>
                 </p>
@@ -50,9 +50,9 @@ namespace Saay.Services.Classes
             return message;
         }
 
-        public async Task<bool> SendConfirmationEmailAsync(string to, string subject, string recipientName)
+        public async Task<bool> SendConfirmationEmailAsync(string to, string subject, string recipientName, string confirmationURL)
         {
-            MimeMessage Message = _GenerateConfirmationMessage(_emailFrom, to, recipientName, "Saay سعي");
+            MimeMessage Message = _GenerateConfirmationMessage(_emailFrom, to, recipientName, "Saay سعي", confirmationURL);
 
             try
             {

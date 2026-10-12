@@ -32,6 +32,8 @@ public partial class SaayContext : DbContext
 
     public virtual DbSet<AIConversation> AIConversations { get; set; }
 
+    public DbSet<EmailConfirmationToken> EmailConfirmationTokens { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TaskCategory>(entity =>
@@ -179,6 +181,30 @@ public partial class SaayContext : DbContext
                 .HasForeignKey(e => e.UserId)
                 .HasConstraintName("FK_AIConversations_Users")
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<EmailConfirmationToken>(entity =>
+        {
+            entity.HasKey(e => e.EmailConfirmationTokenId);
+
+            entity.Property(e => e.TokenHash)
+                .IsRequired()
+                .HasMaxLength(64)
+                .IsUnicode(false);
+
+            entity.HasIndex(e => e.TokenHash)
+                .IsUnique();
+
+            entity.HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Property(e => e.ExpiresAt)
+                .IsRequired();
+
+            entity.Property(e => e.UsedAt)
+                .IsRequired(false);
         });
 
         OnModelCreatingPartial(modelBuilder);

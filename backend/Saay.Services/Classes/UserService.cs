@@ -9,14 +9,17 @@ namespace Saay.Services.Classes
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
-
         private readonly IEmailService _emailService;
+        private readonly IEmailConfirmationRepository _emailConfirmationRepository;
+        private readonly ITokenService _tokenService;
 
-        public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IEmailService emailService)
+        public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IEmailService emailService, IEmailConfirmationRepository emailConfirmationRepository, ITokenService tokenService)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _emailService = emailService;
+            _emailConfirmationRepository = emailConfirmationRepository;
+            _tokenService = tokenService;
         }
 
         public async Task<int?> AddUserAsync(AddUserDto addUserDto)
@@ -46,10 +49,29 @@ namespace Saay.Services.Classes
                     return null;
                 }
 
+                // Generate a secure confirmation token.
+                string token = _tokenService.GenerateEmailConfirmationToken();
+
+                var confirmationToken = new EmailConfirmationToken
+                {
+                    UserId = user.UserId,
+                    TokenHash = _tokenService.HashToken(token),
+                    ExpiresAt = DateTime.UtcNow.AddHours(24)
+                };
+
+                // Save the token hash through the repository.
+                await _emailConfirmationRepository
+                    .AddConfirmationTokenAsync(confirmationToken);
+
+                // Include the raw token in the email URL, not in the database.
+                string confirmationUrl =
+                    $"https://saay.vercel.app/confirm?token={Uri.EscapeDataString(token)}";
+
                 bool emailSent = await _emailService.SendConfirmationEmailAsync(
                     user.Email,
                     "Confirm Your Saay Account",
-                    user.FirstName
+                    user.FirstName,
+                    confirmationUrl
                 );
 
                 if (!emailSent)
@@ -162,8 +184,15 @@ namespace Saay.Services.Classes
         public async Task<string?> GetUserEmailAsync(int userId) =>
             await _userRepository.GetUserEmailAsync(userId);
 
-        public async Task<bool?> UpdateConfirmationStatusAsync(string email) =>
-             await _userRepository.UpdateConfirmationStatusAsync(email);
+        public async Task<bool?> UpdateConfirmationStatusAsync(string token)
+        {
+            if (string.IsNullOrWhiteSpace(token))
+                return false;
+
+            string tokenHash = _tokenService.HashToken(token);
+
+            return await _userRepository.UpdateConfirmationStatusAsync(tokenHash);
+        }
 
         public Task<bool?> IsConfirmedAsync(int userId) =>
             _userRepository.IsConfirmedAsync(userId);
