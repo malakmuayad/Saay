@@ -7,7 +7,6 @@ import { EMAIL_REGEX, PASSWORD_REGEX } from "~/validation";
 import { addUser } from "~/services/api/users";
 import type AddUserDto from "~/types/users/AddUserDto";
 import Alert from "../ui/Alert";
-import { addEmailCookie } from "~/services/cookie/email";
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -69,7 +68,6 @@ export default function SignUpForm() {
       return;
     }
 
-    addEmailCookie(result[1]);
     // Clear fields
     setFirstName("");
     setLastName("");
