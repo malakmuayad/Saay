@@ -115,12 +115,12 @@ export default function UserMetaCard({
 
   return (
     <>
-      <div className="mb-6 rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-800">
+      <div className="mb-6 rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-100">
         <div className="flex flex-col gap-5 sm:flex-row xl:gap-10">
           <div className="flex-1">
             <div className="mb-6 flex flex-col gap-5 sm:flex-row xl:items-center xl:justify-between">
               <div className="flex w-full flex-col items-start gap-6 sm:flex-row sm:items-center">
-                <div className="overflow-hidden rounded-full border border-gray-200 dark:border-gray-800">
+                <div className="overflow-hidden rounded-full border border-gray-200 dark:border-gray-100">
                   <img
                     src="/assets/profile-picture-placeholder.png"
                     className="size-20"
@@ -174,7 +174,7 @@ export default function UserMetaCard({
             <button
               type="button"
               onClick={openModal}
-              className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 lg:inline-flex lg:w-auto dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/3 dark:hover:text-gray-200"
+              className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 lg:inline-flex lg:w-auto dark:border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/3 dark:hover:text-gray-200"
             >
               <PencilIcon className="size-4.5" />
               Edit
@@ -240,7 +240,7 @@ export default function UserMetaCard({
 
                     <label
                       htmlFor="file-upload"
-                      className="absolute right-0 bottom-0 flex size-8 cursor-pointer items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400"
+                      className="absolute right-0 bottom-0 flex size-8 cursor-pointer items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 dark:border-gray-100 dark:bg-gray-900 dark:text-gray-400"
                     >
                       <input
                         type="file"
@@ -347,7 +347,7 @@ export default function UserMetaCard({
             </div>
 
             {/* Fixed footer */}
-            <div className="shrink-0 border-t border-gray-200 px-6 py-4 dark:border-gray-800 lg:px-10">
+            <div className="shrink-0 border-t border-gray-200 px-6 py-4 dark:border-gray-100 lg:px-10">
               <div className="flex items-center justify-end gap-3">
                 <Button
                   size="sm"

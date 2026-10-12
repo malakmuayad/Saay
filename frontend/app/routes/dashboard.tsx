@@ -43,7 +43,7 @@ const LayoutContent: React.FC = () => {
         )}
       >
         <Header onLogout={(result: boolean) => setLogoutError(result)} />
-        <main className="mx-auto max-w-(--breakpoint-2xl) p-4 md:p-6">
+        <main className="mx-auto max-w-(--breakpoint-2xl) p-4 md:p-6 bg-white dark:bg-gray-900">
           {logoutError === false && (
             <Alert
               variant="error"

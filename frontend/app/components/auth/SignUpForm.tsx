@@ -88,7 +88,7 @@ export default function SignUpForm() {
   }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center overflow-y-auto px-4 py-8 sm:px-6">
+    <div className="dark:bg-gray-900 flex min-h-screen w-full items-center justify-center overflow-y-auto px-4 py-8 sm:px-6">
       <div className="w-full max-w-md">
         <div>
           <div className="mb-5 sm:mb-8">

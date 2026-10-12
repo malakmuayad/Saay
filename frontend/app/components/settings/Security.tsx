@@ -111,7 +111,7 @@ export default function Security() {
   }
 
   return (
-    <div className="mb-6 rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-800">
+    <div className="mb-6 rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-100">
       <h4 className="mb-4 text-lg font-semibold text-gray-800 lg:mb-6 dark:text-white/90">
         Security
       </h4>
@@ -132,7 +132,7 @@ export default function Security() {
             <button
               type="button"
               onClick={() => setModalOpen(true)}
-              className="shadow-theme-xs flex h-10 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white py-2.5 pr-4 pl-3.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/3 dark:hover:text-gray-200"
+              className="shadow-theme-xs flex h-10 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white py-2.5 pr-4 pl-3.5 text-sm font-medium text-gray-200 hover:bg-gray-50 hover:text-gray-800 dark:border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/3 dark:hover:text-gray-200"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -294,7 +294,7 @@ export default function Security() {
             </div>
 
             {/* Footer */}
-            <div className="mt-6 border-t border-gray-200 px-6 py-4 dark:border-gray-800 lg:px-8">
+            <div className="mt-6 border-t border-gray-200 px-6 py-4 dark:border-gray-100 lg:px-8">
               <div className="flex items-center justify-end gap-3">
                 <Button
                   size="sm"
