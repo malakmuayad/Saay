@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import TodayTasksProgress from "~/components/dashboard/TodayTasksProgress";
 import ComponentCard from "~/components/ui/cards/ComponentCard";
@@ -11,6 +12,7 @@ export const meta = () => [{ title: "Home | Saay" }];
 
 export default function Home() {
   const currentUserId = useAuth()?.currentUserId;
+  const { t } = useTranslation();
 
   const [dashboardNumbers, setDashboardNumbers] =
     useState<DashboardNumbersDto | null>(null);
@@ -38,12 +40,12 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 dark:bg-gray-950">
       <div className="mx-auto w-full max-w-7xl">
-        <ComponentCard title="Dashboard">
+        <ComponentCard title={t("dashboard.title")}>
           <div className="space-y-6">
             {/* Mission */}
             <section>
               <h2 className="mb-3 text-lg font-semibold text-gray-800 dark:text-white">
-                My Mission
+                {t("goals.myMission")}
               </h2>
 
               <MissionCard
@@ -57,7 +59,7 @@ export default function Home() {
             {/* Today's Progress */}
             <section>
               <h2 className="mb-3 text-lg font-semibold text-gray-800 dark:text-white">
-                Today's Progress
+                {t("dashboard.todayProgress")}
               </h2>
 
               <TodayTasksProgress
@@ -73,7 +75,7 @@ export default function Home() {
             {/* Today's Tasks */}
             <section>
               <h2 className="mb-1.5 text-lg font-semibold text-gray-800 dark:text-white">
-                Today's Tasks
+                {t("dashboard.todayTasks")}
               </h2>
 
               <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800">

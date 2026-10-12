@@ -7,7 +7,11 @@
     "of": "of",
     "next": "Next",
     "previous": "Previous",
-    "required": "This field is required"
+    "required": "This field is required",
+    "error": "An error occurred.",
+    "errorDescription": "Please try again later.",
+    "logoutSuccessTitle": "Logged out successfully",
+    "logoutSuccessMessage": "You will be redirected to the sign-in page."
   },
   "signup": "Sign Up",
   "signin": {
@@ -21,6 +25,20 @@
     "forgotPassword": "Forogt Password?",
     "signingIn": "Signing In...",
     "noAccount": "Don't have an account?"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "todayProgress": "Today's Progress",
+    "todayTasks": "Today's Tasks",
+    "todayTasksProgress": {
+      "title": "Dashboard",
+      "subtitle": "Today's Progress",
+      "progress": "Progress",
+      "tasksProgress": "Task completion progress",
+      "tasksToday": "Tasks Today",
+      "completed": "Completed",
+      "urgent": "Urgent"
+    }
   },
   "sidebar": {
     "groups": {

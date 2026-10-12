@@ -9,6 +9,7 @@ import { useState } from "react";
 import AIChatbot from "~/components/layout/AIChatbot";
 import Alert from "~/components/ui/Alert";
 import { getUserConfirmationStatus } from "~/services/api/users";
+import { useTranslation } from "react-i18next";
 
 export async function clientLoader() {
   const currentUserId = getCurrentUser();
@@ -28,13 +29,17 @@ export async function clientLoader() {
 
 const LayoutContent: React.FC = () => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
+  const { t } = useTranslation();
+
   const [botOpen, setBotOpen] = useState<boolean>(false);
   const [logoutError, setLogoutError] = useState<boolean | null>(null);
 
   return (
     <div className="min-h-screen xl:flex">
       <Sidebar onButtonClick={() => setBotOpen(true)} />
+
       <Backdrop />
+
       <div
         className={cn(
           "flex-1 transition-[margin] duration-300 ease-in-out",
@@ -43,22 +48,26 @@ const LayoutContent: React.FC = () => {
         )}
       >
         <Header onLogout={(result: boolean) => setLogoutError(result)} />
-        <main className="mx-auto max-w-(--breakpoint-2xl) p-4 md:p-6 bg-white dark:bg-gray-900">
+
+        <main className="mx-auto max-w-(--breakpoint-2xl) bg-white p-4 md:p-6 dark:bg-gray-900">
           {logoutError === false && (
             <Alert
               variant="error"
-              title="An error occurred"
-              message="Please try again later."
+              title={t("common.error")}
+              message={t("common.errorDescription")}
             />
           )}
+
           {logoutError === true && (
             <Alert
               variant="success"
-              title="Logged out successfully"
-              message="You will be redirected to sign in page."
+              title={t("common.logoutSuccessTitle")}
+              message={t("common.logoutSuccessMessage")}
             />
           )}
+
           {botOpen && <AIChatbot onClose={() => setBotOpen(false)} />}
+
           <Outlet />
         </main>
       </div>

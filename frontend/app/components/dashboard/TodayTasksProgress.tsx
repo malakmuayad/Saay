@@ -2,11 +2,6 @@ import type { ApexOptions } from "apexcharts";
 import ReactApexChart from "react-apexcharts";
 import { useTranslation } from "react-i18next";
 
-const useTranslations = (prefix: string) => {
-  const { t } = useTranslation("common", { keyPrefix: prefix });
-  return t;
-};
-
 type TodayTaskProgressProps = {
   progress: number;
   tasksCount: number;
@@ -20,7 +15,10 @@ export default function TodayTasksProgress({
   completedTasksCount,
   urgentTasksCount,
 }: TodayTaskProgressProps) {
+  const { t } = useTranslation();
+
   const series = [progress];
+
   const options: ApexOptions = {
     colors: ["#465FFF"],
     chart: {
@@ -41,7 +39,7 @@ export default function TodayTasksProgress({
         track: {
           background: "#E4E7EC",
           strokeWidth: "100%",
-          margin: 5, // margin is in pixels
+          margin: 5,
         },
         dataLabels: {
           name: {
@@ -66,7 +64,7 @@ export default function TodayTasksProgress({
     stroke: {
       lineCap: "round",
     },
-    labels: ["Progress"],
+    labels: [t("dashboard.todayTasksProgress.progress")],
   };
 
   return (
@@ -75,12 +73,11 @@ export default function TodayTasksProgress({
         <div className="flex justify-between">
           <div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
-              {/* {t("title")} */}
-              Dashboard
+              {t("dashboard.todayTasksProgress.title")}
             </h3>
+
             <p className="mt-1 text-theme-sm font-normal text-gray-500 dark:text-gray-400">
-              {/* {t("subtitle")} */}
-              Today's Progress
+              {t("dashboard.todayTasksProgress.subtitle")}
             </p>
           </div>
         </div>
@@ -95,38 +92,42 @@ export default function TodayTasksProgress({
             />
           </div>
         </div>
+
         <p className="mx-auto mt-2.5 w-full max-w-95 text-center text-sm text-gray-500 sm:text-base dark:text-gray-400">
-          Tasks progress
+          {t("dashboard.todayTasksProgress.tasksProgress")}
         </p>
       </div>
 
       <div className="flex items-center justify-center gap-5 px-6 py-3 sm:gap-8 sm:py-5">
         <div>
           <p className="mb-1 text-center text-theme-xs text-gray-500 sm:text-sm dark:text-gray-400">
-            Tasks Today
+            {t("dashboard.todayTasksProgress.tasksToday")}
           </p>
+
           <p className="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg dark:text-white/90">
             {tasksCount}
           </p>
         </div>
 
-        <div className="h-7 w-px bg-gray-200 dark:bg-gray-800"></div>
+        <div className="h-7 w-px bg-gray-200 dark:bg-gray-800" />
 
         <div>
           <p className="mb-1 text-center text-theme-xs text-gray-500 sm:text-sm dark:text-gray-400">
-            Completed
+            {t("dashboard.todayTasksProgress.completed")}
           </p>
+
           <p className="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg dark:text-white/90">
             {completedTasksCount}
           </p>
         </div>
 
-        <div className="h-7 w-px bg-gray-200 dark:bg-gray-800"></div>
+        <div className="h-7 w-px bg-gray-200 dark:bg-gray-800" />
 
         <div>
           <p className="mb-1 text-center text-theme-xs text-gray-500 sm:text-sm dark:text-gray-400">
-            Urgent
+            {t("dashboard.todayTasksProgress.urgent")}
           </p>
+
           <p className="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg dark:text-white/90">
             {urgentTasksCount}
           </p>

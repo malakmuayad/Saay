@@ -6,7 +6,11 @@
     "of": "من أصل",
     "next": "التالي",
     "previous": "السابق",
-    "required": "هذا الحقل مطلوب"
+    "required": "هذا الحقل مطلوب",
+    "error": "لقد حدث خطأ ما",
+    "errorDescription": "قم بإعادة المحاولة لاحقًا.",
+    "logoutSuccessTitle": "تم تسجيل الخروج بنجاح",
+    "logoutSuccessMessage": "ستتم إعادة توجيهك إلى صفحة تسجيل الدخول."
   },
   "signup": "قم بالتسجيل",
   "signin": {
@@ -20,6 +24,20 @@
     "forgotPassword": "نسيت كلمة المرور ؟",
     "signingIn": "يتم تسجيل الدخول...",
     "noAccount": "لا تملك حسابًا؟"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "todayProgress": "تقدّم اليوم",
+    "todayTasks": "مهام اليوم",
+    "todayTasksProgress": {
+      "title": "لوحة التحكم",
+      "subtitle": "تقدّم اليوم",
+      "progress": "التقدّم",
+      "tasksProgress": "تقدّم إنجاز المهام",
+      "tasksToday": "مهام اليوم",
+      "completed": "المكتملة",
+      "urgent": "العاجلة"
+    }
   },
   "sidebar": {
     "groups": {
