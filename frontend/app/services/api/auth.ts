@@ -138,6 +138,9 @@ export async function confirm(token: string): Promise<boolean | string> {
     return "User not found.";
   }
 
+  if (response.status === 429)
+    return "You tried too many times. Please try again later.";
+
   if (!response.ok) {
     return "An error occurred. Please try again later.";
   }

@@ -6,20 +6,38 @@ import { confirm } from "~/services/api/auth";
 export default function ConfirmEmail() {
   const [searchParams] = useSearchParams();
   const [isConfirmed, setIsConfirmed] = useState<boolean | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function confirmEmail() {
+    setError(null);
+
     const token = searchParams.get("token");
 
     if (!token) {
       setIsConfirmed(false);
+      setError("The confirmation token is missing.");
       return;
     }
 
-    const result = await confirm(token);
+    try {
+      setIsLoading(true);
 
-    if (typeof result === "string") return;
+      const result = await confirm(token);
 
-    setIsConfirmed(true);
+      if (typeof result === "string") {
+        setIsConfirmed(false);
+        setError(result);
+        return;
+      }
+
+      setIsConfirmed(true);
+    } catch {
+      setIsConfirmed(false);
+      setError("Something went wrong. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -62,40 +80,43 @@ export default function ConfirmEmail() {
 
         {/* Heading */}
         <h1 className="mb-3 text-3xl font-bold tracking-tight text-gray-900">
-          {isConfirmed ? "Email confirmed!" : "Confirm your email"}
+          {isConfirmed === true ? "Email confirmed!" : "Confirm your email"}
         </h1>
 
         {/* Description */}
         <p className="mb-8 text-base leading-7 text-gray-500">
-          {isConfirmed
+          {isConfirmed === true
             ? "Your Saay account is ready! You can now sign in and start organizing your goals, tasks, and habits."
             : "You're one step away from getting started with Saay. Confirm your email address to activate your account."}
         </p>
 
         {/* Action */}
-        {isConfirmed === null ? (
+        {isConfirmed !== true && (
           <button
             type="button"
             onClick={confirmEmail}
-            className="w-full rounded-xl bg-indigo-600 px-6 py-3.5 font-semibold text-white shadow-sm transition duration-200 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-[0.98]"
+            disabled={isLoading}
+            className="w-full rounded-xl bg-indigo-600 px-6 py-3.5 font-semibold text-white shadow-sm transition duration-200 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Confirm my account
+            {isLoading ? "Confirming..." : "Confirm my account"}
           </button>
-        ) : (
+        )}
+
+        {/* Error Alert */}
+        {error && (
+          <div className="mt-5 text-left">
+            <Alert variant="error" title="Error Occurred" message={error} />
+          </div>
+        )}
+
+        {/* Success Action */}
+        {isConfirmed === true && (
           <Link
             to="/"
             className="block w-full rounded-xl bg-indigo-600 px-6 py-3.5 font-semibold text-white shadow-sm transition duration-200 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Go to home page
           </Link>
-        )}
-
-        {isConfirmed === false && (
-          <Alert
-            variant="error"
-            title="Error Occurred"
-            message="The account is not found or the link is expired."
-          />
         )}
 
         {/* Footer */}

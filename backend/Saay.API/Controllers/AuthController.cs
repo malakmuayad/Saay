@@ -199,7 +199,7 @@ namespace Saay.API.Controllers
         }
 
         [EnableRateLimiting("CriticalOpsLimiter")]
-        [HttpPut("{email}")]
+        [HttpPut]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
