@@ -147,20 +147,32 @@ export default function AIChatbot({ onClose }: AIChatbotProps) {
 
         {/* Suggested prompts */}
         <div className="m-2 flex flex-wrap gap-2">
-          <Badge onClick={() => handleSend("Help me build a habit")}>
-            Build a habit
+          <Badge
+            className="cursor-pointer"
+            onClick={() => handleSend("Help me build a habit")}
+          >
+            {t("aiChatbot.suggestions.habits")}
           </Badge>
 
-          <Badge onClick={() => handleSend("Help me achieve my goals")}>
-            Achieve my goals
+          <Badge
+            className="cursor-pointer"
+            onClick={() => handleSend("Help me achieve my goals")}
+          >
+            {t("aiChatbot.suggestions.goals")}
           </Badge>
 
-          <Badge onClick={() => handleSend("Help me prioritize my tasks")}>
-            Prioritize tasks
+          <Badge
+            className="cursor-pointer"
+            onClick={() => handleSend("Help me prioritize my tasks")}
+          >
+            {t("aiChatbot.suggestions.tasks")}
           </Badge>
 
-          <Badge onClick={() => handleSend("Help me plan my day")}>
-            Plan my day
+          <Badge
+            className="cursor-pointer"
+            onClick={() => handleSend("Help me plan my day")}
+          >
+            {t("aiChatbot.suggestions.plan")}
           </Badge>
         </div>
 

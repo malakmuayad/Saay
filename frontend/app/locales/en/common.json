@@ -146,6 +146,20 @@
     "addNewTask": "Add New Task",
     "add": "Add the Task"
   },
+  "aiChatbot": {
+    "welcome": "Welcome to Saay Assistant. How can I help you today?",
+    "error": "An error occurred. Please try again try.",
+    "title": "Saay Assistant",
+    "subtitle": "Your personal assistant for goals, habits, and productivity.",
+    "close": "Close",
+    "placeholder": "Ask Saay Assistant",
+    "suggestions": {
+      "habits": "Build a habit",
+      "goals": "Achieve Goals",
+      "tasks": "Prioritize tasks",
+      "plan": "Plan my day"
+    }
+  },
   "ecommerce": {
     "title": "E-commerce Dashboard",
     "metrics": {
