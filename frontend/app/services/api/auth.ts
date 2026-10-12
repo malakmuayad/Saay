@@ -120,12 +120,14 @@ export async function logout(logoutDto: LogoutDto): Promise<boolean | string> {
 }
 
 export async function confirm(token: string): Promise<boolean | string> {
-  const url = new URL(`${token}`, Base_URL);
+  const url = new URL("/api/saay/users/confirm-email", Base_URL);
+
   const options: RequestInit = {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
+    body: JSON.stringify({ token }),
   };
 
   const response = await apiFetch(url, options);
@@ -138,8 +140,9 @@ export async function confirm(token: string): Promise<boolean | string> {
     return "User not found.";
   }
 
-  if (response.status === 429)
+  if (response.status === 429) {
     return "You tried too many times. Please try again later.";
+  }
 
   if (!response.ok) {
     return "An error occurred. Please try again later.";
