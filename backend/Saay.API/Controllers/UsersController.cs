@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Saay.Infrastructure.DTOs.UserDTOs;
+using Saay.Infrastructure.Validation;
 using Saay.Services.Interfaces;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace Saay.API.Controllers
 {
@@ -14,12 +16,16 @@ namespace Saay.API.Controllers
         private readonly IUserService _userService;
         private readonly IOwnershipAuthorizationService _ownershipAuthorizationService;
         private readonly ILogger<UsersController> _logger;
+        private readonly IPasswordResetTokenService _passwordResetTokenService;
+        private readonly IHashService _hashService;
 
-        public UsersController(IUserService userService, IOwnershipAuthorizationService ownershipAuthorizationService, ILogger<UsersController> logger)
+        public UsersController(IUserService userService, IOwnershipAuthorizationService ownershipAuthorizationService, ILogger<UsersController> logger, IPasswordResetTokenService passwordResetTokenService, IHashService hashService)
         {
             _userService = userService;
             _ownershipAuthorizationService = ownershipAuthorizationService;
             _logger = logger;
+            _passwordResetTokenService = passwordResetTokenService;
+            _hashService = hashService;
         }
 
         [EnableRateLimiting("LightOpsLimiter")]
@@ -266,6 +272,76 @@ namespace Saay.API.Controllers
                 return NotFound("User not found.");
             else
                 return Ok(result);
+        }
+
+        [EnableRateLimiting("AuthLimiter")]
+        [HttpPut("verify-forget-password")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        public async Task<ActionResult<bool>> VerifyForgetPassword(VerifyPasswordDto verifyPasswordDto)
+        {
+            if (_hashService.HashToken(verifyPasswordDto.Code) != await _passwordResetTokenService.GetTokenAsync(verifyPasswordDto.Email))
+            {
+                return Ok(false);
+            }
+
+            return Ok(true);
+        }
+
+
+        // should be handled in a transaction
+        [EnableRateLimiting("AuthLimiter")]
+        [HttpPut("forget-password")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        public async Task<ActionResult<bool>> ForgetPassword(ForgetPasswordDto forgetPasswordDto)
+        {
+            int? userId = await _userService.GetUserIdByEmailAsync(
+                forgetPasswordDto.Email);
+
+            if (userId == null)
+                return NotFound("User not found.");
+
+            string? token = await _passwordResetTokenService.GetTokenAsync(
+                forgetPasswordDto.Email);
+
+            if (string.IsNullOrWhiteSpace(token))
+                return BadRequest("Invalid or expired password reset code.");
+
+            // Validate that the token is valid, unexpired, and unused here.
+            // Prefer a service method that verifies the exact token.
+            // ensure that the token is not expired yet
+            bool? result = await _userService.UpdatePasswordAsync(
+                new UpdatePasswordDto
+                {
+                    UserId = userId.Value,
+                    NewPassword = forgetPasswordDto.NewPassword
+                });
+
+            if (result == null)
+                return NotFound("User not found.");
+
+            if (result == false)
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    "An error occurred while updating the password.");
+
+            bool tokenMarkedAsUsed = await _passwordResetTokenService
+                .MarkAsUsedAsync(userId.Value, token);
+
+            if (!tokenMarkedAsUsed)
+            {
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    "The password was updated, but the reset code could not be invalidated.");
+            }
+
+            return Ok(true);
         }
     }
 }

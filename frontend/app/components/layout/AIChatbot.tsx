@@ -4,6 +4,7 @@ import { useAuth } from "~/context/AuthContext";
 import { sendAIMessage } from "~/services/api/ai";
 import Badge from "../ui/Badge";
 import ReactMarkdown from "react-markdown";
+import { getLanguage } from "~/services/localStorage/languages";
 
 type AIChatbotProps = {
   onClose: () => void;
@@ -17,6 +18,7 @@ interface Message {
 
 export default function AIChatbot({ onClose }: AIChatbotProps) {
   const currentUserId = useAuth()?.currentUserId;
+  const language = getLanguage();
   const { t } = useTranslation();
 
   const [message, setMessage] = useState("");
@@ -149,28 +151,52 @@ export default function AIChatbot({ onClose }: AIChatbotProps) {
         <div className="m-2 flex flex-wrap gap-2">
           <Badge
             className="cursor-pointer"
-            onClick={() => handleSend("Help me build a habit")}
+            onClick={() =>
+              handleSend(
+                language === "en"
+                  ? "Help me build a habit"
+                  : "ساعدني في بناء عادة",
+              )
+            }
           >
             {t("aiChatbot.suggestions.habits")}
           </Badge>
 
           <Badge
             className="cursor-pointer"
-            onClick={() => handleSend("Help me achieve my goals")}
+            onClick={() =>
+              handleSend(
+                language === "en"
+                  ? "Help me achieve my goals"
+                  : "ساعدني في تحقيق أهدافي",
+              )
+            }
           >
             {t("aiChatbot.suggestions.goals")}
           </Badge>
 
           <Badge
             className="cursor-pointer"
-            onClick={() => handleSend("Help me prioritize my tasks")}
+            onClick={() =>
+              handleSend(
+                language === "en"
+                  ? "Help me prioritize my tasks"
+                  : "ساعدني في تحديد أولويات مهامي",
+              )
+            }
           >
             {t("aiChatbot.suggestions.tasks")}
           </Badge>
 
           <Badge
             className="cursor-pointer"
-            onClick={() => handleSend("Help me plan my day")}
+            onClick={() =>
+              handleSend(
+                language === "en"
+                  ? "Help me plan my day"
+                  : "ساعدني في تخطيط يومي",
+              )
+            }
           >
             {t("aiChatbot.suggestions.plan")}
           </Badge>

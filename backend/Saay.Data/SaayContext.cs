@@ -33,6 +33,7 @@ public partial class SaayContext : DbContext
     public virtual DbSet<AIConversation> AIConversations { get; set; }
 
     public DbSet<EmailConfirmationToken> EmailConfirmationTokens { get; set; }
+    public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -205,6 +206,35 @@ public partial class SaayContext : DbContext
 
             entity.Property(e => e.UsedAt)
                 .IsRequired(false);
+        });
+
+        modelBuilder.Entity<PasswordResetToken>(entity =>
+        {
+            entity.ToTable("PasswordResetTokens", "dbo");
+
+            entity.HasKey(e => e.PasswordResetTokenId);
+
+            entity.Property(e => e.CodeHash)
+                .IsRequired()
+                .HasMaxLength(64)
+                .IsUnicode(false);
+
+            entity.Property(e => e.ExpiresAt)
+                .HasColumnType("datetime2")
+                .IsRequired();
+
+            entity.Property(e => e.UsedAt)
+                .HasColumnType("datetime2")
+                .IsRequired(false);
+
+            entity.HasIndex(e => e.UserId)
+                .HasDatabaseName("IX_PasswordResetTokens_UserId");
+
+            entity.HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_PasswordResetTokens_Users");
         });
 
         OnModelCreatingPartial(modelBuilder);

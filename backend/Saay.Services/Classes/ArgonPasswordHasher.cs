@@ -16,7 +16,7 @@ namespace Saay.Services.Classes
         /// <summary>
         /// Hashes a plaintext password using Argon2id.
         /// </summary>
-        public string HashPassword(string password)
+        public string HashToken(string password)
         {
             // Generate a cryptographically secure random salt
             byte[] salt = new byte[SaltLength];

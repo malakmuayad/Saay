@@ -141,5 +141,11 @@ namespace Saay.Repository.Classes
             .Where(u => u.UserId == userId)
             .Select(u => (bool?)u.IsConfirmed)
             .FirstOrDefaultAsync();
+
+        public Task<int> GetUserIdByEmailAsync(string email) =>
+            _context.Users
+            .Where(u => u.Email == email)
+            .Select(u => u.UserId)
+            .FirstOrDefaultAsync();
     }
 }

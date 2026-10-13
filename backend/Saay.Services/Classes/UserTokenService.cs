@@ -15,7 +15,7 @@ namespace Saay.Services.Classes
             _passwordHasher = passwordHasherService;
         }
         public async Task<bool?> LoginAsync(int userId, string refreshToken, DateTime refreshTokenExpiresAt) =>
-            await _userTokenRepository.LoginAsync(userId, _passwordHasher.HashPassword(refreshToken), refreshTokenExpiresAt);
+            await _userTokenRepository.LoginAsync(userId, _passwordHasher.HashToken(refreshToken), refreshTokenExpiresAt);
 
         public async Task<TokenDto> GetTokenDataForUserAsync(int userId)
         {
@@ -34,7 +34,7 @@ namespace Saay.Services.Classes
         }
 
         public async Task<bool?> RefreshAsync(int userId, string refreshToken, DateTime refreshTokenExpiresAt) =>
-            await _userTokenRepository.RefreshAsync(userId, _passwordHasher.HashPassword(refreshToken), refreshTokenExpiresAt);
+            await _userTokenRepository.RefreshAsync(userId, _passwordHasher.HashToken(refreshToken), refreshTokenExpiresAt);
 
         public async Task<string> GetRefreshTokenHashForUserAsync(int userId) =>
             await _userTokenRepository.GetRefreshTokenHashForUserAsync(userId);

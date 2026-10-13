@@ -6,6 +6,7 @@ export default [
   route("signup", "routes/signup.tsx"),
   route("confirm", "routes/confirm.tsx"),
   route("notConfirmed", "routes/notConfirmed.tsx"),
+  route("reset-password", "routes/forgetPassword.tsx"),
 
   route("dashboard", "routes/dashboard.tsx", [
     index("routes/home.tsx"),

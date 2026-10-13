@@ -38,7 +38,7 @@ namespace Saay.Repository.Classes
             AIConversation conversation = await _context.AIConversations
                 .FirstOrDefaultAsync(x => x.UserId == userId);
 
-            if (conversation == null)
+            if (!await IsFirstTime(userId) && conversation == null)
                 return null;
 
             conversation.PreviousInteractionId = newInteractionId;

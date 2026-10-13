@@ -58,6 +58,7 @@ namespace Saay.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITaskCategoryService, TaskCategoryService>();
             services.AddScoped<IPasswordHasher, ArgonPasswordHasher>();
+            services.AddScoped<IHashService, SHA256Service>();
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IGoalCategoryService, GoalCategoryService>();
             services.AddScoped<IGoalService, GoalService>();
@@ -70,6 +71,7 @@ namespace Saay.Extensions
             services.AddScoped<IAIConversationService, AIConversationService>();
             services.AddScoped<IGeminiService, GeminiService>();
             services.AddHttpClient<GeminiService>();
+            services.AddScoped<IPasswordResetTokenService, PasswordResetTokenService>();
 
             return services;
         }
@@ -86,6 +88,7 @@ namespace Saay.Extensions
             services.AddScoped<IUserTokenRepository, UserTokenRpository>();
             services.AddScoped<IAIConversationRepository, AIConversationRepository>();
             services.AddScoped<IEmailConfirmationRepository, EmailConfirmationRepository>();
+            services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
 
             return services;
         }

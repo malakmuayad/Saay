@@ -18,5 +18,7 @@ namespace Saay.Services.Interfaces
         public Task<string?> GetUserEmailAsync(int userId);
         public Task<bool?> UpdateConfirmationStatusAsync(string token);
         public Task<bool?> IsConfirmedAsync(int userId);
+        public Task<bool> DoesEmailExist(string email);
+        public Task<int?> GetUserIdByEmailAsync(string email);
     }
 }

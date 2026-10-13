@@ -52,10 +52,10 @@ namespace Saay.Services.Classes
                 .Replace('+', '-')
                 .Replace('/', '_');
         }
-        public string HashToken(string token)
-        {
-            byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(token));
-            return Convert.ToHexString(bytes);
-        }
+
+        public string GenerateResetCode() =>
+            RandomNumberGenerator
+                .GetInt32(0, 1_000_000)
+                .ToString("D6");
     }
 }

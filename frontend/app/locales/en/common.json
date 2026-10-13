@@ -1,5 +1,6 @@
 {
   "common": {
+    "saay": "Saay",
     "edit": "Edit",
     "save": "Save",
     "overview": "Overview",
@@ -12,6 +13,44 @@
     "errorDescription": "Please try again later.",
     "logoutSuccessTitle": "Logged out successfully",
     "logoutSuccessMessage": "You will be redirected to the sign-in page."
+  },
+  "forgotPassword": {
+    "steps": {
+      "emailTitle": "Forgot your password?",
+      "emailDescription": "Enter the email address associated with your Saay account. We'll send you a verification code.",
+      "verifyTitle": "Verify your email",
+      "verifyDescription": "Enter the six-digit verification code we sent to your email address.",
+      "resetTitle": "Create a new password",
+      "resetDescription": "Choose a strong password for your Saay account.",
+      "successTitle": "Password reset successful",
+      "successDescription": "Your password has been updated."
+    },
+    "email": "Email address",
+    "emailPlaceholder": "Enter your email",
+    "sendCode": "Send verification code",
+    "sending": "Sending code...",
+    "codeSent": "If your account is eligible, a verification email will arrive shortly.",
+    "verificationCode": "Verification code",
+    "verifyCode": "Verify code",
+    "verifying": "Verifying...",
+    "changeEmail": "Use a different email",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "showPassword": "Show password",
+    "resetPassword": "Reset password",
+    "resetting": "Updating password...",
+    "successMessage": "Your password has been reset. You can now sign in with your new password.",
+    "backToSignIn": "Back to sign in",
+    "rememberPassword": "Remember your password?",
+    "signIn": "Sign in",
+    "errors": {
+      "requestFailed": "Unable to send the verification code. Please try again.",
+      "invalidCode": "The verification code is invalid or has expired.",
+      "verifyFailed": "Unable to verify the code. Please try again.",
+      "passwordMismatch": "The passwords do not match.",
+      "passwordTooShort": "Your password must contain at least 8 characters.",
+      "resetFailed": "Unable to reset your password. Please try again."
+    }
   },
   "signup": "Sign Up",
   "signin": {

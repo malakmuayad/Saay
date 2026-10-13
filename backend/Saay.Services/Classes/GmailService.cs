@@ -72,5 +72,50 @@ namespace Saay.Services.Classes
             _logger.LogInformation($"Email sent successfully to {to}");
             return true;
         }
+
+        private MimeMessage _GeneratePasswordConfirmationMessage(string EmailFrom, string EmailTo, string Receiver, string Sender, string code)
+        {
+            MimeMessage message = new MimeMessage();
+            message.From.Add(new MailboxAddress(Sender, EmailFrom));
+            message.To.Add(new MailboxAddress(Receiver, EmailTo));
+            message.Subject = "Reset Your Password";
+            message.Body = new TextPart("html")
+            {
+                Text = $"""
+                <h2>Reset Your Password</h2>
+
+                <p>You have requested to reset your password. Please enter the following code:</p>
+
+                <p>
+                {code}
+                </p>
+                <p>Please note that this code will expire in 10 minutes.</p>
+               """
+            };
+            return message;
+        }
+
+        public async Task<bool> SendConfirmationPasswordAsync(string to, string subject, string recipientName, string code)
+        {
+            MimeMessage Message = _GeneratePasswordConfirmationMessage(_emailFrom, to, recipientName, "Saay سعي", code);
+
+            try
+            {
+                using (var Client = new SmtpClient())
+                {
+                    await Client.ConnectAsync(_SMTPServer, Convert.ToInt32(_portNumber), MailKit.Security.SecureSocketOptions.StartTls);
+                    await Client.AuthenticateAsync(_emailFrom, _authenticationPassword);
+                    _logger.LogInformation(await Client.SendAsync(Message));
+                    await Client.DisconnectAsync(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error sending email: {ex.Message}");
+                return false;
+            }
+            _logger.LogInformation($"Email sent successfully to {to}");
+            return true;
+        }
     }
 }

@@ -253,3 +253,66 @@ export async function getUserConfirmationStatus(
 
   return (await response.json()) as boolean;
 }
+
+export async function verifyCode(
+  email: string,
+  code: string,
+): Promise<boolean | string> {
+  try {
+    const response = await fetch(
+      `${Base_URL}/api/saay/users/verify-forget-password`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          code,
+        }),
+      },
+    );
+    if (response.status === 404) {
+      return "User with this email is not found. Sign up instead.";
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return (await response.json()) as boolean;
+  } catch (error) {
+    console.error("API request error:", error);
+    return "An error occurred. Please try again later.";
+  }
+}
+
+export async function resetPassword(
+  email: string,
+  newPassword: string,
+): Promise<boolean | string> {
+  try {
+    const response = await fetch(`${Base_URL}/api/saay/users/forget-password`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        newPassword,
+      }),
+    });
+    if (response.status === 404) {
+      return "User with this email is not found. Sign up instead.";
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return (await response.json()) as boolean;
+  } catch (error) {
+    console.error("API request error:", error);
+    return "An error occurred. Please try again later.";
+  }
+}

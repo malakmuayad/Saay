@@ -21,7 +21,6 @@ namespace Saay.Services.Classes
             string? previousInteractionId =
                 await _aiConversationRepository.GetInteractionId(userId);
 
-            //wait _aiConversationRepository.IsFirstTime(userId)
             if (previousInteractionId == null)
             {
                 string? userName = await _userRepository.GetNameAsync(userId);

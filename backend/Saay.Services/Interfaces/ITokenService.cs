@@ -12,6 +12,6 @@ namespace Saay.Services.Interfaces
 
         public string GenerateEmailConfirmationToken();
 
-        public string HashToken(string token);
+        public string GenerateResetCode();
     }
 }

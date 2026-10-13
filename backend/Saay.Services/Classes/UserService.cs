@@ -12,14 +12,16 @@ namespace Saay.Services.Classes
         private readonly IEmailService _emailService;
         private readonly IEmailConfirmationRepository _emailConfirmationRepository;
         private readonly ITokenService _tokenService;
+        private readonly IHashService _hashService;
 
-        public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IEmailService emailService, IEmailConfirmationRepository emailConfirmationRepository, ITokenService tokenService)
+        public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IEmailService emailService, IEmailConfirmationRepository emailConfirmationRepository, ITokenService tokenService, IHashService hashService)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _emailService = emailService;
             _emailConfirmationRepository = emailConfirmationRepository;
             _tokenService = tokenService;
+            _hashService = hashService;
         }
 
         public async Task<int?> AddUserAsync(AddUserDto addUserDto)
@@ -36,7 +38,7 @@ namespace Saay.Services.Classes
                     FirstName = addUserDto.FirstName,
                     LastName = addUserDto.LastName,
                     Email = addUserDto.Email,
-                    PasswordHash = _passwordHasher.HashPassword(addUserDto.Password),
+                    PasswordHash = _passwordHasher.HashToken(addUserDto.Password),
                     ProfilePictureUrl = addUserDto.ProfilePictureURL,
                     IsConfirmed = false
                 };
@@ -55,7 +57,7 @@ namespace Saay.Services.Classes
                 var confirmationToken = new EmailConfirmationToken
                 {
                     UserId = user.UserId,
-                    TokenHash = _tokenService.HashToken(token),
+                    TokenHash = _hashService.HashToken(token),
                     ExpiresAt = DateTime.UtcNow.AddHours(24)
                 };
 
@@ -119,7 +121,7 @@ namespace Saay.Services.Classes
             if (!await _userRepository.DoesUserExist(updatePasswordDto.UserId))
                 return null; // User does not exist
 
-            string hashedPassword = _passwordHasher.HashPassword(updatePasswordDto.NewPassword); // hash new password before storing it
+            string hashedPassword = _passwordHasher.HashToken(updatePasswordDto.NewPassword); // hash new password before storing it
             return await _userRepository.UpdatePasswordAsync(updatePasswordDto.UserId, hashedPassword);
         }
 
@@ -189,12 +191,22 @@ namespace Saay.Services.Classes
             if (string.IsNullOrWhiteSpace(token))
                 return false;
 
-            string tokenHash = _tokenService.HashToken(token);
+            string tokenHash = _hashService.HashToken(token);
 
             return await _userRepository.UpdateConfirmationStatusAsync(tokenHash);
         }
 
         public Task<bool?> IsConfirmedAsync(int userId) =>
             _userRepository.IsConfirmedAsync(userId);
+
+        public Task<bool> DoesEmailExist(string email) =>
+            _userRepository.DoesEmailExist(email);
+
+        public async Task<int?> GetUserIdByEmailAsync(string email)
+        {
+            if(!await _userRepository.DoesEmailExist(email))
+                return null;
+            return await _userRepository.GetUserIdByEmailAsync(email);
+        }
     }
 }
