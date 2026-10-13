@@ -316,3 +316,30 @@ export async function resetPassword(
     return "An error occurred. Please try again later.";
   }
 }
+
+export async function getUserEmail(userId: number): Promise<string | null> {
+  const url: URL = new URL(`api/saay/users/userEmail/${userId}`, Base_URL);
+
+  const options: RequestInit = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const response = await apiFetch(url, options);
+
+  if (typeof response === "string") {
+    return response;
+  }
+
+  if (response.status === 404) {
+    return "User not found.";
+  }
+
+  if (!response.ok) {
+    return "An error occurred. Please try again later.";
+  }
+
+  return (await response.text()) as string | null;
+}

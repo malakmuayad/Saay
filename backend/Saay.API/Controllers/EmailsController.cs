@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using Saay.Data.Entities;
+using Saay.Infrastructure.DTOs.UserDTOs;
 using Saay.Infrastructure.Validation;
 using Saay.Services.Interfaces;
 using System.Text.RegularExpressions;
@@ -15,16 +17,21 @@ namespace Saay.API.Controllers
         private readonly ITokenService _tokenService;
         private readonly IPasswordResetTokenService _passwordResetTokenService;
 
-        public EmailsController(IUserService userService, IEmailService emailService, ITokenService tokenService, IPasswordResetTokenService passwordResetTokenService)
+        private readonly IHashService _hashService;
+
+        public EmailsController(IUserService userService, IEmailService emailService,
+            ITokenService tokenService, IPasswordResetTokenService passwordResetTokenService,
+            IHashService hashService)
         {
             _userService = userService;
             _emailService = emailService;
             _tokenService = tokenService;
             _passwordResetTokenService = passwordResetTokenService;
+            _hashService = hashService;
         }
 
         [EnableRateLimiting("AuthLimiter")]
-        [HttpGet("{email}")]
+        [HttpGet("reset-password/{email}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -48,6 +55,26 @@ namespace Saay.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to send reset password email.");
 
             return Ok(true);
+        }
+
+        [EnableRateLimiting("AuthLimiter")]
+        [HttpGet("resend-confirmation/{to}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        public async Task<IActionResult> SendConfirmationEmail(string to)
+        {
+            if (!Regex.IsMatch(to, ValidationRules.EMAIL_REGX))
+                return BadRequest("Invalid email format.");
+
+            bool? result = await _userService.ResendConfirmationEmailAsync(to);
+
+            if (result == null)
+                return NotFound("User not found.");
+
+            return Ok(result);
         }
     }
 }

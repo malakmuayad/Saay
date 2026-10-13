@@ -52,6 +52,21 @@
       "resetFailed": "Unable to reset your password. Please try again."
     }
   },
+  "notConfirmed": {
+    "title": "Account Not Confirmed",
+    "description": "Your account has not been confirmed yet. Please check your email inbox for the confirmation email and follow the instructions to verify your account.",
+    "resendPrompt": "Didn't receive a confirmation email?",
+    "resendLink": "Send again",
+    "sending": "Sending...",
+    "successTitle": "Email Sent",
+    "successMessage": "The confirmation email has been sent successfully. Please check your inbox and spam folder.",
+    "errorTitle": "Unable to Complete Request",
+    "errors": {
+      "sessionExpired": "Your session has expired. Please sign in again.",
+      "userNotFound": "User not found. Please sign in again.",
+      "resendFailed": "We couldn't resend the confirmation email. Please try again later."
+    }
+  },
   "signup": "Sign Up",
   "signin": {
     "title": "Sign In",

@@ -25,5 +25,6 @@ namespace Saay.Repository.Interfaces
         public System.Threading.Tasks.Task RollbackTransactionAsync();
         public Task<bool?> IsConfirmedAsync(int userId);
         public Task<int> GetUserIdByEmailAsync(string email);
+        public Task<string?> GetNameAsync(string email);
     }
 }

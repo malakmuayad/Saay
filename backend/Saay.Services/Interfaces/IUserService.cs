@@ -20,5 +20,7 @@ namespace Saay.Services.Interfaces
         public Task<bool?> IsConfirmedAsync(int userId);
         public Task<bool> DoesEmailExist(string email);
         public Task<int?> GetUserIdByEmailAsync(string email);
+        public Task<string?> GetNameAsync(string email);
+        public Task<bool?> ResendConfirmationEmailAsync(string email);
     }
 }

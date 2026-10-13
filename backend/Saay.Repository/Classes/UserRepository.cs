@@ -147,5 +147,10 @@ namespace Saay.Repository.Classes
             .Where(u => u.Email == email)
             .Select(u => u.UserId)
             .FirstOrDefaultAsync();
+        public async Task<string?> GetNameAsync(string email) =>
+            await _context.Users
+            .Where(u => u.Email == email)
+            .Select(u => u.FirstName)
+            .FirstOrDefaultAsync();
     }
 }

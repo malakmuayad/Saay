@@ -2,10 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Saay.Infrastructure.DTOs.UserDTOs;
-using Saay.Infrastructure.Validation;
 using Saay.Services.Interfaces;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
 
 namespace Saay.API.Controllers
 {
@@ -245,6 +243,28 @@ namespace Saay.API.Controllers
             }
 
             return Ok(await _userService.GetUserMissionAsync(userId));
+        }
+
+        [EnableRateLimiting("LightOpsLimiter")]
+        [Authorize]
+        [HttpGet("userEmail/{userId}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        public async Task<ActionResult<string?>> GetUserEmail(int userId)
+        {
+            if (!await _ownershipAuthorizationService.IsOwnerAsync(User, userId))
+            {
+                _logger.LogWarning("User {userId} attmpted to get email without ownership.",
+                   userId);
+                return Forbid();
+            }
+
+            return Ok(await _userService.GetUserEmailAsync(userId));
         }
 
         [EnableRateLimiting("LightOpsLimiter")]

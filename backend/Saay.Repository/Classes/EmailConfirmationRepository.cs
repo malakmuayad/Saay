@@ -25,7 +25,8 @@ namespace Saay.Repository.Classes
 
         public async Task<EmailConfirmationToken?> GetConfirmationTokenByHashAsync(string tokenHash) =>
             await _context.EmailConfirmationTokens
-                .FirstOrDefaultAsync(t => t.TokenHash == tokenHash);
+            .OrderByDescending(et => et.EmailConfirmationTokenId)
+            .FirstOrDefaultAsync(t => t.TokenHash == tokenHash);
 
         public async Task<bool?> UpdateConfirmationTokenAsync(int tokenId, EmailConfirmationToken newToken)
         {

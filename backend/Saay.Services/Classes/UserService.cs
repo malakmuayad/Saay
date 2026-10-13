@@ -65,7 +65,7 @@ namespace Saay.Services.Classes
                 await _emailConfirmationRepository
                     .AddConfirmationTokenAsync(confirmationToken);
 
-                // Include the raw token in the email URL, not in the database.
+                // Include the raw token in the email URL.
                 string confirmationUrl =
                     $"https://saay.vercel.app/confirm?token={Uri.EscapeDataString(token)}";
 
@@ -93,6 +93,43 @@ namespace Saay.Services.Classes
             }
         }
 
+        public async Task<bool?> ResendConfirmationEmailAsync(string email)
+        {
+            if (!await _userRepository.DoesEmailExist(email))
+                return null;
+
+            int? userId = await _userRepository.GetUserIdByEmailAsync(email);
+
+            if (userId == null) return null;
+
+            string? name = await _userRepository.GetNameAsync(email);
+
+            if (name == null) return null;
+
+            string token = _tokenService.GenerateEmailConfirmationToken();
+
+            var confirmationToken = new EmailConfirmationToken
+            {
+                UserId = (int)userId,
+                TokenHash = _hashService.HashToken(token),
+                ExpiresAt = DateTime.UtcNow.AddHours(24)
+            };
+
+            // Save the token hash through the repository.
+            await _emailConfirmationRepository
+                .AddConfirmationTokenAsync(confirmationToken);
+
+            // Include the raw token in the email URL.
+            string confirmationUrl =
+                $"https://saay.vercel.app/confirm?token={Uri.EscapeDataString(token)}";
+
+            return await _emailService.SendConfirmationEmailAsync(
+                email,
+                "Confirm Your Saay Account",
+                name,
+                confirmationUrl
+            );
+        }
         public async Task<bool?> DeleteUserAsync(int userId) => await _userRepository.DeleteUserAsync(userId);
 
         public async Task<bool?> UpdateMissionAsync(UpdateMissionDto updateMissionDto) =>
@@ -208,5 +245,8 @@ namespace Saay.Services.Classes
                 return null;
             return await _userRepository.GetUserIdByEmailAsync(email);
         }
+
+        public async Task<string?> GetNameAsync(string email) =>
+            await _userRepository.GetNameAsync(email);
     }
 }
