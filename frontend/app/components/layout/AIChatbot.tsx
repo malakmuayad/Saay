@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "~/context/AuthContext";
-import { sendAIMessage } from "~/services/api/ai";
+import { getAIReply } from "~/services/api/ai";
 import Badge from "../ui/Badge";
 import ReactMarkdown from "react-markdown";
 import { getLanguage } from "~/services/localStorage/languages";
+import type { Message } from "~/types/ai/Message";
 
 type AIChatbotProps = {
   onClose: () => void;
 };
 
-interface Message {
+interface MessageUI {
   id: number;
   text: string;
   sender: "user" | "ai";
@@ -24,13 +25,15 @@ export default function AIChatbot({ onClose }: AIChatbotProps) {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const [messages, setMessages] = useState<Message[]>([
+  const [messages, setMessages] = useState<MessageUI[]>([
     {
       id: 1,
       sender: "ai",
       text: t("aiChatbot.welcome"),
     },
   ]);
+
+  const [sentMessages, setSentMessages] = useState<Message[]>([]);
 
   const handleSend = async (text?: string) => {
     const trimmedMessage = (text ?? message).trim();
@@ -48,11 +51,20 @@ export default function AIChatbot({ onClose }: AIChatbotProps) {
       },
     ]);
 
+    const updatedSentMessages = [
+      ...sentMessages,
+      {
+        role: "user",
+        content: trimmedMessage,
+      },
+    ];
+    setSentMessages(updatedSentMessages);
+
     setMessage("");
     setIsLoading(true);
 
     try {
-      const response = await sendAIMessage(currentUserId, trimmedMessage);
+      const response = await getAIReply(updatedSentMessages);
 
       setMessages((prev) => [
         ...prev,

@@ -248,5 +248,8 @@ namespace Saay.Services.Classes
 
         public async Task<string?> GetNameAsync(string email) =>
             await _userRepository.GetNameAsync(email);
+
+        public async Task<string?> GetNameAsync(int userId) =>
+            await _userRepository.GetNameAsync(userId);
     }
 }

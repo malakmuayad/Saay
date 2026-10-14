@@ -22,5 +22,6 @@ namespace Saay.Services.Interfaces
         public Task<int?> GetUserIdByEmailAsync(string email);
         public Task<string?> GetNameAsync(string email);
         public Task<bool?> ResendConfirmationEmailAsync(string email);
+        public Task<string?> GetNameAsync(int userId);
     }
 }
