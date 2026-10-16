@@ -1,4 +1,5 @@
-﻿using Saay.Data.Entities;
+﻿using Microsoft.AspNetCore.Http;
+using Saay.Data.Entities;
 using Saay.Infrastructure.DTOs.UserDTOs;
 using Saay.Repository.Interfaces;
 using Saay.Services.Interfaces;
@@ -13,8 +14,10 @@ namespace Saay.Services.Classes
         private readonly IEmailConfirmationRepository _emailConfirmationRepository;
         private readonly ITokenService _tokenService;
         private readonly IHashService _hashService;
+        private readonly IImageStorageService _imageStorageService;
 
-        public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IEmailService emailService, IEmailConfirmationRepository emailConfirmationRepository, ITokenService tokenService, IHashService hashService)
+        public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IEmailService emailService, IEmailConfirmationRepository emailConfirmationRepository,
+            ITokenService tokenService, IHashService hashService, IImageStorageService imageStorageService)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
@@ -22,6 +25,7 @@ namespace Saay.Services.Classes
             _emailConfirmationRepository = emailConfirmationRepository;
             _tokenService = tokenService;
             _hashService = hashService;
+            _imageStorageService = imageStorageService;
         }
 
         public async Task<int?> AddUserAsync(AddUserDto addUserDto)
@@ -148,7 +152,6 @@ namespace Saay.Services.Classes
                 FirstName = updateUserDto.FirstName,
                 LastName = updateUserDto.LastName,
                 Email = updateUserDto.Email,
-                ProfilePictureUrl = updateUserDto.ProfilePictureUrl
             };
             return await _userRepository.UpdateUserAsync(updateUserDto.UserId, user);
         }
@@ -251,5 +254,23 @@ namespace Saay.Services.Classes
 
         public async Task<string?> GetNameAsync(int userId) =>
             await _userRepository.GetNameAsync(userId);
+
+        public async Task<bool?> UpdateProfilePictureAsync(UpdateProfilePictureDto updateProfilePictureDto)
+        {
+            if (updateProfilePictureDto.NewProfilePicture == null)
+                return await _userRepository.UpdateProfilePictureAsync(updateProfilePictureDto.UserId, null);
+
+            string? newProfilePictureURL = await _imageStorageService.UploadAsync(updateProfilePictureDto.NewProfilePicture);
+
+            if(newProfilePictureURL == null)
+                throw new InvalidOperationException(
+                "Image upload failed. No profile picture URL was returned.");
+
+            return await _userRepository.UpdateProfilePictureAsync(updateProfilePictureDto.UserId,
+                newProfilePictureURL);
+        }
+
+        public async Task<bool?> DeleteProfilePictureAsync(int userId) =>
+            await _userRepository.DeleteProfilePictureAsync(userId);
     }
 }

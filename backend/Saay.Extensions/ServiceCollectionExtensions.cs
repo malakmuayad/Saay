@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Saay.Repository.Classes;
 using Saay.Repository.Interfaces;
+using Saay.Services;
 using Saay.Services.Authorization.Handlers;
 using Saay.Services.Authorization.Requirements;
 using Saay.Services.Classes;
@@ -71,6 +72,8 @@ namespace Saay.Extensions
             services.AddScoped<IPasswordResetTokenService, PasswordResetTokenService>();
             services.AddHttpClient<GroqAIConversationService>();
             services.AddScoped<IAIService, GroqAIConversationService>();
+            services.AddHttpClient<ImgBBImageStorageService>();
+            services.AddScoped<IImageStorageService, ImgBBImageStorageService>();
 
             return services;
         }

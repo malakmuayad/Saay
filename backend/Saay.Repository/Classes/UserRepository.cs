@@ -56,7 +56,6 @@ namespace Saay.Repository.Classes
             user.FirstName = newUser.FirstName;
             user.LastName = newUser.LastName;
             user.Email = newUser.Email;
-            user.ProfilePictureUrl = newUser.ProfilePictureUrl;
 
             return await _context.SaveChangesAsync() >= 0;
         }
@@ -152,5 +151,27 @@ namespace Saay.Repository.Classes
             .Where(u => u.Email == email)
             .Select(u => u.FirstName)
             .FirstOrDefaultAsync();
+
+        public async Task<bool?> UpdateProfilePictureAsync(int userId, string? newProfilePicture)
+        {
+            User user = await _context.Users.FindAsync(userId);
+
+            if (user == null) return null; // User not found
+
+            user.ProfilePictureUrl = newProfilePicture;
+
+            return await _context.SaveChangesAsync() >= 0;
+        }
+    
+        public async Task<bool?> DeleteProfilePictureAsync(int userId)
+        {
+            User user = await _context.Users.FindAsync(userId);
+
+            if (user == null) return null; // User not found
+
+            user.ProfilePictureUrl = null;
+
+            return await _context.SaveChangesAsync() >= 0;
+        }
     }
 }

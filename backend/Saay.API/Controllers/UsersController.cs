@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Saay.Infrastructure.DTOs.UserDTOs;
+using Saay.Infrastructure.Validation;
 using Saay.Services.Interfaces;
 using System.Security.Claims;
 
@@ -16,14 +17,18 @@ namespace Saay.API.Controllers
         private readonly ILogger<UsersController> _logger;
         private readonly IPasswordResetTokenService _passwordResetTokenService;
         private readonly IHashService _hashService;
+        private readonly IImageStorageService _imageStorageService;
 
-        public UsersController(IUserService userService, IOwnershipAuthorizationService ownershipAuthorizationService, ILogger<UsersController> logger, IPasswordResetTokenService passwordResetTokenService, IHashService hashService)
+        public UsersController(IUserService userService, IOwnershipAuthorizationService ownershipAuthorizationService,
+            ILogger<UsersController> logger, IPasswordResetTokenService passwordResetTokenService,
+            IHashService hashService, IImageStorageService imageStorageService)
         {
             _userService = userService;
             _ownershipAuthorizationService = ownershipAuthorizationService;
             _logger = logger;
             _passwordResetTokenService = passwordResetTokenService;
             _hashService = hashService;
+            _imageStorageService = imageStorageService;
         }
 
         [EnableRateLimiting("LightOpsLimiter")]
@@ -32,12 +37,32 @@ namespace Saay.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
-        public async Task<ActionResult> AddUserAsync(AddUserDto addUserDto)
+        public async Task<ActionResult> AddUserAsync(AddUserRequestDto addUserRequestDto)
         {
+            if(!ValidationRules.ValidateImageFormat(addUserRequestDto.ProfilePicture))
+            {
+                return BadRequest("Image type must me jpg or png.");
+            }
+
+            string? profilePictureURL = null;
+
+            if (addUserRequestDto.ProfilePicture != null)
+                profilePictureURL = await _imageStorageService.UploadAsync(addUserRequestDto.ProfilePicture);
+
+            AddUserDto addUserDto = new AddUserDto
+            {
+                FirstName = addUserRequestDto.FirstName,
+                LastName = addUserRequestDto.LastName,
+                Email = addUserRequestDto.Email,
+                Password = addUserRequestDto.Password,
+                ProfilePictureURL = profilePictureURL
+            };
+
             int? userId = await _userService.AddUserAsync(addUserDto);
 
             if (userId == null)
                 return BadRequest("User already exists with the provided email.");
+
             else
             {
                 GetUserDto getUserDto = new GetUserDto
@@ -126,7 +151,13 @@ namespace Saay.API.Controllers
                 return Forbid();
             }
 
-            bool? result = await _userService.UpdateUserAsync(updateUserDto);
+            bool? result = await _userService.UpdateUserAsync(new UpdateUserDto
+            {
+                UserId = updateUserDto.UserId,
+                FirstName = updateUserDto.FirstName,
+                LastName = updateUserDto.LastName,
+                Email = updateUserDto.Email,
+            });
             if (result == true)
                 return Ok(true);
             else if (result == false)
@@ -362,6 +393,63 @@ namespace Saay.API.Controllers
             }
 
             return Ok(true);
+        }
+
+
+        [EnableRateLimiting("CriticalOpsLimiter")]
+        [Authorize]
+        [HttpPut("profile-picture")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        public async Task<ActionResult<bool>> UpdateProfilePictureAsync(UpdateProfilePictureDto updateProfilePictureDto)
+        {
+            if (!await _ownershipAuthorizationService.IsOwnerAsync(User, updateProfilePictureDto.UserId))
+            {
+                _logger.LogWarning("User {UserId} attmpted to update a user without ownership.",
+                   updateProfilePictureDto.UserId);
+                return Forbid();
+            }
+
+            bool? result = await _userService.UpdateProfilePictureAsync(updateProfilePictureDto);
+            if (result == true)
+                return Ok(true);
+            else if (result == null)
+                return NotFound("User is not found.");
+            else
+                return StatusCode(500, "An error occurred while updating the user.");
+        }
+
+        [EnableRateLimiting("CriticalOpsLimiter")]
+        [Authorize]
+        [HttpDelete("profile-picture/{userId}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        public async Task<ActionResult> DeleteProfilePictureAsync(int userId)
+        {
+            if (!await _ownershipAuthorizationService.IsOwnerAsync(User, userId))
+            {
+                _logger.LogWarning("User {userId} attmpted to delete a user without ownership.",
+                   userId);
+                return Forbid();
+            }
+
+            bool? result = await _userService.DeleteProfilePictureAsync(userId);
+            if (result == true)
+                return Ok(true);
+            else if (result == null)
+                return NotFound("User not found.");
+            else
+                return StatusCode(500, "An error occurred while deleting the user.");
         }
     }
 }

@@ -26,5 +26,8 @@ namespace Saay.Repository.Interfaces
         public Task<bool?> IsConfirmedAsync(int userId);
         public Task<int> GetUserIdByEmailAsync(string email);
         public Task<string?> GetNameAsync(string email);
+        public Task<bool?> UpdateProfilePictureAsync(int userId, string? newProfilePicture);
+
+        public Task<bool?> DeleteProfilePictureAsync(int userId);
     }
 }

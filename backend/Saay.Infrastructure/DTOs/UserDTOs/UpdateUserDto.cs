@@ -20,8 +20,5 @@ namespace Saay.Infrastructure.DTOs.UserDTOs
         [Required]
         [RegularExpression(ValidationRules.EMAIL_REGX, ErrorMessage = "Invalid email format.")]
         public string Email { get; set; } = null!;
-
-        [MaxLength(255, ErrorMessage = "ProfilePictureUrl must be a string with a maximum length of 255 characters.")]
-        public string? ProfilePictureUrl { get; set; }
     }
 }
