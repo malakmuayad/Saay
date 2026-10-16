@@ -4,6 +4,7 @@ import { useAuth } from "~/context/AuthContext";
 import { getAIReply } from "~/services/api/ai";
 import Badge from "../ui/Badge";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { getLanguage } from "~/services/localStorage/languages";
 import type { Message } from "~/types/ai/Message";
 
@@ -133,7 +134,7 @@ export default function AIChatbot({ onClose }: AIChatbotProps) {
               key={msg.id}
               className={`flex ${
                 msg.sender === "user" ? "justify-end" : "justify-start"
-              }`}
+              } overflow-auto`}
             >
               <div
                 className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm ${
@@ -142,7 +143,9 @@ export default function AIChatbot({ onClose }: AIChatbotProps) {
                     : "rounded-bl-md bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
                 }`}
               >
-                <ReactMarkdown>{msg.text}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {msg.text}
+                </ReactMarkdown>
               </div>
             </div>
           ))}
