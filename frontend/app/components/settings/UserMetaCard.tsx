@@ -7,7 +7,7 @@ import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal/Modal";
 import Alert from "../ui/Alert";
 import { EMAIL_REGEX } from "~/validation";
-import { updateUser } from "~/services/api/users";
+import { updateProfilePicture, updateUser } from "~/services/api/users";
 import type { UpdateUserDto } from "~/types/users/UpdateUserDto";
 import { useAuth } from "~/context/AuthContext";
 
@@ -16,6 +16,7 @@ type UserMetaCardProps = {
   firstName: string;
   lastName: string;
   email: string;
+  profilePictureUrl: string | undefined;
   onDataUpdated: () => void;
 };
 
@@ -24,6 +25,7 @@ export default function UserMetaCard({
   firstName,
   lastName,
   email,
+  profilePictureUrl,
   onDataUpdated,
 }: UserMetaCardProps) {
   const { isOpen, openModal, closeModal } = useModal();
@@ -31,6 +33,10 @@ export default function UserMetaCard({
   const [editedFirstName, setEditedFirstName] = useState(firstName);
   const [editedLastName, setEditedLastName] = useState(lastName);
   const [editedEmail, setEditedEmail] = useState(email);
+  const [newProfilePicture, setNewProfilePicture] = useState<File | null>(null);
+  const [editedProfilePictureUrl, setEditedProfilePictureUrl] = useState<
+    string | undefined
+  >(profilePictureUrl);
 
   const [firstNameValid, setFirstNameValid] = useState(true);
   const [lastNameValid, setLastNameValid] = useState(true);
@@ -40,6 +46,7 @@ export default function UserMetaCard({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const refreshUserData = useAuth()?.refreshUserData;
+
   /*
    * Populate the form with the current user data
    * whenever the modal opens or the user data changes.
@@ -50,6 +57,8 @@ export default function UserMetaCard({
     setEditedFirstName(firstName);
     setEditedLastName(lastName);
     setEditedEmail(email);
+    setEditedProfilePictureUrl(profilePictureUrl);
+    setNewProfilePicture(null);
 
     setFirstNameValid(true);
     setLastNameValid(true);
@@ -87,7 +96,6 @@ export default function UserMetaCard({
       firstName: editedFirstName.trim(),
       lastName: editedLastName.trim(),
       email: editedEmail.trim(),
-      profilePictureURL: null,
     } satisfies UpdateUserDto);
 
     if (typeof response === "string" || response === false) {
@@ -98,6 +106,23 @@ export default function UserMetaCard({
       );
       setSaving(false);
       return;
+    }
+
+    if (newProfilePicture !== null) {
+      const pictureUpdateResult = await updateProfilePicture(
+        userId,
+        newProfilePicture,
+      );
+
+      if (pictureUpdateResult !== true) {
+        setError(
+          typeof pictureUpdateResult === "string"
+            ? pictureUpdateResult
+            : "Failed to update profile picture.",
+        );
+        setSaving(false);
+        return;
+      }
     }
 
     if (typeof refreshUserData !== "undefined") refreshUserData();
@@ -122,7 +147,10 @@ export default function UserMetaCard({
               <div className="flex w-full flex-col items-start gap-6 sm:flex-row sm:items-center">
                 <div className="overflow-hidden rounded-full border border-gray-200 dark:border-gray-100">
                   <img
-                    src="/assets/profile-picture-placeholder.png"
+                    src={
+                      editedProfilePictureUrl ??
+                      "/assets/profile-picture-placeholder.png"
+                    }
                     className="size-20"
                     alt="user"
                   />
@@ -233,7 +261,10 @@ export default function UserMetaCard({
                 <div className="mb-6 flex max-w-sm items-center gap-6 lg:pr-5">
                   <div className="relative size-20 shrink-0 rounded-full sm:size-25">
                     <img
-                      src="/assets/profile-picture-placeholder.png"
+                      src={
+                        editedProfilePictureUrl ??
+                        "/assets/profile-picture-placeholder.png"
+                      }
                       alt="Profile Picture"
                       className="size-20 rounded-full object-cover sm:size-25"
                     />
@@ -247,7 +278,15 @@ export default function UserMetaCard({
                         name="file-upload"
                         id="file-upload"
                         className="hidden"
-                        accept=".png, .jpg, .jpeg"
+                        accept="image/png, image/jpeg"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+
+                          if (!file) return;
+
+                          setNewProfilePicture(file);
+                          setEditedProfilePictureUrl(URL.createObjectURL(file));
+                        }}
                       />
 
                       <PencilIcon />

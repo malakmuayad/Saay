@@ -18,6 +18,8 @@ import ArrowDownIcon from "./arrow-down.svg?react";
 import ArrowUpIcon from "./arrow-up.svg?react";
 import MoreDotIcon from "./moredot.svg?react";
 import PencilIcon from "./pencil.svg?react";
+import TrashBinIcon from "./trash.svg?react";
+import UploadIcon from "./upload.svg?react";
 
 export {
   EyeIcon,
@@ -40,4 +42,6 @@ export {
   ArrowUpIcon,
   MoreDotIcon,
   PencilIcon,
+  TrashBinIcon,
+  UploadIcon,
 };

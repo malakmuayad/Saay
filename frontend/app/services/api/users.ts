@@ -1,4 +1,4 @@
-import type AddUserDto from "~/types/users/AddUserDto";
+import type AddUserRequestDto from "~/types/users/AddUserRequestDto";
 import type { UserDto } from "~/types/users/UserDto";
 import { apiFetch } from "./main";
 import type { UpdateUserDto } from "~/types/users/UpdateUserDto";
@@ -6,36 +6,40 @@ import type { UpdateUserDto } from "~/types/users/UpdateUserDto";
 const Base_URL = "https://saay.runasp.net";
 
 export async function addUser(
-  user: AddUserDto,
+  user: AddUserRequestDto,
 ): Promise<string | [number, string]> {
-  const url: URL = new URL("api/saay/users", Base_URL);
+  const url = new URL("api/saay/users", Base_URL);
 
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      password: user.password,
-      profilePictureURL: user.profilePictureURL,
-    }),
-  };
+  const formData = new FormData();
+
+  formData.append("FirstName", user.firstName);
+  formData.append("LastName", user.lastName);
+  formData.append("Email", user.email);
+  formData.append("Password", user.password);
+
+  if (user.profilePicture) {
+    formData.append("ProfilePicture", user.profilePicture);
+  }
 
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
 
     if (response.status === 400) {
       return "Email already registered! Sign In instead.";
     }
 
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
 
     const createdUser = await response.json();
-    return [createdUser.userId, createdUser.email]; // registeration successed
+
+    return [createdUser.userId, createdUser.email];
   } catch (error) {
+    console.error("Failed to register user:", error);
     return "An error occurred. Please try again later.";
   }
 }
@@ -143,7 +147,6 @@ export async function updateUser(
       firstName: updateUserDto.firstName,
       lastName: updateUserDto.lastName,
       email: updateUserDto.email,
-      profilePictureURL: null,
     }),
   };
 
@@ -342,4 +345,37 @@ export async function getUserEmail(userId: number): Promise<string | null> {
   }
 
   return (await response.text()) as string | null;
+}
+
+export async function updateProfilePicture(
+  userId: number,
+  newProfilePicture: File,
+): Promise<boolean | string> {
+  const url: URL = new URL("api/saay/users/profile-picture", Base_URL);
+
+  const formData = new FormData();
+
+  formData.append("UserId", userId.toString());
+  formData.append("NewProfilePicture", newProfilePicture, newProfilePicture.name);
+
+  const options: RequestInit = {
+    method: "PUT",
+    body: formData,
+  };
+
+  const response = await apiFetch(url, options);
+
+  if (typeof response === "string") {
+    return response;
+  }
+
+  if (response.status === 404) {
+    return "User not found.";
+  }
+
+  if (!response.ok) {
+    return "An error occurred. Please try again later.";
+  }
+
+  return (await response.json()) as boolean;
 }

@@ -1,7 +1,7 @@
-export default interface AddUserDto {
+export default interface AddUserRequestDto {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  profilePictureURL: string | null;
+  profilePicture: File | null;
 }

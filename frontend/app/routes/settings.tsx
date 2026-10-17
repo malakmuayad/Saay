@@ -57,6 +57,7 @@ export default function Settings() {
               firstName={userState?.firstName ?? ""}
               lastName={userState?.lastName ?? ""}
               email={userState?.email ?? ""}
+              profilePictureUrl={userState?.profilePictureUrl}
               onDataUpdated={handleDataUpdate}
             />
 

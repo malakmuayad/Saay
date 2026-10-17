@@ -5,8 +5,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "~/validation";
 import { addUser } from "~/services/api/users";
-import type AddUserDto from "~/types/users/AddUserDto";
+import type AddUserRequestDto from "~/types/users/AddUserRequestDto";
 import Alert from "../ui/Alert";
+import DropzoneComponent from "../form/DropZone";
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,6 +23,8 @@ export default function SignUpForm() {
 
   const [password, setPassword] = useState<string>("");
   const [passwordValid, setPasswordValid] = useState<boolean>(true);
+
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
 
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [confirmPasswordValid, setConfirmPasswordValid] =
@@ -57,8 +60,8 @@ export default function SignUpForm() {
       lastName: lastName.trim(),
       email: email.trim(),
       password,
-      profilePictureURL: null,
-    } satisfies AddUserDto);
+      profilePicture: profilePicture,
+    } satisfies AddUserRequestDto);
 
     setError(null);
     setSigningUp(false);
@@ -245,6 +248,10 @@ export default function SignUpForm() {
                 </span>
               </div>
             </div>
+            <DropzoneComponent
+              title="Profile Picture -Optional"
+              onImageChange={setProfilePicture}
+            />
             {/* <!-- Button --> */}
             <div>
               <button

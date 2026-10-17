@@ -68,8 +68,8 @@ export default function UserDropdown({ onLogout }: UserDropdownProps) {
     async function loadUser() {
       if (currentUserId === null || currentUserId === undefined) return;
       const result = await getUser(currentUserId);
-
       if (!ignore && typeof result !== "string") {
+        console.log("User profile URL:", result.profilePictureUrl);
         setUser(result);
       }
     }
@@ -113,7 +113,7 @@ export default function UserDropdown({ onLogout }: UserDropdownProps) {
           <span className="me-3 h-11 w-11 overflow-hidden rounded-full">
             <img
               src={
-                user?.profilePictureURL ??
+                user?.profilePictureUrl ??
                 "/assets/profile-picture-placeholder.png"
               }
               alt="User Profile Picture"
