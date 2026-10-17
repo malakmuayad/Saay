@@ -1,5 +1,7 @@
-export function setTheme(input: string) {
-  localStorage.setItem("theme", input);
+import type { Theme } from "~/types/Theme";
+
+export function setLocalStorageTheme(theme: Theme) {
+  localStorage.setItem("theme", theme);
 }
 
 export function getTheme() {

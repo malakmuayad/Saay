@@ -2,9 +2,8 @@
 
 import type React from "react";
 import { createContext, useState, useContext, useEffect } from "react";
-import { getTheme } from "~/services/localStorage/theme";
-
-type Theme = "light" | "dark";
+import { getTheme, setLocalStorageTheme } from "~/services/localStorage/theme";
+import type { Theme } from "~/types/Theme";
 
 type ThemeContextType = {
   theme: Theme;
@@ -42,7 +41,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [theme, isInitialized]);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    setLocalStorageTheme(newTheme);
   };
 
   return (
