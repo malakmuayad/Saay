@@ -41,12 +41,17 @@ type Pages = {
   "/dashboard/settings": {
     params: {};
   };
+  "/*": {
+    params: {
+      "*": string;
+    };
+  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/signup" | "/confirm" | "/notConfirmed" | "/reset-password" | "/dashboard" | "/dashboard/goals" | "/dashboard/tasks" | "/dashboard/habits" | "/dashboard/settings";
+    page: "/" | "/signup" | "/confirm" | "/notConfirmed" | "/reset-password" | "/dashboard" | "/dashboard/goals" | "/dashboard/tasks" | "/dashboard/habits" | "/dashboard/settings" | "/*";
   };
   "routes/signin.tsx": {
     id: "routes/signin";
@@ -92,6 +97,10 @@ type RouteFiles = {
     id: "routes/settings";
     page: "/dashboard/settings";
   };
+  "routes/not-found.tsx": {
+    id: "routes/not-found";
+    page: "/*";
+  };
 };
 
 type RouteModules = {
@@ -107,4 +116,5 @@ type RouteModules = {
   "routes/tasks": typeof import("./app/routes/tasks.tsx");
   "routes/habits": typeof import("./app/routes/habits.tsx");
   "routes/settings": typeof import("./app/routes/settings.tsx");
+  "routes/not-found": typeof import("./app/routes/not-found.tsx");
 };

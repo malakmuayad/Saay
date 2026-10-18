@@ -15,4 +15,5 @@ export default [
     route("habits", "routes/habits.tsx"),
     route("settings", "routes/settings.tsx"),
   ]),
+  route("*", "routes/not-found.tsx"),
 ] satisfies RouteConfig;
