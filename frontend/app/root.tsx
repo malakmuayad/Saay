@@ -8,11 +8,9 @@ import {
 } from "react-router";
 
 import "./i18n";
-
 import type { Route } from "./+types/root";
 import "./app.css";
 import { ThemeProvider } from "./context/ThemeContext";
-import { SidebarProvider } from "./context/SidebarContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -29,6 +27,38 @@ export const links: Route.LinksFunction = () => [
   {
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap",
+  },
+
+  // Favicons
+  { rel: "icon", href: "/assets/favicon.ico" },
+  {
+    rel: "icon",
+    type: "image/png",
+    sizes: "32x32",
+    href: "/assets/favicon-32x32.png",
+  },
+  {
+    rel: "icon",
+    type: "image/png",
+    sizes: "16x16",
+    href: "/assets/favicon-16x16.png",
+  },
+  {
+    rel: "apple-touch-icon",
+    sizes: "180x180",
+    href: "/assets/apple-touch-icon.png",
+  },
+  {
+    rel: "icon",
+    type: "image/png",
+    sizes: "192x192",
+    href: "/assets/android-chrome-192x192.png",
+  },
+  {
+    rel: "icon",
+    type: "image/png",
+    sizes: "512x512",
+    href: "/assets/android-chrome-512x512.png",
   },
 ];
 
