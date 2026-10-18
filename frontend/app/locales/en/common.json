@@ -1,4 +1,113 @@
 {
+  "landing": {
+    "header": {
+      "home": "Saay home",
+      "mainNavigation": "Main navigation",
+      "mobileNavigation": "Mobile navigation",
+      "features": "Features",
+      "howItWorks": "How it works",
+      "aiAssistant": "AI assistant",
+      "signIn": "Sign in",
+      "getStarted": "Get started",
+      "free": "free",
+      "switchToLight": "Switch to light mode",
+      "switchToDark": "Switch to dark mode",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
+    },
+    "hero": {
+      "eyebrow": "A calmer way to make progress",
+      "titleFirst": "Make space for",
+      "titleHighlight": "what matters.",
+      "description": "Bring your tasks, goals, and habits together in one simple workspace. Find your focus, build consistency, and move forward with a little help from AI.",
+      "primaryCta": "Get started for free",
+      "secondaryCta": "Explore features",
+      "tagline": "Your goals. Your pace. Your progress."
+    },
+    "preview": {
+      "workspace": "Your workspace",
+      "subtitle": "Monday, a fresh start",
+      "dashboard": "Dashboard",
+      "todayFocus": "Today's focus",
+      "focusDescription": "Small steps, meaningful progress.",
+      "taskCount": "3 of 4",
+      "tasks": {
+        "planWeek": "Plan the week",
+        "importantTask": "Work on an important task",
+        "learn": "Learn something new",
+        "review": "Review today's progress"
+      },
+      "categories": {
+        "personal": "Personal",
+        "work": "Work",
+        "growth": "Growth"
+      },
+      "momentumTitle": "Keep your momentum",
+      "momentumDescription": "Every completed step counts.",
+      "goalProgress": "Goal progress",
+      "thisMonth": "This month",
+      "personalGrowth": "Personal growth",
+      "progressMessage": "You're making progress!",
+      "dailyHabits": "Daily habits",
+      "readDaily": "Read daily",
+      "readStreak": "5-day streak",
+      "stayHydrated": "Stay hydrated",
+      "waterStreak": "8-day streak",
+      "aiName": "Saay AI",
+      "aiSubtitle": "Your planning companion",
+      "aiMessage": "\"Try breaking your goal into smaller steps. A little progress every day adds up!\"",
+      "closingLine": "A little more clarity. A little less overwhelm."
+    },
+    "features": {
+      "eyebrow": "EVERYTHING IN ONE PLACE",
+      "heading": "Your life, a little more organized.",
+      "intro": "You don't need another complicated system. You need a space that helps you take the next step.",
+      "tasks": {
+        "title": "Tasks that flow",
+        "description": "Organize your daily work, manage priorities, and turn a busy day into a clear plan."
+      },
+      "goals": {
+        "title": "Goals with direction",
+        "description": "Set meaningful goals, track your progress, and break big ambitions into achievable steps."
+      },
+      "habits": {
+        "title": "Habits that stick",
+        "description": "Build consistent routines, track your streaks, and celebrate the small wins that add up."
+      },
+      "ai": {
+        "title": "An AI assistant",
+        "description": "Think through your plans, ask questions, and get AI-powered guidance when you need it."
+      }
+    },
+    "steps": {
+      "eyebrow": "START WHERE YOU ARE",
+      "heading": "Progress isn't about doing everything. It's about knowing what comes next.",
+      "intro": "Saay gives your plans a home, helps you stay aware of your progress, and makes it easier to return to what matters most.",
+      "cta": "Find your focus",
+      "capture": {
+        "title": "Get everything out of your head",
+        "description": "Capture tasks, goals, and habits in one place."
+      },
+      "choose": {
+        "title": "Choose your next step",
+        "description": "Give your day direction without overcomplicating it."
+      },
+      "progress": {
+        "title": "Notice your progress",
+        "description": "Use your progress and AI guidance to keep moving."
+      }
+    },
+    "cta": {
+      "eyebrow": "Your next chapter starts here",
+      "heading": "Ready to make room for what matters?",
+      "description": "Start organizing your days, building better habits, and working toward goals that mean something to you.",
+      "button": "Create your free account"
+    },
+    "footer": {
+      "tagline": "Make space for what matters.",
+      "signUp": "Sign up"
+    }
+  },
   "common": {
     "saay": "Saay",
     "edit": "Edit",

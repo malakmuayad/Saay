@@ -20,6 +20,10 @@ import MoreDotIcon from "./moredot.svg?react";
 import PencilIcon from "./pencil.svg?react";
 import TrashBinIcon from "./trash.svg?react";
 import UploadIcon from "./upload.svg?react";
+import SunIcon from "./sun.svg?react";
+import MoonIcon from "./moon.svg?react";
+import ArrowRightIcon from "./arrow-right.svg?react";
+import MenuIcon from "./menu.svg?react";
 
 export {
   EyeIcon,
@@ -44,4 +48,8 @@ export {
   PencilIcon,
   TrashBinIcon,
   UploadIcon,
+  SunIcon,
+  MoonIcon,
+  ArrowRightIcon,
+  MenuIcon,
 };
