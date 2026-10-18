@@ -12,6 +12,7 @@ import type { LoginResponseDto } from "~/types/auth/loginResponseDto";
 import { setRefreshToken } from "~/services/localStorage/auth";
 import { setAccessToken } from "~/services/sessionStorage/auth";
 import { t } from "i18next";
+import { useTheme } from "~/context/ThemeContext";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,8 +26,8 @@ export default function SignInForm() {
   const [signingIn, setSigningIn] = useState<boolean>(false);
 
   const navigator = useNavigate();
-
   const setCurrentUserId = useContext(AuthContext)?.setCurrentUserId;
+  const theme = useTheme().theme;
 
   function validateFields() {
     return password !== "" && email !== "";
@@ -62,107 +63,148 @@ export default function SignInForm() {
     setError(null);
     setSigningIn(false);
 
-    setCurrentUser(result.userId); // store in local storage
+    setCurrentUser(result.userId);
     setAccessToken(result.accessToken);
     setRefreshToken(result.refreshToken);
-    setCurrentUserId?.(result.userId); // store in AuthContext
+    setCurrentUserId?.(result.userId);
 
     navigator("/dashboard");
   }
 
   return (
-    <div className="dark:bg-gray-900 flex min-h-screen w-full items-center justify-center overflow-y-auto px-4 py-8 sm:px-6">
-      <div className="w-full max-w-md">
-        <div>
+    <div className="grid min-h-screen w-full grid-cols-1 dark:bg-gray-900 md:grid-cols-2">
+      {/* Left section — Sign-in form */}
+      <section className="flex items-center justify-center px-4 py-8 sm:px-6 lg:px-12">
+        <div className="w-full max-w-md">
+          {/* Heading */}
           <div className="mb-5 sm:mb-8">
-            <h1 className="mb-2 mt-4 text-title-sm font-semibold text-gray-800 sm:text-title-md dark:text-white/90">
+            <h1 className="mb-2 text-title-sm font-semibold text-gray-800 sm:text-title-md dark:text-white/90">
               {t("signin.title")}
             </h1>
+
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {t("signin.description")}
             </p>
           </div>
-          <div>
-            {error && <Alert variant="error" title="Error" message={error} />}
-            <form onSubmit={handleSignIn}>
-              <div className="space-y-6">
-                <div>
-                  <Label htmlFor="email">
-                    {t("signin.fields.email")}{" "}
-                    <span className="text-error-500">*</span>{" "}
-                  </Label>
+
+          {/* Error alert */}
+          {error && (
+            <div className="mb-5">
+              <Alert variant="error" title="Error" message={error} />
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSignIn}>
+            <div className="space-y-5">
+              {/* Email */}
+              <div>
+                <Label htmlFor="email">
+                  {t("signin.fields.email")}{" "}
+                  <span className="text-error-500">*</span>
+                </Label>
+
+                <Input
+                  id="email"
+                  placeholder="info@gmail.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  hint={!emailValid ? "Email is required" : undefined}
+                  error={!emailValid}
+                  onBlur={() => setEmailValid(email !== "")}
+                />
+              </div>
+
+              {/* Password */}
+              <div>
+                <Label htmlFor="password">
+                  {t("signin.fields.password")}{" "}
+                  <span className="text-error-500">*</span>
+                </Label>
+
+                <div className="relative">
                   <Input
-                    id="email"
-                    placeholder="info@gmail.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    hint={!emailValid ? "Email is required" : undefined}
-                    error={!emailValid}
-                    onBlur={() => setEmailValid(email !== "")}
+                    type={showPassword ? "text" : "password"}
+                    placeholder={t("signin.fields.passwordPlaceholder")}
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    hint={!passwordValid ? "Password is required" : undefined}
+                    error={!passwordValid}
+                    onBlur={() => setPasswordValid(password !== "")}
                   />
-                </div>
-                <div>
-                  <Label htmlFor="password">
-                    {t("signin.fields.password")}{" "}
-                    <span className="text-error-500">*</span>{" "}
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder={t("signin.fields.passwordPlaceholder")}
-                      id="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      hint={!passwordValid ? "Password is required" : undefined}
-                      error={!passwordValid}
-                      onBlur={() => setPasswordValid(password !== "")}
-                    />
-                    <span
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-e-4 top-1/2 z-30 -translate-y-1/2 cursor-pointer"
-                    >
-                      {showPassword ? (
-                        <EyeIcon
-                          className={`size-5 fill-gray-500 dark:fill-gray-400 ${!passwordValid && "-translate-y-1/2"}`}
-                        />
-                      ) : (
-                        <EyeCloseIcon
-                          className={`size-5 fill-gray-500 dark:fill-gray-400 ${!passwordValid && "-translate-y-1/2"}`}
-                        />
-                      )}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <Link
-                    to="/reset-password"
-                    className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                    className="absolute inset-e-4 top-1/2 z-30 -translate-y-1/2 cursor-pointer"
                   >
-                    {t("signin.forgotPassword")}
-                  </Link>
-                </div>
-                <div>
-                  <Button className="w-full" size="sm" disabled={signingIn}>
-                    {signingIn ? t("signin.signingIn") : t("signin.title")}
-                  </Button>
+                    {showPassword ? (
+                      <EyeIcon className="size-5 fill-gray-500 dark:fill-gray-400" />
+                    ) : (
+                      <EyeCloseIcon className="size-5 fill-gray-500 dark:fill-gray-400" />
+                    )}
+                  </button>
                 </div>
               </div>
-            </form>
 
-            <div className="mt-5">
-              <p className="text-center text-sm font-normal text-gray-700 sm:text-start dark:text-gray-400">
-                {t("signin.noAccount")} {""}
+              {/* Forgot password */}
+              <div className="flex items-center justify-between">
                 <Link
-                  to="/signup"
-                  className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                  to="/reset-password"
+                  className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
                 >
-                  {t("signup")}
+                  {t("signin.forgotPassword")}
                 </Link>
-              </p>
+              </div>
+
+              {/* Submit button */}
+              <div>
+                <Button className="w-full" size="sm" disabled={signingIn}>
+                  {signingIn ? t("signin.signingIn") : t("signin.title")}
+                </Button>
+              </div>
             </div>
+          </form>
+
+          {/* Sign-up link */}
+          <div className="mt-5">
+            <p className="text-center text-sm font-normal text-gray-700 sm:text-start dark:text-gray-400">
+              {t("signin.noAccount")}{" "}
+              <Link
+                to="/signup"
+                className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
+              >
+                {t("signup")}
+              </Link>
+            </p>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Right section — Branding */}
+      <section className="relative flex min-h-64 flex-col items-center justify-center gap-8 overflow-hidden bg-[radial-gradient(ellipse_at_center,_#bfdbfe_0%,_#dbeafe_35%,_#ffffff_75%)] px-8 py-12 dark:bg-[radial-gradient(ellipse_at_center,_#263b68_0%,_#1f2937_45%,_#111827_100%)] md:min-h-screen lg:px-16">
+        <img
+          src={theme === "dark" ? "/assets/logo-dark.png" : "/assets/logo.png"}
+          alt="Saay logo"
+          className="h-auto w-40 object-contain sm:w-48"
+          loading="eager"
+        />
+
+        <div className="max-w-md text-center">
+          <h2 className="text-2xl font-semibold text-gray-800 sm:text-3xl dark:text-white">
+            Start building better habits.
+          </h2>
+
+          <p className="mt-4 text-sm leading-6 text-gray-600 sm:text-base dark:text-gray-300">
+            Organize your tasks, track your habits, and turn your goals into
+            meaningful progress with Saay.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }
