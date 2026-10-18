@@ -169,7 +169,7 @@ export default function LandingPage() {
           <div
             role="radiogroup"
             aria-label={t("language.label")}
-            className="inline-flex items-center gap-1 rounded-full border border-border bg-background/80 p-1 shadow-sm backdrop-blur-sm"
+            className="inline-flex items-center gap-1 rounded-xl border border-border bg-background/80 p-1 shadow-sm backdrop-blur-sm"
           >
             <button
               type="button"
@@ -177,7 +177,7 @@ export default function LandingPage() {
               aria-checked={language === "en"}
               title="English"
               onClick={() => setLanguage("en")}
-              className={`focus-ring flex h-8 min-w-8 items-center justify-center rounded-full px-3 text-xs font-semibold transition-all duration-200 ${
+              className={`focus-ring flex h-8 min-w-8 items-center justify-center rounded-xl px-3 text-xs font-semibold transition-all duration-200 ${
                 language === "en"
                   ? "bg-brand-500 text-white shadow-sm"
                   : "hover:text-brand-500 dark:hover:text-brand-300"
@@ -192,7 +192,7 @@ export default function LandingPage() {
               aria-checked={language === "ar"}
               title="العربية"
               onClick={() => setLanguage("ar")}
-              className={`focus-ring flex h-8 min-w-8 items-center justify-center rounded-full px-3 text-xs font-semibold transition-all duration-200 ${
+              className={`focus-ring flex h-8 min-w-8 items-center justify-center rounded-xl px-3 text-xs font-semibold transition-all duration-200 ${
                 language === "ar"
                   ? "bg-brand-500 text-white shadow-sm"
                   : "hover:bg-muted hover:text-brand-500 dark:hover:text-brand-300"
@@ -239,7 +239,6 @@ export default function LandingPage() {
             >
               {t("landing.header.getStarted")}
               <span className="hidden sm:inline">
-                {" "}
                 {t("landing.header.free")}
               </span>
             </Link>
