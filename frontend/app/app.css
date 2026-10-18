@@ -4,7 +4,7 @@
 
 @theme {
   --font-*: initial;
-  --font-outfit: Outfit, sans-serif;
+  --font-sans: "IBM Plex Sans", "IBM Plex Sans Arabic", sans-serif;
 
   --breakpoint-*: initial;
   --breakpoint-2xsm: 375px;
@@ -112,14 +112,6 @@
   --z-index-99999: 99999;
 }
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
   *,
   ::after,
@@ -135,7 +127,7 @@
   }
 
   body {
-    @apply relative z-1 bg-gray-50 font-outfit font-normal;
+    @apply relative z-1 bg-gray-50 font-sans font-normal;
   }
 }
 
