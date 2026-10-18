@@ -237,7 +237,7 @@ export function AddEditGoalModal({
           </div>
         )}
 
-        <h3 className="mb-6 text-lg font-semibold">
+        <h3 className="mb-6 text-lg font-semibold dark:text-white">
           {isEdit ? "Edit Goal" : "Add New Goal"}
         </h3>
 

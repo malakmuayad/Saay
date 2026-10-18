@@ -193,7 +193,9 @@ export function AddTaskModal({
           </div>
         )}
 
-        <h3 className="mb-6 text-lg font-semibold">{t("tasks.addNewTask")}</h3>
+        <h3 className="mb-6 text-lg font-semibold dark:text-white">
+          {t("tasks.addNewTask")}
+        </h3>
 
         <form onSubmit={handleSubmit}>
           <div className="space-y-6">

@@ -166,16 +166,33 @@ const WeeklyCalendar: React.FC = () => {
                   day: "numeric",
                 }).format(arg.date);
 
-                return `${weekday} - ${day}`;
-              },
+                const shortArabicDays = ["أ", "ن", "ث", "ر", "خ", "ج", "س"];
+                const shortEnglishDays = ["S", "M", "T", "W", "T", "F", "S"];
 
+                const shortWeekday =
+                  locale === "ar"
+                    ? shortArabicDays[arg.date.getDay()]
+                    : shortEnglishDays[arg.date.getDay()];
+
+                return (
+                  <>
+                    <span className="sm:hidden">
+                      {shortWeekday} - {day}
+                    </span>
+
+                    <span className="hidden sm:inline">
+                      {weekday} - {day}
+                    </span>
+                  </>
+                );
+              },
               dayHeaderClass: (data: DayHeaderInfo) =>
                 `border-0! bg-gray-50! dark:bg-gray-900! ${
                   data.isToday ? "bg-gray-100/70! dark:bg-gray-800/60!" : ""
                 }`,
 
               dayHeaderInnerClass: (data: DayHeaderInfo) =>
-                `px-1.5! sm:px-3! py-2.5! sm:py-3.5! text-center! text-[11px]! sm:text-xs! font-medium! text-gray-500! uppercase! dark:text-gray-400! ${
+                `px-2! sm:pdayHeax-3! py-3! sm:py-3.5! text-center! text-[11px]! sm:text-xs! font-medium! text-gray-500! uppercase! dark:text-gray-400! ${
                   data.isToday
                     ? "font-semibold! text-brand-500! dark:text-brand-400!"
                     : ""

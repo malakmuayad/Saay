@@ -119,7 +119,7 @@ export default function Tasks() {
   }
 
   return (
-    <div className="min-h-screen rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03] xl:p-6">
+    <div className="min-h-screen rounded-2xl border border-gray-200 bg-white p-2 dark:border-gray-800 dark:bg-gray-900">
       <ComponentCard title={t("tasks.myTasks")}>
         {/* Header */}
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

@@ -165,7 +165,7 @@ export function AddHabitModal({
           </div>
         )}
 
-        <h3 className="mb-6 text-lg font-semibold">
+        <h3 className="mb-6 text-lg font-semibold  dark:text-white">
           {t("habits.addNewHabit")}
         </h3>
 
