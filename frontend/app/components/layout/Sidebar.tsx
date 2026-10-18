@@ -1,5 +1,5 @@
 import { useSidebar } from "~/context/SidebarContext";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router";
 import { GridIcon, TaskIcon, GoalIcon, HabitIcon } from "~/assets/icons";
@@ -57,15 +57,19 @@ type SidebarProps = {
 const Sidebar: React.FC<SidebarProps> = ({ onButtonClick }) => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered, setIsMobileOpen } =
     useSidebar();
+
   const { t } = useTranslation();
   const location = useLocation();
+
   const [openSubmenu, setOpenSubmenu] = useState<{
     type: "main";
     index: number;
   } | null>(null);
+
   const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
     {},
   );
+
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Auto-close sidebar on mobile after route change
@@ -76,14 +80,24 @@ const Sidebar: React.FC<SidebarProps> = ({ onButtonClick }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
-  const isActive = useCallback(
-    (path: string) => location.pathname === path,
-    [location.pathname],
-  );
+  // Match exact routes and nested routes
+  const isActive = (path: string) => {
+    const currentPath = location.pathname.replace(/\/+$/, "") || "/";
+    const targetPath = path.replace(/\/+$/, "") || "/";
+
+    if (targetPath === "/dashboard") {
+      return currentPath === targetPath;
+    }
+
+    return (
+      currentPath === targetPath || currentPath.startsWith(`${targetPath}/`)
+    );
+  };
 
   useEffect(() => {
     if (openSubmenu !== null) {
       const key = `${openSubmenu.type}-${openSubmenu.index}`;
+
       if (subMenuRefs.current[key]) {
         setSubMenuHeight((prevHeights) => ({
           ...prevHeights,
@@ -102,141 +116,157 @@ const Sidebar: React.FC<SidebarProps> = ({ onButtonClick }) => {
       ) {
         return null;
       }
+
       return { type: menuType, index };
     });
   };
 
   const renderMenuItems = (items: NavItem[], menuType: "main") => (
     <ul className="flex flex-col gap-1">
-      {items.map((nav, index) => (
-        <li key={nav.name}>
-          {nav.subItems ? (
-            <button
-              onClick={() => handleSubmenuToggle(index, menuType)}
-              className={`group menu-item ${
-                openSubmenu?.type === menuType && openSubmenu?.index === index
-                  ? "menu-item-active"
-                  : "menu-item-inactive"
-              } cursor-pointer ${
-                !isExpanded && !isHovered
-                  ? "xl:justify-center"
-                  : "xl:justify-start"
-              }`}
-            >
-              <span
-                className={`menu-item-icon-size ${
-                  openSubmenu?.type === menuType && openSubmenu?.index === index
-                    ? "menu-item-icon-active"
-                    : "menu-item-icon-inactive"
-                }`}
-              >
-                {nav.icon}
-              </span>
+      {items.map((nav, index) => {
+        const active = nav.path ? isActive(nav.path) : false;
 
-              {(isExpanded || isHovered || isMobileOpen) && (
-                <span className="menu-item-text">
-                  {nav.key ? t(`sidebar.items.${nav.key}`) : nav.name}
-                </span>
-              )}
-              {nav.new && (isExpanded || isHovered || isMobileOpen) && (
-                <span
-                  className={`absolute inset-e-10 ms-auto ${
-                    openSubmenu?.type === menuType &&
-                    openSubmenu?.index === index
-                      ? "menu-dropdown-badge-active"
-                      : "menu-dropdown-badge-inactive"
-                  } menu-dropdown-badge`}
-                >
-                  {t("sidebar.badges.new")}
-                </span>
-              )}
-            </button>
-          ) : (
-            nav.path && (
-              <Link
-                to={nav.path}
-                target={nav.target}
+        return (
+          <li key={nav.name}>
+            {nav.subItems ? (
+              <button
+                onClick={() => handleSubmenuToggle(index, menuType)}
                 className={`group menu-item ${
-                  isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
+                  openSubmenu?.type === menuType && openSubmenu?.index === index
+                    ? "menu-item-active"
+                    : "menu-item-inactive"
+                } cursor-pointer ${
+                  !isExpanded && !isHovered
+                    ? "xl:justify-center"
+                    : "xl:justify-start"
                 }`}
               >
-                <span
-                  className={`menu-item-icon-size ${
-                    isActive(nav.path)
-                      ? "menu-item-icon-active"
-                      : "menu-item-icon-inactive"
-                  }`}
-                >
-                  {nav.icon}
+                <span className="menu-item-icon-size">
+                  <span
+                    className={
+                      openSubmenu?.type === menuType &&
+                      openSubmenu?.index === index
+                        ? "text-[#465fff]"
+                        : "text-[#64748b]"
+                    }
+                  >
+                    {nav.icon}
+                  </span>
                 </span>
+
                 {(isExpanded || isHovered || isMobileOpen) && (
                   <span className="menu-item-text">
                     {nav.key ? t(`sidebar.items.${nav.key}`) : nav.name}
                   </span>
                 )}
-              </Link>
-            )
-          )}
-          {nav.subItems && (isExpanded || isHovered || isMobileOpen) && (
-            <div
-              ref={(el) => {
-                subMenuRefs.current[`${menuType}-${index}`] = el;
-              }}
-              className="overflow-hidden transition-all duration-300"
-              style={{
-                height:
-                  openSubmenu?.type === menuType && openSubmenu?.index === index
-                    ? `${subMenuHeight[`${menuType}-${index}`]}px`
-                    : "0px",
-              }}
-            >
-              <ul className="ms-9 mt-2 space-y-1">
-                {nav.subItems.map((subItem) => (
-                  <li key={subItem.name}>
-                    <Link
-                      to={subItem.path}
-                      target={subItem.target}
-                      className={`menu-dropdown-item ${
-                        isActive(subItem.path)
-                          ? "menu-dropdown-item-active"
-                          : "menu-dropdown-item-inactive"
-                      }`}
+
+                {nav.new && (isExpanded || isHovered || isMobileOpen) && (
+                  <span
+                    className={`absolute inset-e-10 ms-auto ${
+                      openSubmenu?.type === menuType &&
+                      openSubmenu?.index === index
+                        ? "menu-dropdown-badge-active"
+                        : "menu-dropdown-badge-inactive"
+                    } menu-dropdown-badge`}
+                  >
+                    {t("sidebar.badges.new")}
+                  </span>
+                )}
+              </button>
+            ) : (
+              nav.path && (
+                <Link
+                  to={nav.path}
+                  target={nav.target}
+                  className={`group menu-item ${
+                    active ? "menu-item-active" : "menu-item-inactive"
+                  }`}
+                >
+                  <span className="menu-item-icon-size">
+                    <span
+                      className={active ? "text-[#527bd2]" : "text-[#64748b]"}
                     >
-                      {subItem.key
-                        ? t(`sidebar.items.${subItem.key}`)
-                        : subItem.name}
-                      <span className="ms-auto flex items-center gap-1">
-                        {subItem.new && (
-                          <span
-                            className={`ms-auto ${
-                              isActive(subItem.path)
-                                ? "menu-dropdown-badge-active"
-                                : "menu-dropdown-badge-inactive"
-                            } menu-dropdown-badge`}
-                          >
-                            {t("sidebar.badges.new")}
+                      {nav.icon}
+                    </span>
+                  </span>
+
+                  {(isExpanded || isHovered || isMobileOpen) && (
+                    <span className="menu-item-text">
+                      {nav.key ? t(`sidebar.items.${nav.key}`) : nav.name}
+                    </span>
+                  )}
+                </Link>
+              )
+            )}
+
+            {nav.subItems && (isExpanded || isHovered || isMobileOpen) && (
+              <div
+                ref={(el) => {
+                  subMenuRefs.current[`${menuType}-${index}`] = el;
+                }}
+                className="overflow-hidden transition-all duration-300"
+                style={{
+                  height:
+                    openSubmenu?.type === menuType &&
+                    openSubmenu?.index === index
+                      ? `${subMenuHeight[`${menuType}-${index}`]}px`
+                      : "0px",
+                }}
+              >
+                <ul className="ms-9 mt-2 space-y-1">
+                  {nav.subItems.map((subItem) => {
+                    const subActive = isActive(subItem.path);
+
+                    return (
+                      <li key={subItem.name}>
+                        <Link
+                          to={subItem.path}
+                          target={subItem.target}
+                          className={`menu-dropdown-item ${
+                            subActive
+                              ? "menu-dropdown-item-active"
+                              : "menu-dropdown-item-inactive"
+                          }`}
+                        >
+                          {subItem.key
+                            ? t(`sidebar.items.${subItem.key}`)
+                            : subItem.name}
+
+                          <span className="ms-auto flex items-center gap-1">
+                            {subItem.new && (
+                              <span
+                                className={`ms-auto ${
+                                  subActive
+                                    ? "menu-dropdown-badge-active"
+                                    : "menu-dropdown-badge-inactive"
+                                } menu-dropdown-badge`}
+                              >
+                                {t("sidebar.badges.new")}
+                              </span>
+                            )}
+
+                            {subItem.pro && (
+                              <span
+                                className={`ms-auto ${
+                                  subActive
+                                    ? "menu-dropdown-badge-pro-active"
+                                    : "menu-dropdown-badge-pro-inactive"
+                                } menu-dropdown-badge-pro`}
+                              >
+                                {t("sidebar.badges.pro")}
+                              </span>
+                            )}
                           </span>
-                        )}
-                        {subItem.pro && (
-                          <span
-                            className={`ms-auto ${
-                              isActive(subItem.path)
-                                ? "menu-dropdown-badge-pro-active"
-                                : "menu-dropdown-badge-pro-inactive"
-                            } menu-dropdown-badge-pro`}
-                          >
-                            {t("sidebar.badges.pro")}
-                          </span>
-                        )}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </li>
-      ))}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 
@@ -269,6 +299,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onButtonClick }) => {
                 height={40}
                 loading="eager"
               />
+
               <img
                 className="hidden dark:block"
                 src="/assets/logo-dark.png"
@@ -296,7 +327,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onButtonClick }) => {
                     ? "xl:justify-center"
                     : "justify-start"
                 }`}
-              ></h2>
+              />
             </div>
           </div>
         </nav>

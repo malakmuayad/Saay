@@ -20,7 +20,7 @@ export default function TodayTasksProgress({
   const series = [progress];
 
   const options: ApexOptions = {
-    colors: ["#465FFF"],
+    colors: ["#1a3a9a"],
     chart: {
       fontFamily: "Outfit, sans-serif",
       type: "radialBar",
@@ -49,7 +49,7 @@ export default function TodayTasksProgress({
             fontSize: "36px",
             fontWeight: "600",
             offsetY: -35,
-            color: "#1D2939",
+            color: "#1a3a9a",
             formatter: function (val) {
               return val + "%";
             },
@@ -59,7 +59,7 @@ export default function TodayTasksProgress({
     },
     fill: {
       type: "solid",
-      colors: ["#465FFF"],
+      colors: ["#1a3a9a"],
     },
     stroke: {
       lineCap: "round",

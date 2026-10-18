@@ -38,7 +38,7 @@ export default function Home() {
   }, [currentUserId]);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 dark:bg-gray-950">
+    <div className="min-h-screen bg-gray-50 p-4 dark:bg-gray-900">
       <div className="mx-auto w-full max-w-7xl">
         <ComponentCard title={t("dashboard.title")}>
           <div className="space-y-6">
