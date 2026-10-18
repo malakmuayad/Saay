@@ -18,7 +18,7 @@ export default function Card({
       className={`${cardClassName ?? ""} rounded-2xl border border-gray-200 bg-white p-2 md:p-3 dark:border-gray-800 dark:bg-white/3`}
     >
       <div className="flex items-center justify-between">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-700">
           {Icon && <Icon className="size-6 text-gray-800 dark:text-white/90" />}
         </div>
       </div>
