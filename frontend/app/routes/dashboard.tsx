@@ -1,15 +1,16 @@
+import { useState } from "react";
+import { Outlet, redirect, useNavigation } from "react-router";
+import { useTranslation } from "react-i18next";
 import { SidebarProvider, useSidebar } from "~/context/SidebarContext";
 import { cn } from "~/utils";
-import { Outlet, redirect } from "react-router";
+import { getCurrentUser } from "~/services/localStorage/users";
+import { getUserConfirmationStatus } from "~/services/api/users";
 import Header from "~/components/layout/Header";
 import Sidebar from "~/components/layout/Sidebar";
 import Backdrop from "~/components/layout/Backdrop";
-import { getCurrentUser } from "~/services/localStorage/users";
-import { useState } from "react";
 import AIChatbot from "~/components/layout/AIChatbot";
 import Alert from "~/components/ui/Alert";
-import { getUserConfirmationStatus } from "~/services/api/users";
-import { useTranslation } from "react-i18next";
+import Loading from "~/components/ui/Loading";
 
 export async function clientLoader() {
   const currentUserId = getCurrentUser();
@@ -30,9 +31,14 @@ export async function clientLoader() {
 const LayoutContent: React.FC = () => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
   const { t } = useTranslation();
+  const navigation = useNavigation();
 
-  const [botOpen, setBotOpen] = useState<boolean>(false);
+  const [botOpen, setBotOpen] = useState(false);
   const [logoutError, setLogoutError] = useState<boolean | null>(null);
+
+  if (navigation.state === "loading") {
+    return <Loading />;
+  }
 
   return (
     <div className="min-h-screen xl:flex">
