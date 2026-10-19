@@ -14,28 +14,26 @@ type AuthContextType = {
   currentUserId: number | null;
   setCurrentUserId: Dispatch<SetStateAction<number | null>>;
   refreshUserData: () => void;
+  isInitialized: boolean;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     const userId = getCurrentUser();
-    if (!userId) return;
 
-    const id = parseInt(userId);
-    if (Number.isNaN(id)) return;
-
-    async function setUserProvider() {
-      try {
+    if (userId) {
+      const id = Number(userId);
+      if (Number.isSafeInteger(id) && id > 0) {
         setCurrentUserId(id);
-      } catch {
-        console.error("Error while fetching user from IndexedDB");
       }
     }
-    setUserProvider();
+
+    setIsInitialized(true);
   }, []);
 
   const [userDataVersion, setUserDataVersion] = useState(0);
@@ -49,6 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         currentUserId: currentUserId,
         setCurrentUserId: setCurrentUserId,
         refreshUserData: refreshUserData,
+        isInitialized,
       }}
     >
       {children}

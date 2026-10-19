@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet, redirect, useNavigation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { SidebarProvider, useSidebar } from "~/context/SidebarContext";
+import { useAuth } from "~/context/AuthContext";
 import { cn } from "~/utils";
 import { getCurrentUser } from "~/services/localStorage/users";
 import { getUserConfirmationStatus } from "~/services/api/users";
@@ -20,7 +21,12 @@ export async function clientLoader() {
     throw redirect("/");
   }
 
-  const isConfirmed = await getUserConfirmationStatus(Number(currentUserId));
+  const userId = Number(currentUserId);
+  if (!Number.isSafeInteger(userId) || userId <= 0) {
+    throw redirect("/");
+  }
+
+  const isConfirmed = await getUserConfirmationStatus(userId);
 
   if (!isConfirmed) {
     throw redirect("/notConfirmed");
@@ -30,6 +36,7 @@ export async function clientLoader() {
 }
 
 const LayoutContent: React.FC = () => {
+  const isInitialized = useAuth()?.isInitialized;
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
   const { t, i18n } = useTranslation();
   const navigation = useNavigation();
@@ -39,7 +46,7 @@ const LayoutContent: React.FC = () => {
 
   const isRTL = i18n.dir() === "rtl";
 
-  if (navigation.state === "loading") {
+  if (!isInitialized || navigation.state === "loading") {
     return <Loading />;
   }
 
