@@ -85,7 +85,7 @@ External services are used for selected capabilities:
 ### Dashboard
 
 ![Saay dashboard-1](./screenshots/dashboard-1.png)
-![Saay dashboard-1](./screenshots/dashboard-1.png)
+![Saay dashboard-2](./screenshots/dashboard-2.png)
 
 ### Task Management
 
@@ -113,3 +113,17 @@ External services are used for selected capabilities:
 
 ![Sign up](./screenshots/auth-1.png)
 ![Sign up](./screenshots/auth-2.png)
+
+## Acknowledgments
+
+TailAdmin: Used as a starting point for selected dashboard layout and UI components. These components were adapted and integrated into Saay's interface.
+
+## License
+
+[MIT License](./LICENSE)
+
+## Author
+
+Malak Abu Omar
+📧 [malakmuayad15@gmail.com](mailto:malakmuayad15@gmail.com)  
+🔗 [malakmuayad11](https://github.com/malakmuayad11)
