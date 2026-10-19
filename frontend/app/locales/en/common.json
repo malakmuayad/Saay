@@ -373,12 +373,6 @@
       "category": "Select a category",
       "timeFrame": "Select a time frame"
     },
-    "timeFrames": {
-      "monthly": "Monthly",
-      "quarterly": "Quarterly",
-      "biannual": "Biannual",
-      "annually": "Annually"
-    },
     "validation": {
       "required": "This field is required"
     },
@@ -411,6 +405,12 @@
     "status": {
       "done": "Completed",
       "progress": "In Progress"
+    },
+    "timeFrames": {
+      "Monthly": "Monthly",
+      "Quarterly": "Quarterly",
+      "Biannual": "Biannual",
+      "Annually": "Annually"
     }
   },
   "categories": {
@@ -426,12 +426,6 @@
     "Technology": "Technology",
     "Legacy": "Legacy",
     "Environment": "Environment"
-  },
-  "timeFrames": {
-    "Monthly": "Monthly",
-    "Quarterly": "Quarterly",
-    "Biannual": "Biannual",
-    "Annually": "Annually"
   },
   "status": {
     "done": "Done",
@@ -525,7 +519,8 @@
     "optional": "Optional",
     "addNewTask": "Add New Task",
     "add": "Add the Task",
-    "addSuccess": "Task is added successfully!"
+    "addSuccess": "Task is added successfully!",
+    "adding": "Adding..."
   },
   "aiChatbot": {
     "welcome": "Welcome to Saay Assistant. How can I help you today?",

@@ -365,6 +365,12 @@
         "delete": "حذف"
       }
     },
+    "timeFrames": {
+      "Monthly": "شهري",
+      "Quarterly": "ربع سنوي",
+      "Biannual": "نصف سنوي",
+      "Annually": "سنوي"
+    },
     "modal": {
       "addTitle": "إضافة هدف جديد",
       "editTitle": "تعديل الهدف"
@@ -381,12 +387,7 @@
       "category": "اختر فئة",
       "timeFrame": "اختر إطارًا زمنيًا"
     },
-    "timeFrames": {
-      "monthly": "شهري",
-      "quarterly": "ربع سنوي",
-      "biannual": "نصف سنوي",
-      "annually": "سنوي"
-    },
+
     "validation": {
       "required": "هذا الحقل مطلوب"
     },
