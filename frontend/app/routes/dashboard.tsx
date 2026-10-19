@@ -11,6 +11,7 @@ import Backdrop from "~/components/layout/Backdrop";
 import AIChatbot from "~/components/layout/AIChatbot";
 import Alert from "~/components/ui/Alert";
 import Loading from "~/components/ui/Loading";
+import { SparklesIcon } from "~/assets/icons";
 
 export async function clientLoader() {
   const currentUserId = getCurrentUser();
@@ -30,11 +31,13 @@ export async function clientLoader() {
 
 const LayoutContent: React.FC = () => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigation = useNavigation();
 
   const [botOpen, setBotOpen] = useState(false);
   const [logoutError, setLogoutError] = useState<boolean | null>(null);
+
+  const isRTL = i18n.dir() === "rtl";
 
   if (navigation.state === "loading") {
     return <Loading />;
@@ -72,11 +75,33 @@ const LayoutContent: React.FC = () => {
             />
           )}
 
-          {botOpen && <AIChatbot onClose={() => setBotOpen(false)} />}
-
           <Outlet />
         </main>
       </div>
+
+      {/* Floating AI Chat Button */}
+      {!botOpen && (
+        <button
+          type="button"
+          onClick={() => setBotOpen(true)}
+          aria-label="Open AI chat"
+          title="Open AI chat"
+          className={cn(
+            "fixed bottom-6 z-50 flex h-14 w-14 items-center justify-center",
+            "rounded-full bg-brand-500 text-white shadow-lg",
+            "transition-all duration-200",
+            "hover:scale-110 hover:bg-brand-600 hover:shadow-xl",
+            "focus:outline-none focus:ring-4 focus:ring-brand-500/30",
+            "active:scale-95",
+            isRTL ? "left-6" : "right-6",
+          )}
+        >
+          <SparklesIcon className="h-6 w-6" />
+        </button>
+      )}
+
+      {/* AI Chat Window */}
+      {botOpen && <AIChatbot onClose={() => setBotOpen(false)} />}
     </div>
   );
 };

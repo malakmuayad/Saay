@@ -150,7 +150,7 @@ export default function ForgotPassword() {
       <section className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 sm:p-8">
         {/* Header */}
         <div className="mb-8 text-center">
-          <Link to="/" className="text-2xl font-bold text-brand-600">
+          <Link to="/signin" className="text-2xl font-bold text-brand-600">
             {t("common.saay")}
           </Link>
 

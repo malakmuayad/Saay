@@ -11,7 +11,6 @@ import type { Message } from "~/types/ai/Message";
 type AIChatbotProps = {
   onClose: () => void;
 };
-
 interface MessageUI {
   id: number;
   text: string;

@@ -256,12 +256,6 @@ export default function UserDropdown({ onLogout }: UserDropdownProps) {
                               <FlagIcon className="size-5 shrink-0 overflow-hidden rounded-full" />
                               <span className="truncate">{language.name}</span>
                             </span>
-
-                            {language.badge && (
-                              <span className="rounded bg-warning-50 px-1.5 py-0.5 text-theme-xs font-semibold text-warning-600 dark:bg-warning-500/15 dark:text-warning-400">
-                                {language.badge}
-                              </span>
-                            )}
                           </button>
                         </li>
                       );
