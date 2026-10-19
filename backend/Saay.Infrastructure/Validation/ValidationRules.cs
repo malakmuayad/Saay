@@ -8,7 +8,7 @@ namespace Saay.Infrastructure.Validation
         public const string EMAIL_REGX = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
 
         public static bool ValidateImageFormat(IFormFile? image) =>
-                (image != null &&
+                image == null ? true : (image != null &&
                 (image.ContentType == "image/jpeg" ||
                 image.ContentType == "image/png"));
     }
