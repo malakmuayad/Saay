@@ -124,6 +124,8 @@ TailAdmin: Used as a starting point for selected dashboard layout and UI compone
 
 ## Author
 
-Malak Abu Omar
-📧 [malakmuayad15@gmail.com](mailto:malakmuayad15@gmail.com)  
-🔗 [malakmuayad11](https://github.com/malakmuayad11)
+**Malak Abu Omar**
+
+📧 [malakmuayad15@gmail.com](mailto:malakmuayad15@gmail.com)
+
+🔗 [GitHub: malakmuayad11](https://github.com/malakmuayad11)
