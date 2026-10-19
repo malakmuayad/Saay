@@ -21,10 +21,10 @@ type AddEditGoalModalProps = {
 };
 
 const timeFrameValues = [
-  { value: "0", key: "monthly" },
-  { value: "1", key: "quarterly" },
-  { value: "2", key: "biannual" },
-  { value: "3", key: "annually" },
+  { value: "0", key: "Monthly" },
+  { value: "1", key: "Quarterly" },
+  { value: "2", key: "Biannual" },
+  { value: "3", key: "Annually" },
 ] as const;
 
 function getTodayDate(): string {
@@ -131,19 +131,19 @@ export function AddEditGoalModal({
   const timeFrameOptions = [
     {
       value: "0",
-      label: String(t("goals.timeFrames.monthly")),
+      label: String(t("goals.timeFrames.Monthly")),
     },
     {
       value: "1",
-      label: String(t("goals.timeFrames.quarterly")),
+      label: String(t("goals.timeFrames.Quarterly")),
     },
     {
       value: "2",
-      label: String(t("goals.timeFrames.biannual")),
+      label: String(t("goals.timeFrames.Biannual")),
     },
     {
       value: "3",
-      label: String(t("goals.timeFrames.annually")),
+      label: String(t("goals.timeFrames.Annually")),
     },
   ];
 
