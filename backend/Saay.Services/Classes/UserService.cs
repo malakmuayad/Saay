@@ -15,9 +15,11 @@ namespace Saay.Services.Classes
         private readonly ITokenService _tokenService;
         private readonly IHashService _hashService;
         private readonly IImageStorageService _imageStorageService;
+        private readonly IPasswordResetTokenService _passwordResetTokenService;
 
         public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IEmailService emailService, IEmailConfirmationRepository emailConfirmationRepository,
-            ITokenService tokenService, IHashService hashService, IImageStorageService imageStorageService)
+            ITokenService tokenService, IHashService hashService,
+            IImageStorageService imageStorageService, IPasswordResetTokenService passwordResetTokenService)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
@@ -26,6 +28,7 @@ namespace Saay.Services.Classes
             _tokenService = tokenService;
             _hashService = hashService;
             _imageStorageService = imageStorageService;
+            _passwordResetTokenService = passwordResetTokenService;
         }
 
         public async Task<int?> AddUserAsync(AddUserDto addUserDto)
@@ -138,7 +141,7 @@ namespace Saay.Services.Classes
 
         public async Task<bool?> UpdateMissionAsync(UpdateMissionDto updateMissionDto) =>
             await _userRepository.UpdateMissionAsync(updateMissionDto.UserId, updateMissionDto.NewMission);
-    
+
         public async Task<bool?> UpdateUserAsync(UpdateUserDto updateUserDto)
         {
             if (!await _userRepository.DoesUserExist(updateUserDto.UserId))
@@ -244,7 +247,7 @@ namespace Saay.Services.Classes
 
         public async Task<int?> GetUserIdByEmailAsync(string email)
         {
-            if(!await _userRepository.DoesEmailExist(email))
+            if (!await _userRepository.DoesEmailExist(email))
                 return null;
             return await _userRepository.GetUserIdByEmailAsync(email);
         }
@@ -262,7 +265,7 @@ namespace Saay.Services.Classes
 
             string? newProfilePictureURL = await _imageStorageService.UploadAsync(updateProfilePictureDto.NewProfilePicture);
 
-            if(newProfilePictureURL == null)
+            if (newProfilePictureURL == null)
                 throw new InvalidOperationException(
                 "Image upload failed. No profile picture URL was returned.");
 
@@ -272,5 +275,59 @@ namespace Saay.Services.Classes
 
         public async Task<bool?> DeleteProfilePictureAsync(int userId) =>
             await _userRepository.DeleteProfilePictureAsync(userId);
+
+        public async Task<bool?> ForgetPasswordAsync(ForgetPasswordDto forgetPasswordDto)
+        {
+            await _userRepository.BeginTransactionAsync();
+
+            try
+            {
+                int? userId = await GetUserIdByEmailAsync(forgetPasswordDto.Email);
+
+                if (userId == null) return null; // User not found
+
+                // Update the user's password.
+                bool? result = await UpdatePasswordAsync(
+                    new UpdatePasswordDto
+                    {
+                        UserId = userId.Value,
+                        NewPassword = forgetPasswordDto.NewPassword
+                    });
+
+                if (result == null)
+                {
+                    await _userRepository.RollbackTransactionAsync();
+                    return null; // User not found
+                }
+
+                if (result == false)
+                {
+                    await _userRepository.RollbackTransactionAsync();
+                    return false;
+                }
+
+                // Mark the reset token as used.
+
+                string? token = await _passwordResetTokenService.GetTokenAsync(forgetPasswordDto.Email);
+                bool tokenMarkedAsUsed = await _passwordResetTokenService
+                    .MarkAsUsedAsync(userId.Value, token);
+
+                if (!tokenMarkedAsUsed)
+                {
+                    await _userRepository.RollbackTransactionAsync();
+                    return false;
+                }
+
+                // Commit both changes.
+                await _userRepository.CommitTransactionAsync();
+
+                return true;
+            }
+            catch
+            {
+                await _userRepository.RollbackTransactionAsync();
+                throw;
+            }
+        }
     }
 }

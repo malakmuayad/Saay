@@ -25,5 +25,7 @@ namespace Saay.Services.Interfaces
         public Task<string?> GetNameAsync(int userId);
         public Task<bool?> UpdateProfilePictureAsync(UpdateProfilePictureDto updateProfilePictureDto);
         public Task<bool?> DeleteProfilePictureAsync(int userId);
+
+        public Task<bool?> ForgetPasswordAsync(ForgetPasswordDto forgetPasswordDto);
     }
 }

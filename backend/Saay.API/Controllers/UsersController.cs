@@ -342,7 +342,6 @@ namespace Saay.API.Controllers
         }
 
 
-        // should be handled in a transaction
         [EnableRateLimiting("AuthLimiter")]
         [HttpPut("forget-password")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -352,45 +351,13 @@ namespace Saay.API.Controllers
         [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
         public async Task<ActionResult<bool>> ForgetPassword(ForgetPasswordDto forgetPasswordDto)
         {
-            int? userId = await _userService.GetUserIdByEmailAsync(
-                forgetPasswordDto.Email);
-
-            if (userId == null)
-                return NotFound("User not found.");
-
-            string? token = await _passwordResetTokenService.GetTokenAsync(
-                forgetPasswordDto.Email);
-
-            if (string.IsNullOrWhiteSpace(token))
-                return BadRequest("Invalid or expired password reset code.");
-
-            // Validate that the token is valid, unexpired, and unused here.
-            // Prefer a service method that verifies the exact token.
-            // ensure that the token is not expired yet
-            bool? result = await _userService.UpdatePasswordAsync(
-                new UpdatePasswordDto
-                {
-                    UserId = userId.Value,
-                    NewPassword = forgetPasswordDto.NewPassword
-                });
+            bool? result = await _userService.ForgetPasswordAsync(forgetPasswordDto);   
 
             if (result == null)
                 return NotFound("User not found.");
 
             if (result == false)
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    "An error occurred while updating the password.");
-
-            bool tokenMarkedAsUsed = await _passwordResetTokenService
-                .MarkAsUsedAsync(userId.Value, token);
-
-            if (!tokenMarkedAsUsed)
-            {
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    "The password was updated, but the reset code could not be invalidated.");
-            }
+                return BadRequest("Invalid or expired password reset code.");
 
             return Ok(true);
         }
