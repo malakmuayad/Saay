@@ -160,6 +160,10 @@ export async function updateUser(
     return "User not found.";
   }
 
+  if (response.status === 400) {
+    return "Email is already registered. Choose another email.";
+  }
+
   if (!response.ok) {
     return "An error occurred. Please try again later.";
   }
@@ -356,7 +360,11 @@ export async function updateProfilePicture(
   const formData = new FormData();
 
   formData.append("UserId", userId.toString());
-  formData.append("NewProfilePicture", newProfilePicture, newProfilePicture.name);
+  formData.append(
+    "NewProfilePicture",
+    newProfilePicture,
+    newProfilePicture.name,
+  );
 
   const options: RequestInit = {
     method: "PUT",

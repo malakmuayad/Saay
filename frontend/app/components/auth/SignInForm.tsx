@@ -90,7 +90,11 @@ export default function SignInForm() {
           {/* Error alert */}
           {error && (
             <div className="mb-5">
-              <Alert variant="error" title="Error" message={error} />
+              <Alert
+                variant="error"
+                title={t("signin.error")}
+                message={error}
+              />
             </div>
           )}
 
@@ -109,7 +113,11 @@ export default function SignInForm() {
                   placeholder="info@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  hint={!emailValid ? "Email is required" : undefined}
+                  hint={
+                    !emailValid
+                      ? t("signin.validation.emailRequired")
+                      : undefined
+                  }
                   error={!emailValid}
                   onBlur={() => setEmailValid(email !== "")}
                 />
@@ -129,7 +137,11 @@ export default function SignInForm() {
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    hint={!passwordValid ? "Password is required" : undefined}
+                    hint={
+                      !passwordValid
+                        ? t("signin.validation.passwordRequired")
+                        : undefined
+                    }
                     error={!passwordValid}
                     onBlur={() => setPasswordValid(password !== "")}
                   />
@@ -138,7 +150,9 @@ export default function SignInForm() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={
-                      showPassword ? "Hide password" : "Show password"
+                      showPassword
+                        ? t("signin.passwordVisibility.hide")
+                        : t("signin.passwordVisibility.show")
                     }
                     className="absolute inset-e-4 top-1/2 z-30 -translate-y-1/2 cursor-pointer"
                   >
@@ -163,7 +177,7 @@ export default function SignInForm() {
 
               {/* Submit button */}
               <div>
-                <Button className="w-full" size="sm" disabled={signingIn}>
+                <Button className="w-full" size="md" disabled={signingIn}>
                   {signingIn ? t("signin.signingIn") : t("signin.title")}
                 </Button>
               </div>
@@ -178,7 +192,7 @@ export default function SignInForm() {
                 to="/signup"
                 className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
               >
-                {t("signup")}
+                {t("signUp.title")}
               </Link>
             </p>
           </div>
@@ -196,12 +210,11 @@ export default function SignInForm() {
 
         <div className="max-w-md text-center">
           <h2 className="text-2xl font-semibold text-gray-800 sm:text-3xl dark:text-white">
-            Start building better habits.
+            {t("auth.branding.title")}
           </h2>
 
           <p className="mt-4 text-sm leading-6 text-gray-600 sm:text-base dark:text-gray-300">
-            Organize your tasks, track your habits, and turn your goals into
-            meaningful progress with Saay.
+            {t("auth.branding.description")}
           </p>
         </div>
       </section>

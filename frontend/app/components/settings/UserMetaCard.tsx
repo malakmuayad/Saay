@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useModal } from "../../hooks/useModal";
 import { PencilIcon } from "~/assets/icons";
 import Input from "../form/input/InputField";
@@ -28,6 +29,7 @@ export default function UserMetaCard({
   profilePictureUrl,
   onDataUpdated,
 }: UserMetaCardProps) {
+  const { t } = useTranslation();
   const { isOpen, openModal, closeModal } = useModal();
 
   const [editedFirstName, setEditedFirstName] = useState(firstName);
@@ -45,12 +47,9 @@ export default function UserMetaCard({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
   const refreshUserData = useAuth()?.refreshUserData;
 
-  /*
-   * Populate the form with the current user data
-   * whenever the modal opens or the user data changes.
-   */
   useEffect(() => {
     if (!isOpen) return;
 
@@ -84,9 +83,7 @@ export default function UserMetaCard({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!validateFields()) {
-      return;
-    }
+    if (!validateFields()) return;
 
     setSaving(true);
     setError(null);
@@ -102,7 +99,7 @@ export default function UserMetaCard({
       setError(
         typeof response === "string"
           ? response
-          : "Failed to update your information.",
+          : t("profile.errors.updateFailed"),
       );
       setSaving(false);
       return;
@@ -118,14 +115,16 @@ export default function UserMetaCard({
         setError(
           typeof pictureUpdateResult === "string"
             ? pictureUpdateResult
-            : "Failed to update profile picture.",
+            : t("profile.errors.pictureUpdateFailed"),
         );
         setSaving(false);
         return;
       }
     }
 
-    if (typeof refreshUserData !== "undefined") refreshUserData();
+    if (typeof refreshUserData !== "undefined") {
+      refreshUserData();
+    }
 
     setSaving(false);
     setSuccess(true);
@@ -152,7 +151,7 @@ export default function UserMetaCard({
                       "/assets/profile-picture-placeholder.png"
                     }
                     className="size-20"
-                    alt="user"
+                    alt={t("profile.profilePictureAlt")}
                   />
                 </div>
 
@@ -165,7 +164,7 @@ export default function UserMetaCard({
             <div className="relative grid max-w-4xl grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4 xl:gap-x-11 xl:gap-y-7">
               <div className="w-full">
                 <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                  First Name
+                  {t("profile.fields.firstName")}
                 </p>
 
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
@@ -175,7 +174,7 @@ export default function UserMetaCard({
 
               <div className="w-full">
                 <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                  Last Name
+                  {t("profile.fields.lastName")}
                 </p>
 
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
@@ -183,12 +182,12 @@ export default function UserMetaCard({
                 </p>
               </div>
 
-              <div className="hidden xl:block"></div>
-              <div className="hidden xl:block"></div>
+              <div className="hidden xl:block" />
+              <div className="hidden xl:block" />
 
               <div>
                 <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                  Email address
+                  {t("profile.fields.email")}
                 </p>
 
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
@@ -205,7 +204,7 @@ export default function UserMetaCard({
               className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 lg:inline-flex lg:w-auto dark:border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/3 dark:hover:text-gray-200"
             >
               <PencilIcon className="size-4.5" />
-              Edit
+              {t("profile.edit")}
             </button>
           </div>
         </div>
@@ -220,11 +219,11 @@ export default function UserMetaCard({
           {/* Header */}
           <div className="shrink-0 px-6 pt-6 pr-14 lg:px-10 lg:pt-8">
             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-              Edit Personal Information
+              {t("profile.editPersonalInfo")}
             </h4>
 
             <p className="mb-6 text-sm text-gray-500 lg:mb-7 dark:text-gray-400">
-              Update your details to keep your profile up-to-date.
+              {t("profile.updateDescription")}
             </p>
           </div>
 
@@ -237,7 +236,11 @@ export default function UserMetaCard({
               {/* Error */}
               {error && (
                 <div className="mb-6">
-                  <Alert variant="error" title="Error" message={error} />
+                  <Alert
+                    variant="error"
+                    title={t("profile.errors.title")}
+                    message={error}
+                  />
                 </div>
               )}
 
@@ -246,8 +249,8 @@ export default function UserMetaCard({
                 <div className="mb-6">
                   <Alert
                     variant="success"
-                    title="Success"
-                    message="Your personal information was updated successfully!"
+                    title={t("common.success")}
+                    message={t("profile.success")}
                   />
                 </div>
               )}
@@ -255,7 +258,7 @@ export default function UserMetaCard({
               {/* Profile Picture */}
               <div>
                 <h4 className="mb-6 text-lg font-medium text-gray-800 dark:text-white/90">
-                  Change Profile Picture
+                  {t("profile.changeProfilePicture")}
                 </h4>
 
                 <div className="mb-6 flex max-w-sm items-center gap-6 lg:pr-5">
@@ -265,7 +268,7 @@ export default function UserMetaCard({
                         editedProfilePictureUrl ??
                         "/assets/profile-picture-placeholder.png"
                       }
-                      alt="Profile Picture"
+                      alt={t("profile.profilePictureAlt")}
                       className="size-20 rounded-full object-cover sm:size-25"
                     />
 
@@ -295,7 +298,7 @@ export default function UserMetaCard({
 
                   <div>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Upload an image in JPEG or PNG format.
+                      {t("profile.uploadImageHint")}
                     </p>
                   </div>
                 </div>
@@ -304,13 +307,15 @@ export default function UserMetaCard({
               {/* Personal Information */}
               <div className="my-7">
                 <h5 className="mb-5 text-lg font-medium text-gray-800 lg:mb-6 dark:text-white/90">
-                  Personal Information
+                  {t("profile.personalInfo")}
                 </h5>
 
                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                   {/* First Name */}
                   <div>
-                    <Label htmlFor="firstName">First Name</Label>
+                    <Label htmlFor="firstName">
+                      {t("profile.fields.firstName")}
+                    </Label>
 
                     <Input
                       id="firstName"
@@ -324,7 +329,9 @@ export default function UserMetaCard({
                         setFirstNameValid(editedFirstName.trim() !== "")
                       }
                       hint={
-                        !firstNameValid ? "This field is required" : undefined
+                        !firstNameValid
+                          ? t("profile.errors.required")
+                          : undefined
                       }
                       error={!firstNameValid}
                     />
@@ -332,7 +339,9 @@ export default function UserMetaCard({
 
                   {/* Last Name */}
                   <div>
-                    <Label htmlFor="lastName">Last Name</Label>
+                    <Label htmlFor="lastName">
+                      {t("profile.fields.lastName")}
+                    </Label>
 
                     <Input
                       id="lastName"
@@ -346,7 +355,9 @@ export default function UserMetaCard({
                         setLastNameValid(editedLastName.trim() !== "")
                       }
                       hint={
-                        !lastNameValid ? "This field is required" : undefined
+                        !lastNameValid
+                          ? t("profile.errors.required")
+                          : undefined
                       }
                       error={!lastNameValid}
                     />
@@ -354,7 +365,7 @@ export default function UserMetaCard({
 
                   {/* Email */}
                   <div>
-                    <Label htmlFor="email">Email Address</Label>
+                    <Label htmlFor="email">{t("profile.fields.email")}</Label>
 
                     <Input
                       id="email"
@@ -375,7 +386,7 @@ export default function UserMetaCard({
                       }
                       hint={
                         !emailValid
-                          ? "Please enter a valid email address"
+                          ? t("profile.errors.invalidEmail")
                           : undefined
                       }
                       error={!emailValid}
@@ -394,11 +405,13 @@ export default function UserMetaCard({
                   onClick={closeModal}
                   disabled={saving}
                 >
-                  Close
+                  {t("profile.actions.close")}
                 </Button>
 
                 <Button size="sm" disabled={saving}>
-                  {saving ? "Saving..." : "Save Changes"}
+                  {saving
+                    ? t("profile.actions.saving")
+                    : t("profile.actions.save")}
                 </Button>
               </div>
             </div>

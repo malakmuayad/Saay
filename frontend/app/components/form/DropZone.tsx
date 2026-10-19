@@ -3,6 +3,7 @@ import { useModal } from "~/hooks/useModal";
 import { EyeIcon, TrashBinIcon, UploadIcon } from "~/assets/icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { useTranslation } from "react-i18next";
 import ComponentCard from "../ui/cards/ComponentCard";
 
 interface FileWithPreview extends File {
@@ -20,6 +21,8 @@ export default function DropzoneComponent({
   description,
   onImageChange,
 }: DropzoneComponentProps) {
+  const { t } = useTranslation();
+
   const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [previewImage, setPreviewImage] = useState<FileWithPreview | null>(
     null,
@@ -29,6 +32,7 @@ export default function DropzoneComponent({
   // Keep a ref always pointing at the latest files so the unmount cleanup
   // can revoke all object URLs without needing `files` as a dependency.
   const filesRef = useRef<FileWithPreview[]>(files);
+
   useEffect(() => {
     filesRef.current = files;
   }, [files]);
@@ -150,24 +154,24 @@ export default function DropzoneComponent({
             {/* Title / Status Message */}
             <h4 className="mb-2 text-theme-xl font-semibold text-gray-800 dark:text-white/90">
               {isDragReject
-                ? "File type not supported"
+                ? t("dropzone.messages.fileTypeNotSupported")
                 : isDragAccept
-                  ? "Drop images here"
+                  ? t("dropzone.messages.dropImagesHere")
                   : isDragActive
-                    ? "Drop images here"
-                    : "Drag & Drop Your Profile Picture Here"}
+                    ? t("dropzone.messages.dropImagesHere")
+                    : t("dropzone.messages.dragAndDropProfilePicture")}
             </h4>
 
             {/* Helper Text */}
             <p className="mb-4 max-w-72.5 text-sm text-gray-600 dark:text-gray-400">
               {isDragReject
-                ? "Only PNG, JPG images up to 5MB are allowed"
-                : "Drag and drop your PNG, JPG images here or browse"}
+                ? t("dropzone.messages.invalidFileHint")
+                : t("dropzone.messages.browseHint")}
             </p>
 
             {/* Action Prompt */}
             <span className="text-theme-sm font-medium text-brand-500 underline hover:text-brand-600">
-              Browse Image
+              {t("dropzone.actions.browseImage")}
             </span>
           </div>
         </div>
@@ -176,7 +180,7 @@ export default function DropzoneComponent({
         {files.length > 0 && (
           <div className="mt-6 space-y-4">
             <h5 className="text-theme-sm font-medium text-gray-700 dark:text-gray-300">
-              Profile Picture
+              {t("dropzone.labels.profilePicture")}
             </h5>
 
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -206,18 +210,23 @@ export default function DropzoneComponent({
                           type="button"
                           onClick={() => handleOpenPreview(file)}
                           className="flex size-8 items-center justify-center rounded-full bg-white/90 text-gray-800 backdrop-blur-xs transition hover:bg-white dark:bg-gray-800/90 dark:text-white dark:hover:bg-gray-800"
-                          title="Preview image"
-                          aria-label={`Preview ${file.name}`}
+                          title={t("dropzone.actions.previewImage")}
+                          aria-label={t("dropzone.accessibility.previewFile", {
+                            fileName: file.name,
+                          })}
                         >
                           <EyeIcon className="size-4" />
                         </button>
                       )}
+
                       <button
                         type="button"
                         onClick={() => removeFile(file.name)}
                         className="flex size-8 items-center justify-center rounded-full bg-white/90 text-error-500 backdrop-blur-xs transition hover:bg-white dark:bg-gray-800/90 dark:text-error-400 dark:hover:bg-gray-800"
-                        title="Remove image"
-                        aria-label={`Remove ${file.name}`}
+                        title={t("dropzone.actions.removeImage")}
+                        aria-label={t("dropzone.accessibility.removeFile", {
+                          fileName: file.name,
+                        })}
                       >
                         <TrashBinIcon className="size-4" />
                       </button>
@@ -232,6 +241,7 @@ export default function DropzoneComponent({
                     >
                       {file.name}
                     </p>
+
                     <p className="mt-0.5 text-[11px] text-gray-500 dark:text-gray-400">
                       {formatFileSize(file.size)}
                     </p>
@@ -252,8 +262,9 @@ export default function DropzoneComponent({
             <div>
               <div className="mb-4">
                 <h4 className="text-theme-lg font-semibold text-gray-800 dark:text-white/90">
-                  Image Preview
+                  {t("dropzone.labels.imagePreview")}
                 </h4>
+
                 <p className="text-theme-xs text-gray-500 dark:text-gray-400">
                   {previewImage.name} • {formatFileSize(previewImage.size)}
                 </p>

@@ -18,8 +18,9 @@ import { AddEditGoalModal } from "~/components/goals/Modals/AddEditGoalModal";
 import MissionCard from "~/components/ui/cards/MissionCard";
 import { PaginationRow } from "~/components/ui/PaginationRow";
 import { DeleteModal } from "~/components/ui/modal/DeleteModal";
+import { t } from "i18next";
 
-export const meta = () => [{ title: "Goals | Saay" }];
+export const meta = () => [{ title: t("routes.goals") }];
 
 export default function Goals() {
   const currentUserId = useAuth()?.currentUserId;

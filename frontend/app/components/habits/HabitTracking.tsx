@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import type { HabitLogDto } from "~/types/habits/HabitLogDto";
 
 type HabitTrackingProps = {
@@ -20,9 +21,9 @@ export default function HabitTracking({
           return (
             <div
               key={dayNumber}
-              title={`Day ${dayNumber}`}
+              title={t("habits.tracking.day", { count: dayNumber })}
               className={`h-3 w-3 rounded-sm ${
-                log?.isDone ? "bg-brand-500" : "bg-gray-200 dark:bg-gray-800"
+                log?.isDone ? "bg-brand-500" : "bg-gray-300 dark:bg-gray-600"
               }`}
             />
           );

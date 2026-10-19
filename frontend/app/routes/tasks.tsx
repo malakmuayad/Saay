@@ -16,7 +16,7 @@ import type { TaskDto } from "~/types/tasks/TaskDto";
 import { AddTaskModal } from "~/components/tasks/AddTaskModal";
 import WeeklyCalendar from "~/components/ui/calendar/WeeklyCaledar";
 
-export const meta = () => [{ title: "Tasks | Saay" }];
+export const meta = () => [{ title: t("routes.tasks") }];
 
 type Title = "tasks.today" | "tasks.tomorrow" | "tasks.thisWeek";
 

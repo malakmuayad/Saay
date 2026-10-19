@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
@@ -5,6 +6,8 @@ import Alert from "~/components/ui/Alert";
 import { useAuth } from "~/context/AuthContext";
 import { resendConfirmationEmail } from "~/services/api/emails";
 import { getUserConfirmationStatus, getUserEmail } from "~/services/api/users";
+
+export const meta = () => [{ title: t("routes.notConfirmed") }];
 
 const NotConfirmed: React.FC = () => {
   const { t } = useTranslation();

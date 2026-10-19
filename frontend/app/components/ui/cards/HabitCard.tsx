@@ -2,6 +2,7 @@ import { DeleteIcon } from "~/assets/icons";
 import Button from "../button/Button";
 import HabitTracking from "~/components/habits/HabitTracking";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { HabitLogDto } from "~/types/habits/HabitLogDto";
 import { getHabitLogs, markHabitAsCompleted } from "~/services/api/habits";
 import Alert from "../Alert";
@@ -13,6 +14,7 @@ type HabitCardProps = {
 };
 
 export default function HabitCard({ habit, onHabitDelete }: HabitCardProps) {
+  const { t } = useTranslation();
   const [habitLogs, setHabitLogs] = useState<HabitLogDto[] | null>();
   const [error, setError] = useState<boolean>(false);
 
@@ -46,6 +48,7 @@ export default function HabitCard({ habit, onHabitDelete }: HabitCardProps) {
 
   async function handleButtonClick() {
     const response = await markHabitAsCompleted(habit.habitId, passedDays);
+
     if (typeof response === "string") {
       setError(true);
       return;
@@ -103,7 +106,7 @@ export default function HabitCard({ habit, onHabitDelete }: HabitCardProps) {
         <div className="mb-4">
           <Alert
             variant="warning"
-            title="Habit is already completed today!"
+            title={t("habits.card.completedTodayError")}
             message=""
           />
         </div>
@@ -135,11 +138,14 @@ export default function HabitCard({ habit, onHabitDelete }: HabitCardProps) {
         <div className="mb-2 flex items-center justify-between">
           <div>
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Progress
+              {t("habits.card.progress")}
             </p>
 
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              Day {passedDays} of {targetDuration}
+              {t("habits.card.dayOf", {
+                day: passedDays,
+                targetDuration,
+              })}
             </p>
           </div>
 
@@ -159,7 +165,7 @@ export default function HabitCard({ habit, onHabitDelete }: HabitCardProps) {
       {/* Steps */}
       <div className="mt-5 rounded-lg bg-gray-50 p-3 dark:bg-gray-900/40">
         <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-          Steps
+          {t("habits.card.steps")}
         </p>
 
         <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">
@@ -171,11 +177,11 @@ export default function HabitCard({ habit, onHabitDelete }: HabitCardProps) {
       <div className="mt-5">
         <div className="mb-2 flex items-center justify-between">
           <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Daily tracking
+            {t("habits.card.dailyTracking")}
           </p>
 
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            {completedDays} completed
+            {t("habits.card.completed", { count: completedDays })}
           </p>
         </div>
 
@@ -191,7 +197,9 @@ export default function HabitCard({ habit, onHabitDelete }: HabitCardProps) {
           onClick={handleButtonClick}
           disabled={isFinished}
         >
-          {isFinished ? "Habit completed 🎉" : "Log today's progress"}
+          {isFinished
+            ? t("habits.card.completedStatus")
+            : t("habits.card.logProgress")}
         </Button>
       </div>
     </div>

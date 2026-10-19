@@ -1,6 +1,7 @@
 import { Modal } from "~/components/ui/modal/Modal";
 import Button from "~/components/ui/button/Button";
 import Alert from "~/components/ui/Alert";
+import { t } from "i18next";
 
 type DeleteModalProps = {
   isOpen: boolean;
@@ -39,7 +40,11 @@ export function DeleteModal({
 
         {success && (
           <div className="mb-4">
-            <Alert variant="success" title="Success" message={successMessage} />
+            <Alert
+              variant="success"
+              title={t("signUp.successTitle")}
+              message={successMessage}
+            />
           </div>
         )}
 
@@ -62,11 +67,11 @@ export function DeleteModal({
             className="flex-1"
             onClick={onCancel}
           >
-            Cancel
+            {t("common.cancel")}
           </Button>
 
           <Button size="sm" className="flex-1" onClick={onSave}>
-            Delete
+            {t("common.delete")}
           </Button>
         </div>
       </div>

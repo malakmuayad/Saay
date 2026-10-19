@@ -7,8 +7,9 @@ import { getUser } from "~/services/api/users";
 import { useLoaderData } from "react-router";
 import { useState } from "react";
 import type { UserDto } from "~/types/users/UserDto";
+import { t } from "i18next";
 
-export const meta = () => [{ title: "Settings | Saay" }];
+export const meta = () => [{ title: t("routes.settings") }];
 
 export async function clientLoader() {
   const userId = Number(getCurrentUser());
@@ -48,7 +49,7 @@ export default function Settings() {
   }
 
   return (
-    <div className="min-h-screen rounded-2xl border border-gray-200 bg-white p-2 xl:py-3 dark:border-gray-800 dark:bg-white/3">
+    <div className="min-h-screen rounded-2xl border border-gray-200 bg-white p-2 xl:py-3 dark:border-gray-800 dark:bg-gray-900">
       <div className="mx-auto w-full">
         <ComponentCard title="profile">
           <div className="space-y-6">
@@ -60,7 +61,6 @@ export default function Settings() {
               profilePictureUrl={userState?.profilePictureUrl}
               onDataUpdated={handleDataUpdate}
             />
-
             <Security />
             <DangerZone />
           </div>

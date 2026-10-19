@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Modal } from "../ui/modal/Modal";
 import Button from "../ui/button/Button";
 import Alert from "../ui/Alert";
@@ -10,6 +11,7 @@ import { removeAccessToken } from "~/services/sessionStorage/auth";
 import { useNavigate } from "react-router";
 
 export default function DangerZone() {
+  const { t } = useTranslation();
   const currentUserId = useAuth()?.currentUserId;
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -35,7 +37,7 @@ export default function DangerZone() {
 
   async function handleDeleteAccount() {
     if (currentUserId === null || currentUserId === undefined) {
-      setError("Unable to identify your account.");
+      setError(t("dangerZone.errors.identifyAccount"));
       return;
     }
 
@@ -46,7 +48,9 @@ export default function DangerZone() {
 
     if (typeof result === "string" || result === false) {
       setError(
-        typeof result === "string" ? result : "Failed to delete your account.",
+        typeof result === "string"
+          ? result
+          : t("dangerZone.errors.deleteFailed"),
       );
 
       setDeleting(false);
@@ -69,19 +73,18 @@ export default function DangerZone() {
   return (
     <div className="mb-6 rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-100">
       <h4 className="mb-4 text-lg font-semibold text-gray-800 lg:mb-6 dark:text-white/90">
-        Danger Zone
+        {t("dangerZone.title")}
       </h4>
 
       <div>
         <div className="flex flex-col justify-between gap-4 border-b border-gray-200 py-4 first:pt-0 last:border-b-0 last:pb-0 sm:flex-row sm:items-end dark:border-gray-100">
           <div>
             <span className="mb-1 block text-base font-medium text-gray-800 dark:text-white/90">
-              Delete account
+              {t("dangerZone.deleteAccount")}
             </span>
 
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Once you delete your account, there is no going back. Please be
-              certain.
+              {t("dangerZone.description")}
             </p>
           </div>
 
@@ -106,7 +109,8 @@ export default function DangerZone() {
                   strokeLinejoin="round"
                 />
               </svg>
-              Delete account
+
+              {t("dangerZone.deleteAccount")}
             </button>
           </div>
         </div>
@@ -121,11 +125,11 @@ export default function DangerZone() {
           {/* Header */}
           <div className="px-6 pt-6 pr-14 lg:px-8 lg:pt-8">
             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-              Are you sure you want to delete your account?
+              {t("dangerZone.confirmationTitle")}
             </h4>
 
             <p className="mb-6 text-sm text-gray-500 lg:mb-7 dark:text-gray-400">
-              All data will be deleted. This action cannot be undone.
+              {t("dangerZone.confirmationDescription")}
             </p>
           </div>
 
@@ -133,7 +137,11 @@ export default function DangerZone() {
           <div className="px-6 lg:px-8">
             {error && (
               <div className="mb-6">
-                <Alert variant="error" title="Error" message={error} />
+                <Alert
+                  variant="error"
+                  title={t("dangerZone.errors.title")}
+                  message={error}
+                />
               </div>
             )}
 
@@ -141,8 +149,8 @@ export default function DangerZone() {
               <div className="mb-6">
                 <Alert
                   variant="success"
-                  title="Success"
-                  message="Your account was deleted successfully. You will be redirected to sign up."
+                  title={t("common.success")}
+                  message={t("dangerZone.success")}
                 />
               </div>
             )}
@@ -156,11 +164,13 @@ export default function DangerZone() {
               onClick={handleClose}
               disabled={deleting}
             >
-              Cancel
+              {t("dangerZone.actions.cancel")}
             </Button>
 
             <Button size="sm" onClick={handleDeleteAccount} disabled={deleting}>
-              {deleting ? "Deleting..." : "Delete"}
+              {deleting
+                ? t("dangerZone.actions.deleting")
+                : t("dangerZone.actions.delete")}
             </Button>
           </div>
         </div>

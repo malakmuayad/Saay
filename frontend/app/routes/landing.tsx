@@ -16,6 +16,7 @@ import {
   CloseIcon,
 } from "~/assets/icons";
 import { useState } from "react";
+import { t } from "i18next";
 
 export async function clientLoader() {
   const currentUserId = getCurrentUser();
@@ -26,6 +27,8 @@ export async function clientLoader() {
 
   return null;
 }
+
+export const meta = () => [{ title: t("routes.landing") }];
 
 export default function LandingPage() {
   const { t } = useTranslation();

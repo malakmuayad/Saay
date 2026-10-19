@@ -1,4 +1,17 @@
 {
+  "routes": {
+    "confirm": "Confirm | Saay",
+    "goals": "Goals | Saay",
+    "habits": "Habits | Saay",
+    "home": "Home | Saay",
+    "landing": "Saay",
+    "notFound": "Page Not Found | Saay",
+    "notConfirmed": "Account Not Confirmed | Saay",
+    "settings": "Settings | Saay",
+    "signin": "Sign In | Saay",
+    "signup": "Sign Up | Saay",
+    "tasks": "Tasks | Saay"
+  },
   "landing": {
     "header": {
       "home": "Saay home",
@@ -121,7 +134,10 @@
     "error": "An error occurred.",
     "errorDescription": "Please try again later.",
     "logoutSuccessTitle": "Logged out successfully",
-    "logoutSuccessMessage": "You will be redirected to the sign-in page."
+    "logoutSuccessMessage": "You will be redirected to the sign-in page.",
+    "success": "Operation completed successfully!",
+    "delete": "Delete",
+    "cancel": "Cancel"
   },
   "forgotPassword": {
     "steps": {
@@ -176,18 +192,113 @@
       "resendFailed": "We couldn't resend the confirmation email. Please try again later."
     }
   },
-  "signup": "Sign Up",
+  "loading": {
+    "message": "Getting things ready..."
+  },
+  "dropzone": {
+    "messages": {
+      "fileTypeNotSupported": "File type not supported",
+      "dropImagesHere": "Drop images here",
+      "dragAndDropProfilePicture": "Drag & Drop Your Profile Picture Here",
+      "invalidFileHint": "Only PNG, JPG images up to 5MB are allowed",
+      "browseHint": "Drag and drop your PNG, JPG images here or browse"
+    },
+    "actions": {
+      "browseImage": "Browse Image",
+      "previewImage": "Preview image",
+      "removeImage": "Remove image"
+    },
+    "labels": {
+      "profilePicture": "Profile Picture",
+      "imagePreview": "Image Preview"
+    },
+    "accessibility": {
+      "previewFile": "Preview {fileName}",
+      "removeFile": "Remove {fileName}"
+    }
+  },
+  "signUp": {
+    "title": "Sign Up",
+    "subtitle": "Enter your details to create your Saay account.",
+    "errorTitle": "Error",
+    "successTitle": "Success",
+    "successMessage": "Your account has been created. Check your email to confirm your account!",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastNamePlaceholder": "Enter your last name",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "required": "Required",
+    "firstNameError": "First name is required and must not exceed 50 characters.",
+    "lastNameError": "Last name is required and must not exceed 50 characters.",
+    "emailError": "Enter a valid email address.",
+    "passwordError": "Password must be at least 8 characters and contain lowercase, uppercase, numeric, and special characters.",
+    "confirmPasswordError": "Passwords must match.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "profilePicture": "Profile Picture - Optional",
+    "signingUp": "Creating account...",
+    "submit": "Sign Up",
+    "genericError": "Something went wrong. Please try again.",
+    "existingAccount": "Already have an account?",
+    "signIn": "Sign In",
+    "brandingTitle": "Start building better habits.",
+    "brandingDescription": "Organize your tasks, track your habits, and turn your goals into meaningful progress with Saay.",
+    "logoAlt": "Saay logo"
+  },
   "signin": {
     "title": "Sign In",
-    "description": "Enter your email and password to sign in!",
+    "description": "Enter your email and password to access your account.",
     "fields": {
-      "email": " Email",
+      "email": "Email Address",
       "password": "Password",
       "passwordPlaceholder": "Enter your password"
     },
-    "forgotPassword": "Forogt Password?",
-    "signingIn": "Signing In...",
-    "noAccount": "Don't have an account?"
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "signingIn": "Signing in...",
+    "validation": {
+      "emailRequired": "Email is required",
+      "passwordRequired": "Password is required"
+    },
+    "passwordVisibility": {
+      "show": "Show password",
+      "hide": "Hide password"
+    },
+    "error": "Error"
+  },
+  "auth": {
+    "branding": {
+      "title": "Start building better habits.",
+      "description": "Organize your tasks, track your habits, and turn your goals into meaningful progress with Saay."
+    }
+  },
+  "confirmEmail": {
+    "title": "Confirm your email",
+    "description": "You're one step away from getting started with Saay. Confirm your email address to activate your account.",
+    "success": {
+      "title": "Email confirmed!",
+      "description": "Your Saay account is ready! You can now sign in and start organizing your goals, tasks, and habits."
+    },
+    "actions": {
+      "confirm": "Confirm my account",
+      "confirming": "Confirming...",
+      "home": "Go to home page"
+    },
+    "errors": {
+      "title": "Error Occurred",
+      "missingToken": "The confirmation token is missing.",
+      "unexpected": "Something went wrong. Please try again later."
+    },
+    "footer": {
+      "notice": "If you didn't create a Saay account, you can safely ignore this page.",
+      "tagline": "Make every day count."
+    }
   },
   "dashboard": {
     "title": "Dashboard",
@@ -204,15 +315,6 @@
     }
   },
   "sidebar": {
-    "groups": {
-      "menu": "Menu",
-      "support": "Support",
-      "others": "Others"
-    },
-    "badges": {
-      "new": "new",
-      "pro": "pro"
-    },
     "items": {
       "dashboard": "Dashboard",
       "tasks": "Tasks",
@@ -226,16 +328,7 @@
     }
   },
   "header": {
-    "searchPlaceholder": "Search or type command...",
-    "toggleSidebar": "Toggle Sidebar",
-    "notifications": {
-      "title": "Notification",
-      "requestsPermission": "requests permission to change",
-      "project": "Project",
-      "minAgo": "{count} min ago",
-      "hrAgo": "{count} hr ago",
-      "viewAll": "View All Notifications"
-    }
+    "toggleSidebar": "Toggle Sidebar"
   },
   "userDropdown": {
     "editProfile": "Edit profile",
@@ -258,37 +351,143 @@
       "timeFrame": "Time Frame",
       "deadline": "Deadline",
       "status": "Status",
-      "actions": { "title": "Actions", "edit": "Edit", "delete": "Delete" }
+      "actions": {
+        "title": "Actions",
+        "edit": "Edit",
+        "delete": "Delete"
+      }
+    },
+    "modal": {
+      "addTitle": "Add New Goal",
+      "editTitle": "Edit Goal"
+    },
+    "fields": {
+      "title": "Goal Title",
+      "category": "Goal Category",
+      "timeFrame": "Time Frame",
+      "deadline": "Deadline",
+      "markCompleted": "Mark as completed"
+    },
+    "placeholders": {
+      "title": "Enter goal title",
+      "category": "Select a category",
+      "timeFrame": "Select a time frame"
+    },
+    "timeFrames": {
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "biannual": "Biannual",
+      "annually": "Annually"
+    },
+    "validation": {
+      "required": "This field is required"
+    },
+    "alerts": {
+      "error": "Error",
+      "success": "Success",
+      "added": "Goal added successfully!",
+      "updated": "Goal updated successfully!"
+    },
+    "buttons": {
+      "add": "Add Goal",
+      "update": "Update Goal",
+      "adding": "Adding...",
+      "updating": "Updating..."
     },
     "categories": {
       "Health": "Health",
       "Career": "Career",
       "Relationships": "Relationships",
       "Finance": "Finance",
-      "PersonalGrowth": "Personal Growth",
+      "Personal Growth": "Personal Growth",
       "Spirituality": "Spirituality",
       "Community": "Community",
-      "Lifestyle": "Life Style",
+      "Lifestyle": "Lifestyle",
       "Travel": "Travel",
       "Technology": "Technology",
       "Legacy": "Legacy",
       "Environment": "Environment"
     },
-    "timeFrames": {
-      "Monthly": "Monthly",
-      "Quarterly": "Quarterly",
-      "Biannual": "Biannual",
-      "Annually": "Annually"
-    },
     "status": {
-      "done": "Done",
-      "progress": "Pending"
+      "done": "Completed",
+      "progress": "In Progress"
     }
+  },
+  "categories": {
+    "Health": "Health",
+    "Career": "Career",
+    "Relationships": "Relationships",
+    "Finance": "Finance",
+    "Personal Growth": "Personal Growth",
+    "Spirituality": "Spirituality",
+    "Community": "Community",
+    "Lifestyle": "Life Style",
+    "Travel": "Travel",
+    "Technology": "Technology",
+    "Legacy": "Legacy",
+    "Environment": "Environment"
+  },
+  "timeFrames": {
+    "Monthly": "Monthly",
+    "Quarterly": "Quarterly",
+    "Biannual": "Biannual",
+    "Annually": "Annually"
+  },
+  "status": {
+    "done": "Done",
+    "progress": "Pending"
   },
   "habits": {
     "myHabits": "My Habits",
     "description": "Manage and track your habits",
-    "addHabit": "Add Habit"
+    "addHabit": "Add Habit",
+    "count_one": "{count} habit",
+    "count_other": "{count} habits",
+    "empty": {
+      "title": "No habits yet",
+      "description": "Start building better routines by adding your first habit. You can track your progress and stay consistent over time.",
+      "addFirst": "Add your first habit"
+    },
+    "delete": {
+      "title": "Are you sure you want to delete this habit?",
+      "description": "This action cannot be undone.",
+      "error": "Failed to delete habit",
+      "success": "Habit is deleted successfully!"
+    },
+    "addNewHabit": "Add New Habit",
+    "fields": {
+      "title": "Habit Title",
+      "reasonForHabit": "Reason for This Habit",
+      "steps": "Steps to Follow",
+      "targetDuration": "Target Duration",
+      "targetDurationPlaceholder": "Select target duration"
+    },
+    "success": {
+      "added": "Habit added successfully!"
+    },
+    "errors": {
+      "userInfoUnavailable": "User information is unavailable. Please try again."
+    },
+    "adding": "Adding...",
+    "add": "Add Habit",
+    "targetDuration": {
+      "oneMonth": "30 days",
+      "twoMonths": "60 days",
+      "threeMonths": "90 days"
+    },
+    "tracking": {
+      "day": "Day {count}"
+    },
+    "card": {
+      "progress": "Progress",
+      "dayOf": "Day {day} of {targetDuration}",
+      "steps": "Steps",
+      "dailyTracking": "Daily tracking",
+      "completed": "{count} completed",
+      "completedTodayError": "Habit is already completed today!",
+      "completedStatus": "Habit completed 🎉",
+      "logProgress": "Log today's progress"
+    }
   },
   "tasks": {
     "myTasks": "My Tasks",
@@ -325,7 +524,8 @@
     },
     "optional": "Optional",
     "addNewTask": "Add New Task",
-    "add": "Add the Task"
+    "add": "Add the Task",
+    "addSuccess": "Task is added successfully!"
   },
   "aiChatbot": {
     "welcome": "Welcome to Saay Assistant. How can I help you today?",
@@ -341,734 +541,76 @@
       "plan": "Plan my day"
     }
   },
-  "ecommerce": {
-    "title": "E-commerce Dashboard",
-    "metrics": {
-      "customers": "Customers",
-      "orders": "Orders"
+  "profile": {
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address"
     },
-    "months": {
-      "jan": "Jan",
-      "feb": "Feb",
-      "mar": "Mar",
-      "apr": "Apr",
-      "may": "May",
-      "jun": "Jun",
-      "jul": "Jul",
-      "aug": "Aug",
-      "sep": "Sep",
-      "oct": "Oct",
-      "nov": "Nov",
-      "dec": "Dec"
+    "edit": "Edit",
+    "editPersonalInfo": "Edit Personal Information",
+    "updateDescription": "Update your details to keep your profile up-to-date.",
+    "changeProfilePicture": "Change Profile Picture",
+    "profilePictureAlt": "User profile picture",
+    "uploadImageHint": "Upload an image in JPEG or PNG format.",
+    "personalInfo": "Personal Information",
+    "errors": {
+      "title": "Error",
+      "required": "This field is required",
+      "invalidEmail": "Please enter a valid email address",
+      "updateFailed": "Failed to update your information.",
+      "pictureUpdateFailed": "Failed to update profile picture."
     },
-    "monthlySales": {
-      "title": "Monthly Sales",
-      "series": "Sales"
-    },
-    "monthlyTarget": {
-      "title": "Monthly Target",
-      "subtitle": "Target you’ve set for each month",
-      "earned": "You earn {amount} today, it's higher than last month. Keep up your good work!",
-      "target": "Target",
-      "revenue": "Revenue",
-      "today": "Today"
-    },
-    "statistics": {
-      "title": "Statistics",
-      "subtitle": "Target you've set for each month",
-      "sales": "Sales",
-      "revenue": "Revenue",
-      "monthly": "Monthly",
-      "quarterly": "Quarterly",
-      "annually": "Annually",
-      "selectDateRange": "Select date range"
-    },
-    "recentOrders": {
-      "title": "Recent Orders",
-      "products": "Products",
-      "category": "Category",
-      "price": "Price",
-      "status": "Status",
-      "variants": "{count, plural, one {# Variant} other {# Variants}}",
-      "categories": {
-        "laptop": "Laptop",
-        "watch": "Watch",
-        "smartphone": "SmartPhone",
-        "electronics": "Electronics",
-        "accessories": "Accessories"
-      },
-      "statuses": {
-        "delivered": "Delivered",
-        "pending": "Pending",
-        "canceled": "Canceled"
-      }
-    },
-    "demographic": {
-      "title": "Customers Demographic",
-      "subtitle": "Number of customer based on country",
-      "customers": "{count} Customers",
-      "usa": "USA",
-      "france": "France"
+    "success": "Your personal information was updated successfully!",
+    "actions": {
+      "close": "Close",
+      "save": "Save Changes",
+      "saving": "Saving..."
     }
   },
-  "analytics": {
-    "metrics": {
-      "uniqueVisitors": "Unique Visitors",
-      "totalPageviews": "Total Pageviews",
-      "bounceRate": "Bounce Rate",
-      "visitDuration": "Visit Duration",
-      "vsLastMonth": "Vs last month"
+  "security": {
+    "title": "Security",
+    "changePassword": "Change Password",
+    "description": "Update your password to keep your account secure.",
+    "modalDescription": "Enter a new password for your account.",
+    "fields": {
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password"
     },
-    "barChart": {
-      "title": "Analytics",
-      "subtitle": "Visitor analytics of last 30 days"
+    "errors": {
+      "title": "Error",
+      "updateFailed": "Failed to update your password.",
+      "passwordRequirements": "Password must be at least 8 characters and contain lowercase, uppercase, special, and numeric characters.",
+      "passwordsDoNotMatch": "Passwords do not match"
     },
-    "topChannels": {
-      "title": "Top Channels",
-      "source": "Source",
-      "visitors": "Visitors",
-      "channelsReport": "Channels Report"
+    "success": "Your password was updated successfully. You will be redirected to sign in.",
+    "actions": {
+      "close": "Close",
+      "changePassword": "Change Password",
+      "saving": "Saving..."
+    }
+  },
+  "dangerZone": {
+    "title": "Danger Zone",
+    "deleteAccount": "Delete account",
+    "description": "Once you delete your account, there is no going back. Please be certain.",
+    "confirmationTitle": "Are you sure you want to delete your account?",
+    "confirmationDescription": "All data will be deleted. This action cannot be undone.",
+    "errors": {
+      "title": "Error",
+      "identifyAccount": "Unable to identify your account.",
+      "deleteFailed": "Failed to delete your account."
     },
-    "topPages": {
-      "title": "Top Pages",
-      "source": "Source",
-      "pageview": "Pageview",
-      "channelsReport": "Channels Report"
-    },
-    "activeUsers": {
-      "title": "Active Users",
-      "liveVisitors": "Live visitors",
-      "avgDaily": "Avg, Daily",
-      "avgWeekly": "Avg, Weekly",
-      "avgMonthly": "Avg, Monthly"
-    },
-    "acquisitionChannels": {
-      "title": "Acquisition Channels",
-      "direct": "Direct",
-      "referral": "Referral",
-      "organicSearch": "Organic Search",
-      "social": "Social"
-    },
-    "session": {
-      "title": "Sessions By Device",
-      "desktop": "Desktop",
-      "mobile": "Mobile",
-      "tablet": "Tablet"
-    },
-    "recentOrders": {
-      "title": "Recent Orders",
-      "products": "Products",
-      "category": "Category",
-      "country": "Country",
-      "cr": "CR",
-      "value": "Value",
-      "categories": {
-        "uiKits": "UI Kits",
-        "templates": "Templates",
-        "saas": "SaaS"
-      },
-      "crDashboard": "Dashboard"
+    "success": "Your account was deleted successfully. You will be redirected to sign up.",
+    "actions": {
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting..."
     }
   },
   "notFound": {
-    "error": "ERROR",
+    "title": "ERROR",
     "message": "We can’t seem to find the page you are looking for!",
     "backHome": "Back to Home Page"
-  },
-  "marketing": {
-    "metrics": {
-      "avgClientRating": "Avg. Client Rating",
-      "instagramFollowers": "Instagram Followers",
-      "totalRevenue": "Total Revenue",
-      "vsLastMonth": "Vs last month"
-    },
-    "impressionChart": {
-      "title": "Impression & Data Traffic",
-      "totalRevenue": "Total Revenue",
-      "sales": "Sales",
-      "revenue": "Revenue"
-    },
-    "featuredCampaign": {
-      "title": "Featured Campaigns",
-      "viewMore": "View More",
-      "delete": "Delete",
-      "products": "Products",
-      "campaign": "Campaign",
-      "status": "Status",
-      "adsCampaign": "Ads campaign",
-      "campaigns": {
-        "growBrand": "Grow your brand by...",
-        "betterIdeas": "Make Better Ideas...",
-        "increaseTraffic": "Increase your website tra..."
-      },
-      "statuses": {
-        "success": "Success",
-        "pending": "Pending",
-        "failed": "Failed"
-      }
-    },
-    "trafficStats": {
-      "title": "Traffic Stats",
-      "viewMore": "View More",
-      "delete": "Delete",
-      "newSubscribers": "New Subscribers",
-      "conversionRate": "Conversion Rate",
-      "pageBounceRate": "Page Bounce Rate",
-      "thenLastWeek": "then last Week",
-      "newSales": "New Sales"
-    },
-    "trafficSource": {
-      "title": "Top Traffic Source",
-      "viewMore": "View More",
-      "delete": "Delete",
-      "viewAll": "View All"
-    }
-  },
-  "crm": {
-    "metrics": {
-      "activeDeal": "Active Deal",
-      "revenueTotal": "Revenue Total",
-      "closedDeals": "Closed Deals",
-      "lastMonth": "last month"
-    },
-    "statistics": {
-      "title": "Statistics",
-      "subtitle": "Target you’ve set for each month",
-      "avgYearlyProfit": "Avg. Yearly Profit",
-      "sales": "Sales",
-      "revenue": "Revenue"
-    },
-    "estimatedRevenue": {
-      "title": "Estimated Revenue",
-      "subtitle": "Target you’ve set for each month",
-      "goals": "June Goals",
-      "marketing": "Marketing",
-      "sales": "Sales"
-    },
-    "salesCategory": {
-      "title": "Sales Category",
-      "affiliate": "Affiliate",
-      "direct": "Direct",
-      "adsense": "Adsense",
-      "affiliateProgram": "Affiliate Program",
-      "directBuy": "Direct Buy",
-      "products": "Products",
-      "total": "Total",
-      "usedOf": "Used of"
-    },
-    "upcomingSchedule": {
-      "title": "Upcoming Schedule",
-      "schedules": {
-        "item1": {
-          "title": "Business Analytics Press",
-          "description": "Exploring the Future of Data-Driven +6 more"
-        },
-        "item2": {
-          "title": "Business Sprint",
-          "description": "Techniques from Business Sprint +2 more"
-        },
-        "item3": {
-          "title": "Customer Review Meeting",
-          "description": "Insights from the Customer Review Meeting +8 more"
-        }
-      }
-    },
-    "recentOrders": {
-      "title": "Recent Orders",
-      "dealId": "Deal ID",
-      "customer": "Customer",
-      "productService": "Product/Service",
-      "dealValue": "Deal Value",
-      "closeDate": "Close Date",
-      "status": "Status",
-      "action": "Action",
-      "products": {
-        "softwareLicense": "Software License",
-        "cloudHosting": "Cloud Hosting",
-        "webDomain": "Web Domain",
-        "sslCertificate": "SSL Certificate",
-        "premiumSupport": "Premium Support"
-      },
-      "statuses": {
-        "complete": "Complete",
-        "pending": "Pending",
-        "cancel": "Cancel"
-      }
-    }
-  },
-  "stocks": {
-    "title": "Stocks",
-    "dividend": {
-      "title": "Dividend",
-      "viewMore": "View More",
-      "delete": "Delete"
-    },
-    "portfolioPerformance": {
-      "title": "Portfolio Performance",
-      "subtitle": "Here is your performance stats of each month",
-      "series": "Portfolio Performance"
-    },
-    "trendingStocks": {
-      "title": "Trending Stocks",
-      "shortStock": "Short Stock",
-      "buyStock": "Buy Stock"
-    },
-    "watchlist": {
-      "title": "My Watchlist",
-      "viewMore": "View More",
-      "delete": "Delete"
-    },
-    "latestTransactions": {
-      "title": "Latest Transactions",
-      "searchPlaceholder": "Search...",
-      "table": {
-        "name": "Name",
-        "date": "Date",
-        "price": "Price",
-        "category": "Category",
-        "status": "Status"
-      },
-      "actions": {
-        "bought": "Bought {symbol}",
-        "sell": "Sell {symbol}"
-      },
-      "categories": {
-        "finance": "Finance"
-      },
-      "statuses": {
-        "success": "Success",
-        "pending": "Pending",
-        "failed": "Failed"
-      }
-    }
-  },
-  "saas": {
-    "title": "SaaS",
-    "metrics": {
-      "overview": "Overview",
-      "totalRevenue": "Total Revenue",
-      "activeUsers": "Active Users",
-      "clv": "Customer Lifetime Value",
-      "cac": "Customer Acquisition Cost"
-    },
-    "churnRate": {
-      "title": "Churn Rate",
-      "subtitle": "Downgrade to Free plan",
-      "thanLastWeek": "than last Week",
-      "series": "Churn Rate",
-      "viewMore": "View More",
-      "delete": "Delete"
-    },
-    "userGrowth": {
-      "title": "User Growth",
-      "subtitle": "New signups website + mobile",
-      "thanLastWeek": "than last Week",
-      "series": "Revenue",
-      "viewMore": "View More",
-      "delete": "Delete"
-    },
-    "conversionFunnel": {
-      "title": "Conversion Funnel",
-      "viewMore": "View More",
-      "delete": "Delete",
-      "series": {
-        "adImpressions": "Ad Impressions",
-        "websiteSession": "Website Session",
-        "appDownload": "App Download",
-        "newUsers": "New Users"
-      }
-    },
-    "recentInvoices": {
-      "title": "Recent Invoices",
-      "table": {
-        "serialNo": "Serial No:",
-        "closeDate": "Close Date",
-        "user": "User",
-        "amount": "Amount",
-        "status": "Status"
-      },
-      "statuses": {
-        "complete": "Complete",
-        "pending": "Pending",
-        "cancelled": "Cancelled"
-      }
-    },
-    "productPerformance": {
-      "title": "Product Performance",
-      "viewMore": "View More",
-      "delete": "Delete",
-      "tabs": {
-        "dailySales": "Daily Sales",
-        "onlineSales": "Online Sales",
-        "newUsers": "New Users"
-      },
-      "digitalProduct": "Digital Product",
-      "physicalProduct": "Physical Product",
-      "avgDailySales": "Average Daily Sales",
-      "totalOnlineSales": "Total Online Sales",
-      "addedLastMonth": "Added last month",
-      "totalNewUsers": "Total New Users",
-      "series": {
-        "sales": "Sales",
-        "revenue": "Revenue"
-      }
-    },
-    "activities": {
-      "title": "Activities",
-      "viewMore": "View More",
-      "delete": "Delete",
-      "newInvoice": "New invoice",
-      "createdInvoice": "created invoice",
-      "justNow": "Just Now",
-      "fifteenMinAgo": "15 minutes ago",
-      "fiveMonthsAgo": "5 months ago",
-      "twoWeeksAgo": "2 weeks ago"
-    }
-  },
-  "logistics": {
-    "title": "Logistics",
-    "metrics": {
-      "totalOrders": "Total Orders",
-      "ordersInTransit": "Orders in Transit"
-    },
-    "deliveryStatistics": {
-      "title": "Delivery Statistics",
-      "subtitle": "Total number of deliveries 70.5K",
-      "monthly": "Monthly",
-      "yearly": "Yearly",
-      "shipment": "Shipment",
-      "delivery": "Delivery"
-    },
-    "revenueEarned": {
-      "totalRevenue": "Total revenue earned",
-      "shippedQuantities": "Shipped quantities",
-      "newSales": "New Sales"
-    },
-    "deliveryVehicle": {
-      "title": "Delivery Vehicles",
-      "subtitle": "Vehicles operating on the road",
-      "thanLastWeek": "than last Week",
-      "onRoute": "On-route"
-    },
-    "trackingDelivery": {
-      "title": "Tracking Delivery",
-      "subtitle": "Last viewed delivery history"
-    },
-    "trackingProgress": {
-      "trackingId": "Tracking ID",
-      "inTransit": "In Transit",
-      "pickedUp": "Picked up",
-      "delivered": "Delivered"
-    },
-    "deliveryMan": {
-      "courier": "Courier"
-    },
-    "deliveriesActivity": {
-      "title": "Delivery Activities",
-      "subtitle": "Track your recent shipping activities",
-      "tabs": {
-        "all": "All",
-        "delivered": "Delivered",
-        "inTransit": "In-Transit",
-        "pending": "Pending",
-        "processing": "Processing"
-      },
-      "filter": {
-        "button": "Filter",
-        "category": "Category",
-        "searchCategory": "Search category...",
-        "company": "Company",
-        "searchCompany": "Search company...",
-        "apply": "Apply"
-      },
-      "table": {
-        "orderId": "Order ID",
-        "category": "Category",
-        "company": "Company",
-        "arrivalTime": "Arrival Time",
-        "route": "Route",
-        "price": "Price",
-        "status": "Status"
-      },
-      "categories": {
-        "furniture": "Furniture",
-        "clothing": "Clothing",
-        "books": "Books",
-        "automotive": "Automotive",
-        "electronics": "Electronics",
-        "health": "Health",
-        "toys": "Toys",
-        "kitchen": "Kitchen",
-        "beauty": "Beauty",
-        "sports": "Sports"
-      },
-      "statuses": {
-        "delivered": "Delivered",
-        "inTransit": "In Transit",
-        "canceled": "Canceled"
-      },
-      "pagination": {
-        "showing": "Showing",
-        "to": "to",
-        "of": "of",
-        "page": "Page"
-      }
-    }
-  },
-  "aiDashboard": {
-    "stats": {
-      "users": "Users",
-      "projects": "Projects",
-      "revenue": "Revenue",
-      "paidUsers": "Paid Users",
-      "last30Days": "Last 30 Days"
-    },
-    "userRevenue": {
-      "title": "Users & Revenue Statistics",
-      "subtitle": "Visualize month-to-month progress and engagement.",
-      "users": "Users",
-      "revenue": "Revenue",
-      "monthly": "Monthly",
-      "quarterly": "Quarterly",
-      "annually": "Annually"
-    },
-    "apiToken": {
-      "title": "API Token Usages",
-      "totalApiTokenUsed": "Total API Token Used",
-      "tokenUsed": "Token used",
-      "configuredKey": "{count, plural, one {# API key configured} other {# API keys configured}}",
-      "viewAllUsageDetails": "View All Usage Details"
-    },
-    "userAnalytics": {
-      "title": "User Analytics",
-      "subtitle": "Platform user insights",
-      "totalUsers": "Total Users",
-      "freeUsers": "Free Users",
-      "paidUsers": "Paid Users",
-      "ofTotalUser": "of total user",
-      "thisMonth": "This Month",
-      "fromLastMonth": "from last month",
-      "thisYear": "This Year",
-      "fromLastYear": "from last year"
-    },
-    "projectAnalytics": {
-      "title": "Projects Analytics",
-      "subtitle": "View detailed project insights",
-      "totalProjects": "Total Projects",
-      "today": "Today",
-      "yesterday": "Yesterday",
-      "projectCreated": "Project created",
-      "thisMonth": "This Month",
-      "fromLastMonth": "from last month",
-      "thisYear": "This Year",
-      "fromLastYear": "from last year"
-    },
-    "recentTransactions": {
-      "title": "Recent Transactions",
-      "searchPlaceholder": "Search...",
-      "filter": "Filter",
-      "table": {
-        "paidBy": "Paid By",
-        "packageName": "Package Name",
-        "price": "Price",
-        "paidDate": "Paid Date",
-        "status": "Status",
-        "actions": "Actions"
-      },
-      "packages": {
-        "starterMonthly": "Starter - Monthly",
-        "growthYearly": "Growth - Yearly",
-        "premiumMonthly": "Premium - Monthly"
-      },
-      "statuses": {
-        "active": "Active",
-        "expired": "Expired"
-      },
-      "pagination": {
-        "previous": "Previous",
-        "next": "Next",
-        "pageOf": "Page {current} of {total}"
-      },
-      "noResults": "No results found"
-    }
-  },
-  "sales": {
-    "salesStats": {
-      "title": "Sales Dashboard",
-      "subtitle": "Track revenue, performance, and sales growth in real-time",
-      "selectDateRange": "Select date range",
-      "export": "Export",
-      "totalRevenue": "Total Revenue",
-      "totalSales": "Total Sales",
-      "conversionRate": "Conversion Rate",
-      "refundRate": "Refund Rate",
-      "vsLastMonth": "vs last month",
-      "newSales": "New Sales"
-    },
-    "userRevenueStats": {
-      "title": "Users & Revenue Statistics",
-      "subtitle": "Visualize month-to-month progress and engagement.",
-      "daily": "Daily",
-      "weekly": "Weekly",
-      "monthly": "Monthly",
-      "onlineSales": "Online Sales",
-      "offlineSales": "Offline Sales"
-    },
-    "userRetention": {
-      "title": "User Retention",
-      "subtitle": "User engagement over time",
-      "increasedVsLastWeek": "Increased vs last week"
-    },
-    "salesByChannel": {
-      "title": "Sales by Channel",
-      "subtitle": "Channel performance overview",
-      "increasedVsLastWeek": "Increased vs last week",
-      "channels": {
-        "website": "Website",
-        "email": "Email",
-        "socialMedia": "Social Media"
-      },
-      "table": {
-        "channels": "Channels",
-        "metric": "Metric",
-        "total": "Total"
-      }
-    },
-    "salesByCountry": {
-      "title": "Sales by Country",
-      "subtitle": "Country-wise sales overview",
-      "countries": {
-        "usa": "USA",
-        "france": "France",
-        "japan": "Japan",
-        "germany": "Germany"
-      }
-    },
-    "topProducts": {
-      "title": "Top Products",
-      "table": {
-        "productName": "Product Name",
-        "category": "Category",
-        "sales": "Sales",
-        "earnings": "Earnings",
-        "stocks": "Stocks",
-        "status": "Status"
-      },
-      "products": {
-        "classicDenimJacket": "Classic Denim Jacket",
-        "slimFitChinos": "Slim Fit Chinos",
-        "organicCottonTShirt": "Organic Cotton T-Shirt",
-        "leatherAnkleBoots": "Leather Ankle Boots"
-      },
-      "variants": {
-        "threeSizes": "3 Sizes",
-        "fourColors": "4 Colors",
-        "fiveColors": "5 Colors",
-        "sixSizes": "6 Sizes"
-      },
-      "categories": {
-        "jacket": "Jacket",
-        "pants": "Pants",
-        "tShirt": "T-Shirt",
-        "footwear": "Footwear"
-      },
-      "statuses": {
-        "inStock": "In Stock",
-        "lowStock": "Low Stock",
-        "outOfStock": "Out of Stock"
-      }
-    }
-  },
-  "finance": {
-    "totalBalanceOverview": {
-      "title": "Total Balance",
-      "overview": "Overview of your current funds",
-      "thanLastMonth": "than last month",
-      "primaryAccount": "Primary Account:",
-      "seeDetails": "See Details",
-      "transfer": "Transfer",
-      "received": "Received",
-      "balance": "Balance"
-    },
-    "stats": {
-      "totalBalance": "Total Balance",
-      "monthlyIncome": "Monthly Income",
-      "totalSpent": "Total Spent",
-      "savingRate": "Saving Rate",
-      "thanLastMonth": "than last month",
-      "goalProgress": "Goal: 30% - 3.9% to go"
-    },
-    "cashflow": {
-      "title": "Cashflow Overview",
-      "totalRevenue": "Total Revenue",
-      "income": "Income",
-      "expense": "Expense"
-    },
-    "spending": {
-      "title": "Spending",
-      "yearly": "Yearly",
-      "monthly": "Monthly",
-      "total": "Total",
-      "categories": {
-        "activity": "Activity",
-        "onlinePurchases": "Online Purchases",
-        "groceries": "Groceries",
-        "digitalGoods": "Digital Goods",
-        "stationery": "Stationery",
-        "others": "Others"
-      }
-    },
-    "quickSend": {
-      "title": "Quick send",
-      "sendFrom": "Send From",
-      "currency": "Currency",
-      "amount": "Amount",
-      "sendMoney": "Send Money"
-    },
-    "myCards": {
-      "title": "My Cards",
-      "addCard": "Add Card",
-      "virtualCard": "Virtual Card",
-      "recentTransactions": "Recent Transactions",
-      "seeAllTransactions": "See All Transactions",
-      "cardNumber": "Card Number",
-      "exp": "EXP",
-      "cvc": "CVC",
-      "active": "Active",
-      "inactive": "Inactive",
-      "transactions": {
-        "paymentReceived": "Payment Received",
-        "cashbackDesc": "Cashback from Stellar Rewards",
-        "netflixSubscription": "Netflix Subscription",
-        "netflixDesc": "September subscription charge",
-        "moneyReceived": "Money received",
-        "paypalDesc": "Payment received via PayPal",
-        "googleAds": "Google Ads",
-        "googleAdsDesc": "Payment received form google ads"
-      }
-    },
-    "transactionsTable": {
-      "title": "Recent Transactions",
-      "searchPlaceholder": "Search...",
-      "filter": "Filter",
-      "table": {
-        "orderId": "Order ID",
-        "activity": "Activity",
-        "price": "Price",
-        "date": "Date",
-        "status": "Status"
-      },
-      "activities": {
-        "hotelBooking": "Hotel Booking",
-        "onlineShopping": "Online Shopping",
-        "gamePurchase": "Game Purchase",
-        "utilityBillPayment": "Utility Bill Payment",
-        "onlineCourseEnrollment": "Online Course Enrollment"
-      },
-      "statuses": {
-        "completed": "Completed",
-        "inProgress": "In Progress"
-      }
-    }
   }
 }

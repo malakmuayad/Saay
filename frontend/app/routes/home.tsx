@@ -7,8 +7,9 @@ import TasksTable from "~/components/ui/table/TasksTable";
 import { useAuth } from "~/context/AuthContext";
 import { getDashboardNumbers } from "~/services/api/dashboard";
 import type { DashboardNumbersDto } from "~/types/dashboard/DashboardNumbersDto";
+import { t } from "i18next";
 
-export const meta = () => [{ title: "Home | Saay" }];
+export const meta = () => [{ title: t("routes.home") }];
 
 export default function Home() {
   const currentUserId = useAuth()?.currentUserId;

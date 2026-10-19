@@ -9,10 +9,11 @@ import { deleteHabit, getUserHabits } from "~/services/api/habits";
 import { DeleteModal } from "~/components/ui/modal/DeleteModal";
 import { AddHabitModal } from "~/components/habits/AddHabitModal";
 
-export const meta = () => [{ title: "Habits | Saay" }];
+export const meta = () => [{ title: t("routes.habits") }];
 
 export default function Habits() {
   const currentUserId = useAuth()?.currentUserId;
+
   const [addModalOpen, setAddModalOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [habits, setHabits] = useState<HabitDto[] | null>(null);
@@ -43,12 +44,14 @@ export default function Habits() {
 
   async function handleHabitDelete() {
     if (selectedHabitId === null) return;
+
     const result = await deleteHabit(selectedHabitId);
 
     if (typeof result === "string" || result === false) {
       setDeleteError(false);
       return;
     }
+
     if (result === true) {
       setDeleteError(true);
       await loadUserHabits();
@@ -56,7 +59,7 @@ export default function Habits() {
   }
 
   return (
-    <div className="p-2 min-h-screen rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+    <div className="min-h-screen rounded-2xl border border-gray-200 bg-white p-2 dark:border-gray-800 dark:bg-gray-900">
       <ComponentCard title={t("habits.myHabits")}>
         {/* Header */}
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -77,33 +80,28 @@ export default function Habits() {
 
         {/* Summary */}
         <div className="mb-6 rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 dark:border-gray-800 dark:bg-gray-900/30">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                {totalHabitsCount === 0
-                  ? t("tasks.noTasks")
-                  : `${totalHabitsCount} ${
-                      totalHabitsCount === 1
-                        ? t("tasks.task")
-                        : t("tasks.tasks")
-                    }`}
-              </p>
-            </div>
-          </div>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            {totalHabitsCount === 0
+              ? t("habits.empty.title")
+              : t("habits.count", { count: totalHabitsCount ?? 0 })}
+          </p>
         </div>
+
+        {/* Habits List / Empty State */}
         {habits?.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 py-12 text-center dark:border-gray-700 dark:bg-gray-900/30">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary-50 dark:bg-primary-500/10">
-              <span className="text-2xl">🌱</span>
+              <span className="text-2xl" aria-hidden="true">
+                🌱
+              </span>
             </div>
 
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
-              No habits yet
+              {t("habits.empty.title")}
             </h3>
 
             <p className="mt-2 max-w-md text-sm text-gray-500 dark:text-gray-400">
-              Start building better routines by adding your first habit. You can
-              track your progress and stay consistent over time.
+              {t("habits.empty.description")}
             </p>
 
             <Button
@@ -111,7 +109,7 @@ export default function Habits() {
               className="mt-5"
               onClick={() => setAddModalOpen(true)}
             >
-              Add your first habit
+              {t("habits.empty.addFirst")}
             </Button>
           </div>
         ) : (
@@ -126,6 +124,7 @@ export default function Habits() {
           </div>
         )}
 
+        {/* Modals */}
         <AddHabitModal
           isOpen={addModalOpen}
           onClose={() => setAddModalOpen(false)}
@@ -136,11 +135,11 @@ export default function Habits() {
           isOpen={deleteModalOpen}
           onCancel={() => setDeleteModalOpen(false)}
           onSave={handleHabitDelete}
-          title="Are you sure you want to delete this habit?"
-          description="This action cannot be undone."
-          error={deleteError === false ? "Failed to delete habit" : null}
+          title={t("habits.delete.title")}
+          description={t("habits.delete.description")}
+          error={deleteError === false ? t("habits.delete.error") : null}
           success={deleteError === true}
-          successMessage="Habit is deleted successfully!"
+          successMessage={t("habits.delete.success")}
         />
       </ComponentCard>
     </div>

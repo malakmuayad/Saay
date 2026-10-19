@@ -188,7 +188,7 @@ export function AddTaskModal({
             <Alert
               variant="success"
               title={String(t("common.success"))}
-              message={String(t("tasks.success.added"))}
+              message={String(t("tasks.addSuccess"))}
             />
           </div>
         )}

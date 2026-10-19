@@ -1,8 +1,10 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
+
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import { EyeCloseIcon, EyeIcon } from "../../assets/icons";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "~/validation";
 import { addUser } from "~/services/api/users";
 import type AddUserRequestDto from "~/types/users/AddUserRequestDto";
@@ -10,7 +12,11 @@ import Alert from "../ui/Alert";
 import DropzoneComponent from "../form/DropZone";
 import { useTheme } from "~/context/ThemeContext";
 
+export const meta = () => [{ title: "Saay | Sign Up" }];
+
 export default function SignUpForm() {
+  const { t } = useTranslation();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const [firstName, setFirstName] = useState("");
@@ -33,8 +39,8 @@ export default function SignUpForm() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [signingUp, setSigningUp] = useState(false);
-  const theme = useTheme().theme;
 
+  const theme = useTheme().theme;
   const navigate = useNavigate();
 
   function validateFields(): boolean {
@@ -104,9 +110,9 @@ export default function SignUpForm() {
 
       setSuccess(true);
 
-      setTimeout(() => navigate("/"), 4000);
+      setTimeout(() => navigate("/signin"), 4000);
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError(t("signUp.genericError"));
     } finally {
       setSigningUp(false);
     }
@@ -120,18 +126,22 @@ export default function SignUpForm() {
           {/* Heading */}
           <div className="mb-5 sm:mb-8">
             <h1 className="mb-2 text-title-sm font-semibold text-gray-800 sm:text-title-md dark:text-white/90">
-              Sign Up
+              {t("signUp.title")}
             </h1>
 
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Enter your details to create your Saay account.
+              {t("signUp.subtitle")}
             </p>
           </div>
 
           {/* Alerts */}
           {error && (
             <div className="mb-5">
-              <Alert variant="error" title="Error" message={error} />
+              <Alert
+                variant="error"
+                title={t("signUp.errorTitle")}
+                message={error}
+              />
             </div>
           )}
 
@@ -139,8 +149,8 @@ export default function SignUpForm() {
             <div className="mb-5">
               <Alert
                 variant="success"
-                title="Success"
-                message="Account is created. Check your email to confirm your account!"
+                title={t("signUp.successTitle")}
+                message={t("signUp.successMessage")}
               />
             </div>
           )}
@@ -152,7 +162,7 @@ export default function SignUpForm() {
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div>
                   <Label htmlFor="fname">
-                    First Name
+                    {t("signUp.firstName")}
                     <span className="text-error-500">*</span>
                   </Label>
 
@@ -161,11 +171,9 @@ export default function SignUpForm() {
                     id="fname"
                     name="fname"
                     value={firstName}
-                    placeholder="Enter your first name"
+                    placeholder={t("signUp.firstNamePlaceholder")}
                     hint={
-                      !firstNameValid
-                        ? "First Name is required and should not exceed 50 characters."
-                        : undefined
+                      !firstNameValid ? t("signUp.firstNameError") : undefined
                     }
                     error={!firstNameValid}
                     onChange={(e) => setFirstName(e.target.value)}
@@ -180,7 +188,7 @@ export default function SignUpForm() {
 
                 <div>
                   <Label htmlFor="lname">
-                    Last Name
+                    {t("signUp.lastName")}
                     <span className="text-error-500">*</span>
                   </Label>
 
@@ -189,11 +197,9 @@ export default function SignUpForm() {
                     id="lname"
                     name="lname"
                     value={lastName}
-                    placeholder="Enter your last name"
+                    placeholder={t("signUp.lastNamePlaceholder")}
                     hint={
-                      !lastNameValid
-                        ? "Last Name is required and should not exceed 50 characters."
-                        : undefined
+                      !lastNameValid ? t("signUp.lastNameError") : undefined
                     }
                     error={!lastNameValid}
                     onChange={(e) => setLastName(e.target.value)}
@@ -209,7 +215,7 @@ export default function SignUpForm() {
               {/* Email */}
               <div>
                 <Label htmlFor="email">
-                  Email
+                  {t("signUp.email")}
                   <span className="text-error-500">*</span>
                 </Label>
 
@@ -218,8 +224,8 @@ export default function SignUpForm() {
                   id="email"
                   name="email"
                   value={email}
-                  placeholder="Enter your email"
-                  hint={!emailValid ? "Enter a valid email" : undefined}
+                  placeholder={t("signUp.emailPlaceholder")}
+                  hint={!emailValid ? t("signUp.emailError") : undefined}
                   error={!emailValid}
                   onChange={(e) => setEmail(e.target.value)}
                   onBlur={() => setEmailValid(EMAIL_REGEX.test(email.trim()))}
@@ -229,7 +235,7 @@ export default function SignUpForm() {
               {/* Password */}
               <div>
                 <Label htmlFor="password">
-                  Password
+                  {t("signUp.password")}
                   <span className="text-error-500">*</span>
                 </Label>
 
@@ -237,13 +243,11 @@ export default function SignUpForm() {
                   <Input
                     id="password"
                     name="password"
-                    placeholder="Enter your password"
+                    placeholder={t("signUp.passwordPlaceholder")}
                     type={showPassword ? "text" : "password"}
                     value={password}
                     hint={
-                      !passwordValid
-                        ? "Password must be at least 8 characters and contain lowercase, uppercase, special, and numeric characters."
-                        : undefined
+                      !passwordValid ? t("signUp.passwordError") : undefined
                     }
                     error={!passwordValid}
                     onChange={(e) => setPassword(e.target.value)}
@@ -256,9 +260,11 @@ export default function SignUpForm() {
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
                     aria-label={
-                      showPassword ? "Hide password" : "Show password"
+                      showPassword
+                        ? t("signUp.hidePassword")
+                        : t("signUp.showPassword")
                     }
-                    className="absolute inset-e-4 top-1/2 z-30 -translate-y-1/2 cursor-pointer"
+                    className={`absolute inset-e-4 top-1/2 z-30  ${passwordValid ? "-translate-y-1/2" : "-translate-y-4/3"} cursor-pointer`}
                   >
                     {showPassword ? (
                       <EyeIcon className="size-5 fill-gray-500 dark:fill-gray-400" />
@@ -272,7 +278,7 @@ export default function SignUpForm() {
               {/* Confirm password */}
               <div>
                 <Label htmlFor="confirmPassword">
-                  Confirm Password
+                  {t("signUp.confirmPassword")}
                   <span className="text-error-500">*</span>
                 </Label>
 
@@ -280,11 +286,13 @@ export default function SignUpForm() {
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"
-                    placeholder="Confirm your password"
+                    placeholder={t("signUp.confirmPasswordPlaceholder")}
                     type={showPassword ? "text" : "password"}
                     value={confirmPassword}
                     hint={
-                      !confirmPasswordValid ? "Passwords must match" : undefined
+                      !confirmPasswordValid
+                        ? t("signUp.confirmPasswordError")
+                        : undefined
                     }
                     error={!confirmPasswordValid}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -299,9 +307,11 @@ export default function SignUpForm() {
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
                     aria-label={
-                      showPassword ? "Hide password" : "Show password"
+                      showPassword
+                        ? t("signUp.hidePassword")
+                        : t("signUp.showPassword")
                     }
-                    className="absolute inset-e-4 top-1/2 z-30 -translate-y-1/2 cursor-pointer"
+                    className={`absolute inset-e-4 top-1/2 z-30  ${confirmPasswordValid ? "-translate-y-1/2" : "translate-y-[-110%]"} cursor-pointer`}
                   >
                     {showPassword ? (
                       <EyeIcon className="size-5 fill-gray-500 dark:fill-gray-400" />
@@ -314,7 +324,7 @@ export default function SignUpForm() {
 
               {/* Optional profile picture */}
               <DropzoneComponent
-                title="Profile Picture - Optional"
+                title={t("signUp.profilePicture")}
                 onImageChange={setProfilePicture}
               />
 
@@ -325,7 +335,7 @@ export default function SignUpForm() {
                   disabled={signingUp}
                   className="flex w-full items-center justify-center rounded-lg bg-brand-500 px-4 py-3 text-sm font-medium text-white shadow-theme-xs transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {signingUp ? "Signing Up..." : "Sign Up"}
+                  {signingUp ? t("signUp.signingUp") : t("signUp.submit")}
                 </button>
               </div>
             </div>
@@ -334,12 +344,12 @@ export default function SignUpForm() {
           {/* Sign-in link */}
           <div className="mt-5">
             <p className="text-center text-sm font-normal text-gray-700 sm:text-start dark:text-gray-400">
-              Already have an account?{" "}
+              {t("signUp.existingAccount")}{" "}
               <Link
                 to="/signin"
                 className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
               >
-                Sign In
+                {t("signUp.signIn")}
               </Link>
             </p>
           </div>
@@ -350,19 +360,18 @@ export default function SignUpForm() {
       <section className="relative flex min-h-64 flex-col items-center justify-center gap-8 overflow-hidden bg-[radial-gradient(ellipse_at_center,_#bfdbfe_0%,_#dbeafe_35%,_#ffffff_75%)] px-8 py-12 dark:bg-[radial-gradient(ellipse_at_center,_#263b68_0%,_#1f2937_45%,_#111827_100%)] md:min-h-screen lg:px-16">
         <img
           src={theme === "dark" ? "/assets/logo-dark.png" : "/assets/logo.png"}
-          alt="Saay logo"
+          alt={t("signUp.logoAlt")}
           className="h-auto w-40 object-contain sm:w-48"
           loading="eager"
         />
 
         <div className="max-w-md text-center">
           <h2 className="text-2xl font-semibold text-gray-800 sm:text-3xl dark:text-white">
-            Start building better habits.
+            {t("signUp.brandingTitle")}
           </h2>
 
           <p className="mt-4 text-sm leading-6 text-gray-600 sm:text-base dark:text-gray-300">
-            Organize your tasks, track your habits, and turn your goals into
-            meaningful progress with Saay.
+            {t("signUp.brandingDescription")}
           </p>
         </div>
       </section>

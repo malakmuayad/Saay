@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import { Modal } from "../ui/modal/Modal";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
@@ -14,6 +15,7 @@ import { removeCurrentUser } from "~/services/localStorage/users";
 import { PASSWORD_REGEX } from "~/validation";
 
 export default function Security() {
+  const { t } = useTranslation();
   const currentUserId = useAuth()?.currentUserId;
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -88,7 +90,7 @@ export default function Security() {
       setError(
         typeof response === "string"
           ? response
-          : "Failed to update your password.",
+          : t("securityerrors.updateFailed"),
       );
 
       setSaving(false);
@@ -106,25 +108,25 @@ export default function Security() {
       setModalOpen(false);
       resetForm();
 
-      navigate("/");
-    }, 1500);
+      navigate("/signin");
+    }, 3000);
   }
 
   return (
     <div className="mb-6 rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-100">
       <h4 className="mb-4 text-lg font-semibold text-gray-800 lg:mb-6 dark:text-white/90">
-        Security
+        {t("security.title")}
       </h4>
 
       <div>
         <div className="flex flex-col justify-between gap-4 py-4 first:pt-0 last:border-b-0 last:pb-0 sm:flex-row sm:items-end">
           <div>
             <span className="mb-1 block text-base font-medium text-gray-800 dark:text-white/90">
-              Change Password
+              {t("security.changePassword")}
             </span>
 
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Update your password to keep your account secure.
+              {t("security.description")}
             </p>
           </div>
 
@@ -149,7 +151,7 @@ export default function Security() {
                   strokeLinejoin="round"
                 />
               </svg>
-              Change Password
+              {t("security.changePassword")}
             </button>
           </div>
         </div>
@@ -164,11 +166,11 @@ export default function Security() {
           {/* Header */}
           <div className="px-6 pt-6 pr-14 lg:px-8 lg:pt-8">
             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-              Change Password
+              {t("security.changePassword")}
             </h4>
 
             <p className="mb-6 text-sm text-gray-500 lg:mb-7 dark:text-gray-400">
-              Enter a new password for your account.
+              {t("security.modalDescription")}
             </p>
           </div>
 
@@ -177,7 +179,11 @@ export default function Security() {
               {/* Error */}
               {error && (
                 <div className="mb-6">
-                  <Alert variant="error" title="Error" message={error} />
+                  <Alert
+                    variant="error"
+                    title={t("security.errors.title")}
+                    message={error}
+                  />
                 </div>
               )}
 
@@ -186,8 +192,8 @@ export default function Security() {
                 <div className="mb-6">
                   <Alert
                     variant="success"
-                    title="Success"
-                    message="Your password was updated successfully. You will be redirected to sign in."
+                    title={t("common.success")}
+                    message={t("security.success")}
                   />
                 </div>
               )}
@@ -196,7 +202,9 @@ export default function Security() {
               <div className="grid grid-cols-1 gap-5">
                 {/* New Password */}
                 <div className="relative">
-                  <Label htmlFor="password">New Password</Label>
+                  <Label htmlFor="password">
+                    {t("security.fields.newPassword")}
+                  </Label>
 
                   <Input
                     id="password"
@@ -207,7 +215,6 @@ export default function Security() {
                       const value = e.target.value;
 
                       setPassword(value);
-
                       setPasswordValid(PASSWORD_REGEX.test(value));
 
                       if (confirmPassword !== "") {
@@ -222,7 +229,7 @@ export default function Security() {
                     }
                     hint={
                       !passwordValid
-                        ? "Password must be at least 8 characters, contain a small, capital, special, and numeric characters."
+                        ? t("security.errors.passwordRequirements")
                         : undefined
                     }
                     error={!passwordValid}
@@ -244,7 +251,9 @@ export default function Security() {
 
                 {/* Confirm Password */}
                 <div className="relative">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword">
+                    {t("security.fields.confirmPassword")}
+                  </Label>
 
                   <Input
                     id="confirmPassword"
@@ -271,7 +280,7 @@ export default function Security() {
                     }
                     hint={
                       !confirmPasswordValid
-                        ? "Passwords do not match"
+                        ? t("security.errors.passwordsDoNotMatch")
                         : undefined
                     }
                     error={!confirmPasswordValid}
@@ -302,11 +311,13 @@ export default function Security() {
                   onClick={handleClose}
                   disabled={saving}
                 >
-                  Close
+                  {t("security.actions.close")}
                 </Button>
 
                 <Button size="sm" disabled={saving}>
-                  {saving ? "Saving..." : "Change Password"}
+                  {saving
+                    ? t("security.actions.saving")
+                    : t("security.actions.changePassword")}
                 </Button>
               </div>
             </div>

@@ -1,12 +1,15 @@
+import { useTranslation } from "react-i18next";
+
 type LoadingProps = {
   fullScreen?: boolean;
   message?: string;
 };
 
-export default function Loading({
-  fullScreen = true,
-  message = "Getting things ready...",
-}: LoadingProps) {
+export default function Loading({ fullScreen = true, message }: LoadingProps) {
+  const { t } = useTranslation();
+
+  const loadingMessage = message ?? t("loading.message");
+
   return (
     <div
       role="status"
@@ -40,7 +43,10 @@ export default function Loading({
           "
         />
       </div>
-      <p className="text-sm text-gray-500 dark:text-gray-400">{message}</p>
+
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        {loadingMessage}
+      </p>
     </div>
   );
 }

@@ -41,15 +41,15 @@ export function AddHabitModal({
   const targetDurationOptions = [
     {
       value: "0",
-      label: "30 days",
+      label: t("habits.targetDuration.oneMonth"),
     },
     {
       value: "1",
-      label: "60 days",
+      label: t("habits.targetDuration.twoMonths"),
     },
     {
       value: "2",
-      label: "90 days",
+      label: t("habits.targetDuration.threeMonths"),
     },
   ];
 
