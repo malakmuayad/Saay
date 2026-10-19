@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router";
 import { GridIcon, TaskIcon, GoalIcon, HabitIcon } from "~/assets/icons";
 import { cn } from "~/utils";
 import SidebarWidget from "./SidebarWidget";
+import { useTheme } from "~/context/ThemeContext";
 
 type NavItem = {
   name: string;
@@ -60,6 +61,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onButtonClick }) => {
 
   const { t } = useTranslation();
   const location = useLocation();
+  const theme = useTheme().theme;
 
   const [openSubmenu, setOpenSubmenu] = useState<{
     type: "main";
@@ -71,6 +73,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onButtonClick }) => {
   );
 
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const isSidebarExpanded = isExpanded || isHovered || isMobileOpen;
 
   // Auto-close sidebar on mobile after route change
   useEffect(() => {
@@ -154,13 +158,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onButtonClick }) => {
                   </span>
                 </span>
 
-                {(isExpanded || isHovered || isMobileOpen) && (
+                {isSidebarExpanded && (
                   <span className="menu-item-text">
                     {nav.key ? t(`sidebar.items.${nav.key}`) : nav.name}
                   </span>
                 )}
 
-                {nav.new && (isExpanded || isHovered || isMobileOpen) && (
+                {nav.new && isSidebarExpanded && (
                   <span
                     className={`absolute inset-e-10 ms-auto ${
                       openSubmenu?.type === menuType &&
@@ -190,7 +194,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onButtonClick }) => {
                     </span>
                   </span>
 
-                  {(isExpanded || isHovered || isMobileOpen) && (
+                  {isSidebarExpanded && (
                     <span className="menu-item-text">
                       {nav.key ? t(`sidebar.items.${nav.key}`) : nav.name}
                     </span>
@@ -199,7 +203,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onButtonClick }) => {
               )
             )}
 
-            {nav.subItems && (isExpanded || isHovered || isMobileOpen) && (
+            {nav.subItems && isSidebarExpanded && (
               <div
                 ref={(el) => {
                   subMenuRefs.current[`${menuType}-${index}`] = el;
@@ -289,29 +293,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onButtonClick }) => {
         )}
       >
         <Link to="/">
-          {isExpanded || isHovered || isMobileOpen ? (
-            <>
-              <img
-                className="dark:hidden"
-                src="/assets/logo.png"
-                alt="Logo"
-                width={170}
-                height={40}
-                loading="eager"
-              />
-
-              <img
-                className="hidden dark:block"
-                src="/assets/logo-dark.png"
-                alt="Logo"
-                width={170}
-                height={40}
-                loading="eager"
-              />
-            </>
-          ) : (
-            <img src="/assets/logo.png" alt="Logo" width={32} height={32} />
-          )}
+          <img
+            src={
+              theme === "dark" ? "/assets/logo-dark.png" : "/assets/logo.png"
+            }
+            alt="Saay logo"
+            width={isSidebarExpanded ? 170 : 32}
+            height={isSidebarExpanded ? 40 : 32}
+            loading="eager"
+          />
         </Link>
       </div>
 
@@ -332,9 +322,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onButtonClick }) => {
           </div>
         </nav>
 
-        {isExpanded || isHovered || isMobileOpen ? (
-          <SidebarWidget onButtonClick={onButtonClick} />
-        ) : null}
+        {isSidebarExpanded && <SidebarWidget onButtonClick={onButtonClick} />}
       </div>
     </aside>
   );
