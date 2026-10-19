@@ -1,10 +1,10 @@
-import { Modal } from "../ui/modal/Modal";
+import { Modal } from "../../ui/modal/Modal";
 import { useModal } from "~/hooks/useModal";
 import { EyeIcon, TrashBinIcon, UploadIcon } from "~/assets/icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useTranslation } from "react-i18next";
-import ComponentCard from "../ui/cards/ComponentCard";
+import ComponentCard from "../../ui/cards/ComponentCard";
 
 interface FileWithPreview extends File {
   preview?: string;

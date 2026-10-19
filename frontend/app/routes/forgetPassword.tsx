@@ -285,7 +285,11 @@ export default function ForgotPassword() {
                   name="newPassword"
                   type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
-                  placeholder="Enter your new password"
+                  placeholder={
+                    isArabic
+                      ? "أدخل كلمة المرور الجديدة"
+                      : "Enter your new password"
+                  }
                   value={newPassword}
                   hint={
                     !passwordValid
@@ -339,7 +343,11 @@ export default function ForgotPassword() {
                   name="confirmPassword"
                   type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
-                  placeholder="Confirm your new password"
+                  placeholder={
+                    isArabic
+                      ? "أكّد كلمة المرور الجديد"
+                      : "Confirm your new password"
+                  }
                   value={confirmPassword}
                   hint={
                     !confirmPasswordValid ? "Passwords must match" : undefined
@@ -415,7 +423,7 @@ export default function ForgotPassword() {
           <p className="mt-7 text-center text-sm text-gray-500 dark:text-gray-400">
             {t("forgotPassword.rememberPassword")}{" "}
             <Link
-              to="/"
+              to="/signin"
               className="font-semibold text-brand-500 hover:text-brand-600 dark:text-brand-400"
             >
               {t("forgotPassword.signIn")}

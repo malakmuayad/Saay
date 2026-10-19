@@ -14,7 +14,7 @@ import type { Goal } from "~/types/goals/Goal";
 import GoalsTable from "~/components/ui/table/GoalsTable";
 import ComponentCard from "~/components/ui/cards/ComponentCard";
 import Button from "~/components/ui/button/Button";
-import { AddEditGoalModal } from "~/components/goals/Modals/AddEditGoalModal";
+import { AddEditGoalModal } from "~/components/goals/AddEditGoalModal";
 import MissionCard from "~/components/ui/cards/MissionCard";
 import { PaginationRow } from "~/components/ui/PaginationRow";
 import { DeleteModal } from "~/components/ui/modal/DeleteModal";

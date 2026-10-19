@@ -9,7 +9,7 @@ import { EMAIL_REGEX, PASSWORD_REGEX } from "~/validation";
 import { addUser } from "~/services/api/users";
 import type AddUserRequestDto from "~/types/users/AddUserRequestDto";
 import Alert from "../ui/Alert";
-import DropzoneComponent from "../form/DropZone";
+import DropzoneComponent from "../form/input/DropZone";
 import { useTheme } from "~/context/ThemeContext";
 
 export const meta = () => [{ title: "Saay | Sign Up" }];
