@@ -481,6 +481,17 @@
   "tasks": {
     "myTasks": "مهامي",
     "description": "قم بإدارة وتتبع مهامك",
+    "view": "عرض حسب أوقات الصلوات",
+    "locating": "جاري تحديد الموقع...",
+    "prayers": {
+      "fajr": "الفجر",
+      "dhuha": "الضحى",
+      "dhuhr": "الظهر",
+      "asr": "العصر",
+      "maghrib": "المغرب",
+      "isha": "العشاء"
+    },
+    "tasksWithoutPrayers": "مهام غير محددة بوقت",
     "addTask": "+ أضف مهمة",
     "adding": "يتم الإضافة...",
     "today": "اليوم",
@@ -504,7 +515,9 @@
       "taskCategoryPlaceholder": "قم باختيار تصنيف",
       "taskRepetition": "التكرار",
       "taskRepetitionPlaceholder": "قم باختيار التكرار",
-      "dueTime": "الوقت"
+      "dueTime": "الوقت",
+      "connectToPrayer": "ربط بوقت صلاة (اختياري)",
+      "taskPrayerPlaceholder": "قم باختيار وقت الصلاة"
     },
     "repetition": {
       "once": "مرة واحدة",

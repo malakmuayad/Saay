@@ -486,6 +486,17 @@
   "tasks": {
     "myTasks": "My Tasks",
     "description": "Manage and track your tasks",
+    "view": "Display according to prayer times",
+    "locating": "Locating being determined",
+    "prayers": {
+      "fajr": "Fajr",
+      "dhuha": "Dhuha",
+      "dhuhr": "Dhuhr",
+      "asr": "Asr",
+      "maghrib": "Maghrib",
+      "isha": "Isha"
+    },
+    "tasksWithoutPrayers": "Tasks with no specified time",
     "addTask": "+ Add a Task",
     "today": "Today",
     "tomorrow": "Tomorrow",
@@ -508,7 +519,9 @@
       "taskCategoryPlaceholder": "Choose a category",
       "taskRepetition": "Repetition",
       "taskRepetitionPlaceholder": "Choose a repetition",
-      "dueTime": "Time"
+      "dueTime": "Time",
+      "connectToPrayer": "Connet to a prayer time (Optional)",
+      "taskPrayerPlaceholder": "Choose a prayer time"
     },
     "repetition": {
       "once": "Once",

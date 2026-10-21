@@ -2,6 +2,7 @@ import type { TaskDto } from "~/types/tasks/TaskDto";
 import { apiFetch } from "./main";
 import type { AddTaskDto } from "~/types/tasks/AddTaskDto";
 import type { TaskCategoryDto } from "~/types/tasks/TaskCategoryDto";
+import type { TasksByPrayerDto } from "~/types/tasks/TasksByPrayerDto";
 
 const Base_URL: string = "https://saay.runasp.net";
 
@@ -225,4 +226,38 @@ export async function getCategories(): Promise<TaskCategoryDto[] | string> {
   }
 
   return (await response.json()) as TaskCategoryDto[];
+}
+
+export async function getTasksByPrayers(
+  userId: number,
+  latitude: string,
+  longtitude: string,
+): Promise<TasksByPrayerDto | string> {
+  const url: URL = new URL(
+    `api/saay/tasks/${userId}/${latitude}/${longtitude}`,
+    Base_URL,
+  );
+
+  const options: RequestInit = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const response = await apiFetch(url, options);
+
+  if (typeof response === "string") {
+    return response;
+  }
+
+  if (response.status === 404) {
+    return "User not found.";
+  }
+
+  if (!response.ok) {
+    return "An error occurred. Please try again later.";
+  }
+
+  return (await response.json()) as TasksByPrayerDto;
 }

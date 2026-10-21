@@ -68,6 +68,12 @@ export default function TasksTable({
                 </Button>
               </TableCell>
             )}
+            {/* Time */}
+            <TableCell className="px-2 py-3 text-theme-sm text-gray-500 sm:px-4 dark:text-gray-400">
+              <p className="text-theme-sm font-medium text-gray-800 dark:text-white/90">
+                {task.dueTime}
+              </p>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

@@ -36,6 +36,8 @@ export function AddTaskModal({
 
   const [dueTime, setDueTime] = useState("");
 
+  const [prayer, setPrayer] = useState("");
+
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -96,6 +98,15 @@ export function AddTaskModal({
       value: "3",
       label: String(t("tasks.repetition.monthly")),
     },
+  ];
+
+  const prayerOptions = [
+    { value: "0", label: String(t("tasks.prayers.fajr")) },
+    { value: "1", label: String(t("tasks.prayers.dhuha")) },
+    { value: "2", label: String(t("tasks.prayers.dhuhr")) },
+    { value: "3", label: String(t("tasks.prayers.asr")) },
+    { value: "4", label: String(t("tasks.prayers.maghrib")) },
+    { value: "5", label: String(t("tasks.prayers.isha")) },
   ];
 
   function resetForm() {
@@ -271,6 +282,19 @@ export function AddTaskModal({
                 type="time"
                 value={dueTime}
                 onChange={(e) => setDueTime(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <Label>{t("tasks.fields.connectToPrayer")}</Label>
+
+              <Select
+                options={prayerOptions}
+                value={prayer}
+                placeholder={String(t("tasks.fields.taskPrayerPlaceholder"))}
+                onChange={(value) => {
+                  setPrayer(value);
+                }}
               />
             </div>
           </div>
