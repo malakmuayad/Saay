@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Saay.Infrastructure.DTOs.CategoryDTOs;
 using Saay.Infrastructure.DTOs.TaskDTOs;
+using Saay.Infrastructure.DTOs.UserDTOs;
 using Saay.Services.Interfaces;
 using System.Security.Claims;
 
@@ -262,6 +263,33 @@ namespace Saay.API.Controllers
 
             if (result == false)
                 return StatusCode(500, "An error occurred while updating the task.");
+
+            return Ok(result);
+        }
+
+        [EnableRateLimiting("LightOpsLimiter")]
+        [Authorize]
+        [HttpGet("{userId}/{latitude}/{longitude}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        public async Task<ActionResult<TasksByPrayersDto>> GetTasksByPrayersAsync(int userId, string latitude, string longitude)
+        {
+            if (!await _ownershipAuthorizationService.IsOwnerAsync(User, userId))
+            {
+                _logger.LogWarning("User {userId} attmpted to gete tasks by prayer without ownership.",
+                   userId);
+                return Forbid();
+            }
+
+            TasksByPrayersDto result = await _taskService.GetTasksByPrayersAsync(userId, latitude, longitude);
+
+            if (result == null)
+                return NotFound("User not found");
 
             return Ok(result);
         }

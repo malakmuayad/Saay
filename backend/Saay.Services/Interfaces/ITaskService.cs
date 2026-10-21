@@ -35,5 +35,7 @@ namespace Saay.Services.Interfaces
         public Task<byte?> UserUrgentTasksTodayCount(int userId);
 
         public Task<byte?> UserTasksTodayCountAsync(int userId);
+
+        public Task<TasksByPrayersDto> GetTasksByPrayersAsync(int userId, string latitude, string longitude);
     }
 }

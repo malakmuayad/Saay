@@ -267,5 +267,55 @@ namespace Saay.Repository.Classes
             (byte)await _context.Tasks
                 .Where(t => t.UserId == userId && !t.IsDone)
                 .CountAsync();
+
+        public async Task<List<TaskDto>> GetTasksByPrayerAsync(int userId, byte prayerNumber, DateOnly dueDate)
+        {
+            List<Data.Entities.Task> tasks =
+             await _context.Tasks
+             .Include(t => t.TaskCategory)
+             .Where(t => t.UserId == userId && t.PrayerNumber == prayerNumber && t.DueDate == dueDate)
+             .ToListAsync();
+
+            List<TaskDto> taskDtos = new List<TaskDto>();
+
+            foreach(Data.Entities.Task task in tasks) {
+                taskDtos.Add(new TaskDto
+                {
+                    TaskId = task.TaskId,
+                    TaskCategoryTitle = task.TaskCategory.Title,
+                    Title = task.Title,
+                    IsDone = task.IsDone,
+                    DueDate = task.DueDate,
+                    DueTime = task.DueTime
+                });
+            }
+            return taskDtos;
+        }
+
+        public async Task<List<TaskDto>> GetTasksWithoutPrayerAsync(int userId, DateOnly dueDate)
+        {
+            List<Data.Entities.Task> tasks =
+             await _context.Tasks
+             .Include(t => t.TaskCategory)
+             .Where(t => t.UserId == userId && t.PrayerNumber == null && t.DueDate == dueDate)
+             .ToListAsync();
+
+            List<TaskDto> taskDtos = new List<TaskDto>();
+
+            foreach (Data.Entities.Task task in tasks)
+            {
+                taskDtos.Add(new TaskDto
+                {
+                    TaskId = task.TaskId,
+                    TaskCategoryTitle = task.TaskCategory.Title,
+                    Title = task.Title,
+                    IsDone = task.IsDone,
+                    DueDate = task.DueDate,
+                    DueTime = task.DueTime
+                });
+            }
+            return taskDtos;
+        }
+
     }
 }

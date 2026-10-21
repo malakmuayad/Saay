@@ -74,6 +74,8 @@ namespace Saay.Extensions
             services.AddScoped<IAIService, GroqAIConversationService>();
             services.AddHttpClient<ImgBBImageStorageService>();
             services.AddScoped<IImageStorageService, ImgBBImageStorageService>();
+            services.AddHttpClient<AladhanPrayerService>();
+            services.AddScoped<IPrayerService, AladhanPrayerService>();
 
             return services;
         }
@@ -106,7 +108,8 @@ namespace Saay.Extensions
                             "http://127.0.0.1:5500",
                             "http://localhost:5109",
                             "http://localhost:5173",
-                            "https://saay.vercel.app"
+                            "https://saay.vercel.app",
+                            "https://saay-eight.vercel.app"
                         )
                         .AllowAnyHeader()
                         .AllowAnyMethod()

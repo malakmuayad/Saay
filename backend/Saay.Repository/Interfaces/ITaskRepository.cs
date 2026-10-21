@@ -37,5 +37,9 @@ namespace Saay.Repository.Interfaces
         public Task<bool?> MarkTaskAsUncompletedAsync(int taskId);
 
         public Task<byte> UserTasksTodayCountAsync(int userId);
+
+        public Task<List<TaskDto>> GetTasksByPrayerAsync(int userId, byte prayerNumber, DateOnly dueDate);
+        
+        public Task<List<TaskDto>> GetTasksWithoutPrayerAsync(int userId, DateOnly dueDate);
     }
 }

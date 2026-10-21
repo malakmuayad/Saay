@@ -113,6 +113,15 @@ public partial class SaayContext : DbContext
             entity.Property(e => e.Title).HasMaxLength(255);
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
+            entity.Property(e => e.PrayerNumber)
+               .HasColumnType("tinyint")
+               .IsRequired(false);
+
+            entity.ToTable("Tasks", table =>
+                table.HasCheckConstraint(
+                    "CK_Tasks_PrayerNumber",
+                    "[PrayerNumber] >= 0 AND [PrayerNumber] <= 5 OR [PrayerNumber] IS NULL"));
+
             entity.HasOne(d => d.TaskCategory).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.TaskCategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)

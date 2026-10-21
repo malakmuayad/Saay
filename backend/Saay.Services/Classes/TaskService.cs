@@ -8,11 +8,13 @@ namespace Saay.Services.Classes
     {
         private readonly ITaskRepository _taskRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IPrayerService _prayerService;
 
-        public TaskService(ITaskRepository taskRepository, IUserRepository userRepository)
+        public TaskService(ITaskRepository taskRepository, IUserRepository userRepository, IPrayerService prayerService)
         {
             _taskRepository = taskRepository;
             _userRepository = userRepository;
+            _prayerService = prayerService;
         }
 
         private byte _GetRepetitionDays(byte repetition)
@@ -169,6 +171,32 @@ namespace Saay.Services.Classes
             if (!await _userRepository.DoesUserExist(userId))
                 return null; // User not found
             return await _taskRepository.UserTasksTodayCountAsync(userId);
+        }
+
+        public async Task<TasksByPrayersDto?> GetTasksByPrayersAsync(
+            int userId,
+            string latitude,
+            string longitude)
+        {
+            if (!await _userRepository.DoesUserExist(userId))
+                return null;
+
+            DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+
+            List<string> prayersTime = await _prayerService.GetPrayersTime(
+                today, latitude, longitude);
+
+            return new TasksByPrayersDto
+            {
+                PrayerTimes = prayersTime,
+                FajrTasks = await _taskRepository.GetTasksByPrayerAsync(userId, 0, today),
+                DhuhaTasks = await _taskRepository.GetTasksByPrayerAsync(userId, 1, today),
+                DhuhrTasks = await _taskRepository.GetTasksByPrayerAsync(userId, 2, today),
+                AsrTasks = await _taskRepository.GetTasksByPrayerAsync(userId, 3, today),
+                MaghribTasks = await _taskRepository.GetTasksByPrayerAsync(userId, 4, today),
+                IshaTasks = await _taskRepository.GetTasksByPrayerAsync(userId, 5, today),
+                TasksWithoutPrayers = await _taskRepository.GetTasksWithoutPrayerAsync(userId, today)
+            };
         }
     }
 }

@@ -18,6 +18,8 @@ public partial class Task
 
     public bool IsReminderSent { get; set; }
 
+    public byte? PrayerNumber { get; set; }
+
     public virtual TaskCategory TaskCategory { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
